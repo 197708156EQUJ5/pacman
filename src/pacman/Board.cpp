@@ -53,12 +53,20 @@ void Board::draw()
 {
     SDL_FillRect(surface, nullptr, SDL_MapRGB(surface->format, 0x00, 0x00, 0x00));
 
+    int colCount = 0;
+    int rowCount = 4;
     for (Cell cell : level)
     {
-        SDL_Rect position = {cell.destCol * Constants::CHARACTER_SIZE, cell.destRow * Constants::CHARACTER_SIZE, 
+        SDL_Rect position = {colCount * Constants::CHARACTER_SIZE, rowCount * Constants::CHARACTER_SIZE, 
             Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
         spriteSheet->selectSprite(cell.srcCol, cell.srcRow);
-        spriteSheet->drawSelectedSprite(surface, &position);        
+        spriteSheet->drawSelectedSprite(surface, &position);
+        colCount++;
+        if (colCount % 28 == 0 )
+        {
+            colCount = 0;
+            rowCount++;
+        }
     }
 
     // draw Pacman

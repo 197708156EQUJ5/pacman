@@ -10,8 +10,6 @@ struct Cell
 {
     int srcCol;
     int srcRow;
-    int destCol;
-    int destRow;
 };
 
 class LevelDesign
