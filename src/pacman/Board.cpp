@@ -3,6 +3,10 @@
 
 namespace pacman
 {
+Board::Board() :
+    userDirection(Direction::LEFT)
+{
+}
 
 Board::~Board()
 {
@@ -40,6 +44,11 @@ bool Board::init()
     return true;
 }
 
+void Board::setUserDirection(Direction direction)
+{
+    userDirection = direction;
+}
+
 void Board::draw()
 {
     SDL_FillRect(surface, nullptr, SDL_MapRGB(surface->format, 0x00, 0x00, 0x00));
@@ -58,13 +67,14 @@ void Board::draw()
     {
         for (int j = 0; j < 2; j++)
         {
-            SDL_Rect pacmanPos = {(pacman->getX() + i) * Constants::CHARACTER_SIZE, (pacman->getY() + j) * Constants::CHARACTER_SIZE,
+            SDL_Rect pacmanPos = {pacman->getX() + (i * Constants::CHARACTER_SIZE), pacman->getY() + (j * Constants::CHARACTER_SIZE),
                 Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
             spriteSheet->selectSprite(pacman->getSrcCol() + i, pacman->getSrcRow() + j);
             spriteSheet->drawSelectedSprite(surface, &pacmanPos);
         }
     }
     pacman->move();
+    pacman->changeDirection(userDirection);
     
     SDL_Delay(250);
     SDL_UpdateWindowSurface(window);

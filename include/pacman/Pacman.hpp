@@ -10,18 +10,19 @@ class Pacman : public Character
 {
 public:
 
-    Pacman(int col = PacmanConstants::START_COL * Constants::CHARACTER_SIZE, 
+    Pacman(int x = PacmanConstants::START_COL * Constants::CHARACTER_SIZE, 
             int y = PacmanConstants::START_ROW * Constants::CHARACTER_SIZE, 
-            Direction direction = Direction::LEFT); 
+            Direction direction = Direction::LEFT,
+            bool isOddMove = false); 
     ~Pacman() = default;
     
     int getSrcCol();
     int getSrcRow();
     void move();
+    void changeDirection(Direction direction);
     
 private:
 
-    //static const int 
 };
 
 } // namespace pacman

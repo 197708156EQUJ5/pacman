@@ -1,5 +1,6 @@
 #pragma once
 
+#include "pacman/Direction.hpp"
 #include "pacman/CharacterManager.hpp"
 #include "pacman/LevelDesign.hpp"
 #include "pacman/SpriteSheet.hpp"
@@ -16,20 +17,22 @@ class Board
 {
 public:
 
-    Board() = default;
+    Board();
     ~Board();
     
     bool init();
     void update(double deltaTime);
     void draw();
+    void setUserDirection(Direction direction);
 
-private:
-    
+private:    
     
     std::unique_ptr<SpriteSheet> spriteSheet;
     std::unique_ptr<CharacterManager> characterManager;
     std::vector<Cell> level;
 
+    Direction userDirection;
+    
     SDL_Window *window;
     SDL_Surface *surface;
     SDL_Event event;
