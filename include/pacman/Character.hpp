@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pacman/Direction.hpp"
+#include "pacman/Constants.hpp"
 
 namespace pacman
 {

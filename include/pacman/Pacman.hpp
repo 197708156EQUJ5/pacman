@@ -1,7 +1,6 @@
 #pragma once
 
 #include "pacman/Character.hpp"
-#include "pacman/Constants.hpp"
 
 namespace pacman
 {

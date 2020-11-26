@@ -1,9 +1,13 @@
 #pragma once
 
-#include "pacman/Ghost.hpp"
+#include "pacman/Pinky.hpp"
+#include "pacman/Inky.hpp"
+#include "pacman/Blinky.hpp"
+#include "pacman/Clyde.hpp"
 #include "pacman/Pacman.hpp"
 
 #include <memory>
+#include <vector>
 
 namespace pacman
 {
@@ -17,6 +21,7 @@ public:
 
     void initCharacters();
     std::shared_ptr<Pacman> getPacman();
+    std::vector<std::shared_ptr<Ghost>> getGhosts();
 
 private:
 

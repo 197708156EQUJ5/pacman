@@ -9,7 +9,6 @@ namespace pacman
 Pacman::Pacman(int x, int y, Direction direction, bool isOddMove) : 
     Character(x, y, direction, isOddMove)
 {
-    printf("Pacman() %d, %d\n", x, y);
 }
 
 int Pacman::getSrcCol()

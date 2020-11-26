@@ -12,8 +12,8 @@ public:
     Ghost(int x = 0, int y = 0, Direction direction = Direction::LEFT, bool isOddMove = false);
     ~Ghost() = default;
     
-    int getSrcCol();
-    int getSrcRow();
+    virtual int getSrcCol() {};
+    virtual int getSrcRow() {};
     void move();
     void changeDirection(Direction direction);
 };

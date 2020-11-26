@@ -76,6 +76,22 @@ void Board::draw()
     pacman->move();
     pacman->changeDirection(userDirection);
     
+    std::vector<std::shared_ptr<Ghost>> ghosts = characterManager->getGhosts();
+
+    for (std::shared_ptr<Ghost> ghost : ghosts)
+    {
+    for (int i = 0; i < 2; i++)
+    {
+        for (int j = 0; j < 2; j++)
+        {
+            SDL_Rect ghostPos = {ghost->getX() + (i * Constants::CHARACTER_SIZE), ghost->getY() + (j * Constants::CHARACTER_SIZE),
+                Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
+            spriteSheet->selectSprite(ghost->getSrcCol() + i, ghost->getSrcRow() + j);
+            spriteSheet->drawSelectedSprite(surface, &ghostPos);
+        }
+    }
+    }
+
     SDL_Delay(250);
     SDL_UpdateWindowSurface(window);
 }
