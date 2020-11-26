@@ -25,7 +25,6 @@ void SpriteSheet::selectSprite(int x, int y)
 void SpriteSheet::drawSelectedSprite(SDL_Surface *windowSurface, SDL_Rect *position)
 {
     SDL_BlitScaled(spriteSheetSurface, &clip, windowSurface, position);
-    //SDL_BlitSurface(spriteSheetSurface, &clip, windowSurface, position);
 }
 
 } // namespace

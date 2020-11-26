@@ -9,9 +9,13 @@ class Ghost : public Character
 {
 public:
 
-    Ghost(int col = 0, int row = 0, Direction direction = Direction::LEFT);
+    Ghost(int x = 0, int y = 0, Direction direction = Direction::LEFT);
     ~Ghost() = default;
     
+    int getSrcCol();
+    int getSrcRow();
+    void move();
+
 };
 
 } // namespace pacman

@@ -3,21 +3,21 @@
 namespace pacman
 {
 
-Character::Character(int col, int row, Direction direction) :
-    col(col),
-    row(row),
+Character::Character(int x, int y, Direction direction) :
+    x(x),
+    y(y),
     direction(direction)
 {
 }
 
-int Character::getRow() const
+int Character::getY() const
 {
-    return col;
+    return y;
 }
 
-int Character::getCol() const
+int Character::getX() const
 {
-    return row;
+    return x;
 }
 
 }

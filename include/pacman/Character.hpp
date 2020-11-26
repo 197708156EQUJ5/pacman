@@ -16,22 +16,26 @@ class Character
     
 public:
 
-    Character(int col = 0, int row = 0, Direction direction = Direction::LEFT);
+    Character(int x = 0, int y = 0, Direction direction = Direction::LEFT);
     virtual ~Character() {};
 
-    int getCol() const;
-    int getRow() const;
+    int getX() const;
+    int getY() const;
+    virtual int getSrcCol() = 0;
+    virtual int getSrcRow() = 0;
     //virtual void setX(int x);
     //virtual void setY(int y);
     //virtual void setDirection(Direction &direction);
-    //virtual void move();
+    
+    virtual void move() = 0;
     //virtual void respawn();
 
-private:
+protected:
 
-    int col;
-    int row;
     Direction direction;
+    int x;
+    int y;
+
 };
 
 } // namespace pacman
