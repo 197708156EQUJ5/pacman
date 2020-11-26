@@ -1,5 +1,6 @@
 #pragma once
 
+#include "pacman/CharacterManager.hpp"
 #include "pacman/LevelDesign.hpp"
 #include "pacman/SpriteSheet.hpp"
 
@@ -18,12 +19,6 @@ public:
     Board() = default;
     ~Board();
     
-    //Screen dimension constants
-    static const int WIDTH = 672;
-    static const int HEIGHT = 864;
-    static const int SS_COLUMNS = 32;
-    static const int SS_ROW = 20;
-    
     bool init();
     void update(double deltaTime);
     void draw();
@@ -32,6 +27,7 @@ private:
     
     
     std::unique_ptr<SpriteSheet> spriteSheet;
+    std::unique_ptr<CharacterManager> characterManager;
     std::vector<Cell> level;
 
     SDL_Window *window;

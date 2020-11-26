@@ -1,4 +1,5 @@
 #include "pacman/Board.hpp"
+#include "pacman/Constants.hpp"
 
 namespace pacman
 {
@@ -7,11 +8,14 @@ Board::~Board()
 {
     SDL_FreeSurface(surface);
     SDL_DestroyWindow(window);
+
+    SDL_Quit();
 }
 
 bool Board::init()
 {
-    window = SDL_CreateWindow("Pacman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
+    window = SDL_CreateWindow("Pacman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
+            Constants::BOARD_WIDTH, Constants::BOARD_HEIGHT, 0);
 
     if (!window)
     {
@@ -29,7 +33,8 @@ bool Board::init()
         return false;
     }
 
-    spriteSheet = std::make_unique<SpriteSheet>("resources/pacman-spritesheet.bmp", 20, 32);
+    spriteSheet = std::make_unique<SpriteSheet>();
+    characterManager = std::make_unique<CharacterManager>();
     level = LevelDesign::LEVEL_1;
 
     return true;
@@ -41,14 +46,20 @@ void Board::draw()
 
     for (Cell cell : level)
     {
-        SDL_Rect position = {cell.destCol * 24, cell.destRow * 24, 24, 24};
-        spriteSheet->selectSprite(cell.srcRow, cell.srcCol);
+        SDL_Rect position = {cell.destCol * Constants::CHARACTER_SIZE, cell.destRow * Constants::CHARACTER_SIZE, 
+            Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
+        spriteSheet->selectSprite(cell.srcCol, cell.srcRow);
         spriteSheet->drawSelectedSprite(surface, &position);        
     }
-    
-    //position = {24, 0, 24, 24};
-    //spriteSheet->selectSprite(26, 4);
-    //spriteSheet->drawSelectedSprite(surface, &position);
+
+    // draw Pacman
+    std::shared_ptr<Pacman> pacman = characterManager->getPacman();
+    SDL_Rect pacmanPos1 = {pacman->getCol() * Constants::CHARACTER_SIZE, pacman->getRow() * Constants::CHARACTER_SIZE,
+            Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
+    //spriteSheet->selectSprite(pacman->getSrcRow(), pacman->getSrcCol());
+    spriteSheet->selectSprite(6, 0);
+    spriteSheet->drawSelectedSprite(surface, &pacmanPos1);
+
     
     SDL_Delay(100);
     SDL_UpdateWindowSurface(window);

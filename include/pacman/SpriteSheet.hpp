@@ -1,7 +1,9 @@
 #pragma once
 
-#include <SDL2/SDL.h>
 #include "pacman/Utils.hpp"
+#include "pacman/Constants.hpp"
+
+#include <SDL2/SDL.h>
 
 namespace pacman
 {
@@ -10,7 +12,9 @@ class SpriteSheet
 {
 public:
 
-    SpriteSheet(char const *path, int row, int column);
+    SpriteSheet(char const *path = Constants::SPRITESHEET_PATH, int column = Constants::SS_COLS, 
+            int row = Constants::SS_ROWS);
+            
     ~SpriteSheet();
 
     void selectSprite(int x, int y);

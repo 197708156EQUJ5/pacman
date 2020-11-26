@@ -8,10 +8,10 @@ namespace pacman
 
 struct Cell
 {
-    int srcRow;
     int srcCol;
-    int destRow;
+    int srcRow;
     int destCol;
+    int destRow;
 };
 
 class LevelDesign
