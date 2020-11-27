@@ -80,6 +80,11 @@ const std::vector<Cell> LevelDesign::LEVEL_1(
     Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{18, 4}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5},
     Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{19, 4}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5},
     Cell{17, 0}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5},
+    // Row 16
+    Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 3}, Cell{17, 0},
+    Cell{23, 5}, Cell{22, 5}, Cell{30, 5}, Cell{18, 4}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5},
+    Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{19, 4}, Cell{30, 5}, Cell{23, 5}, Cell{22, 5},
+    Cell{17, 0}, Cell{29, 3}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, 
     //Cell{, }, Cell{, }, Cell{, }, Cell{, }, Cell{, }, Cell{, }, Cell{, },
     // Row 21
     Cell{19, 4}, Cell{17, 0}, Cell{17, 0}, Cell{17, 0}, Cell{17, 0}, Cell{17, 0}, Cell{17, 0}, 
