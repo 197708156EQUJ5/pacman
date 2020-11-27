@@ -45,6 +45,7 @@ bool Board::init()
     maze = LevelDesign::LEVEL_1;
     pacman = this->characterManager->getPacman();
     ghosts = characterManager->getGhosts();
+    gameStartTime = std::chrono::system_clock::now();
 
     return true;
 }
@@ -62,10 +63,16 @@ void Board::draw()
     drawScore();
     
     drawPacman();
-    updatePacman();
     
     drawGhosts();
-    updateGhosts();
+
+
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - gameStartTime);
+    if (duration.count() > 3000)
+    {
+        updatePacman();
+        updateGhosts();
+    }
 
     SDL_Delay(100);
     SDL_UpdateWindowSurface(window);

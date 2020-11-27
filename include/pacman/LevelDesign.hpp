@@ -16,6 +16,7 @@ class LevelDesign
 {
 public:
     static const std::vector<Cell> LEVEL_1;
+    static const std::vector<Cell> LEGAL_TILES;
 
 };
 

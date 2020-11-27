@@ -6,6 +6,7 @@
 #include "pacman/SpriteSheet.hpp"
 
 #include <SDL2/SDL.h>
+#include <chrono>
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -37,6 +38,7 @@ private:
     int score;
     int lives;
     int level;
+    std::chrono::time_point<std::chrono::system_clock> gameStartTime;
     
     SDL_Window *window;
     SDL_Surface *surface;

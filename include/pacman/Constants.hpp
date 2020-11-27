@@ -9,7 +9,7 @@ static const int BOARD_HEIGHT = 864;
 static const int SS_COLS = 32;
 static const int SS_ROWS = 20;
 static const int CHARACTER_SIZE = 24;
-static const char *SPRITESHEET_PATH = "resources/pacman-spritesheet.bmp";
+static const char *SPRITESHEET_PATH = "resources/pacman-spritesheet2.bmp";
 
 static const int NUM_ROW = 0;
 static const int NUM_COL_0 = 0;
@@ -28,10 +28,12 @@ static const int NUM_COL_9 = 9;
 namespace PacmanConstants
 {
 
-static const int START_COL = 12;
+static const int START_COL = 13;
 static const int START_ROW = 26;
 
 static const int SRC_ROW = 6;
+static const int SRC_START_COL = 0;
+static const int SRC_START_ROW = 14;
 static const int SRC_LEFT_1 = 0;
 static const int SRC_LEFT_2 = 4;
 static const int SRC_RIGHT_1 = 8;

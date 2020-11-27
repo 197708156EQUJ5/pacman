@@ -15,7 +15,11 @@ int Pacman::getSrcCol()
 {
     int srcCol = -1;
 
-    if (direction == Direction::LEFT)
+    if (direction == Direction::NONE)
+    {
+        srcCol = PacmanConstants::SRC_START_COL;
+    }
+    else if (direction == Direction::LEFT)
     {
         srcCol = isOddMove ? PacmanConstants::SRC_LEFT_1 : PacmanConstants::SRC_LEFT_2;
     }
@@ -37,6 +41,11 @@ int Pacman::getSrcCol()
 
 int Pacman::getSrcRow()
 {
+    if (direction == Direction::NONE)
+    {
+        return PacmanConstants::SRC_START_ROW;
+    }
+
     return PacmanConstants::SRC_ROW;
 }
 
