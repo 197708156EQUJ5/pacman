@@ -35,7 +35,7 @@ namespace PinkyConstants
 {
 
 static const int START_COL = 14;
-static const int START_ROW = 15;
+static const int START_ROW = 17;
 
 static const int SRC_ROW = 16;
 static const int SRC_LEFT_1 = 8;
@@ -53,7 +53,7 @@ namespace BlinkyConstants
 {
 
 static const int START_COL = 14;
-static const int START_ROW = 13;
+static const int START_ROW = 15;
 
 static const int SRC_ROW = 12;
 static const int SRC_LEFT_1 = 8;
@@ -71,7 +71,7 @@ namespace InkyConstants
 {
 
 static const int START_COL = 12;
-static const int START_ROW = 15;
+static const int START_ROW = 17;
 
 static const int SRC_ROW = 16;
 static const int SRC_LEFT_1 = 24;
@@ -89,7 +89,7 @@ namespace ClydeConstants
 {
 
 static const int START_COL = 16;
-static const int START_ROW = 15;
+static const int START_ROW = 17;
 
 static const int SRC_ROW = 18;
 static const int SRC_LEFT_1 = 8;
