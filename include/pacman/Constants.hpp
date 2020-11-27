@@ -9,7 +9,7 @@ static const int BOARD_HEIGHT = 864;
 static const int SS_COLS = 32;
 static const int SS_ROWS = 20;
 static const int CHARACTER_SIZE = 24;
-static const char *SPRITESHEET_PATH = "resources/pacman-spritesheet2.bmp";
+static const char *SPRITESHEET_PATH = "resources/pacman-spritesheet.bmp";
 
 }
 
