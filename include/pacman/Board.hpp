@@ -29,13 +29,24 @@ private:
     
     std::unique_ptr<SpriteSheet> spriteSheet;
     std::unique_ptr<CharacterManager> characterManager;
-    std::vector<Cell> level;
+    std::vector<Cell> maze;
+    std::shared_ptr<Pacman> pacman;
+    std::vector<std::shared_ptr<Ghost>> ghosts;
 
     Direction userDirection;
+    int score;
+    int lives;
+    int level;
     
     SDL_Window *window;
     SDL_Surface *surface;
     SDL_Event event;
+
+    void drawBoard();
+    void drawPacman();
+    void updatePacman();
+    void drawGhosts();
+    void updateGhosts();
 };
 
 } // namespace

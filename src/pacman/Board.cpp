@@ -4,7 +4,10 @@
 namespace pacman
 {
 Board::Board() :
-    userDirection(Direction::LEFT)
+    userDirection(Direction::LEFT),
+    score(0),
+    lives(2),
+    level(1)
 {
 }
 
@@ -39,7 +42,9 @@ bool Board::init()
 
     spriteSheet = std::make_unique<SpriteSheet>();
     characterManager = std::make_unique<CharacterManager>();
-    level = LevelDesign::LEVEL_1;
+    maze = LevelDesign::LEVEL_1;
+    pacman = this->characterManager->getPacman();
+    ghosts = characterManager->getGhosts();
 
     return true;
 }
@@ -53,9 +58,23 @@ void Board::draw()
 {
     SDL_FillRect(surface, nullptr, SDL_MapRGB(surface->format, 0x00, 0x00, 0x00));
 
+    drawBoard();
+    
+    drawPacman();
+    updatePacman();
+    
+    drawGhosts();
+    updateGhosts();
+
+    SDL_Delay(100);
+    SDL_UpdateWindowSurface(window);
+}
+
+void Board::drawBoard()
+{
     int colCount = 0;
     int rowCount = 3;
-    for (Cell cell : level)
+    for (Cell cell : maze)
     {
         SDL_Rect position = {colCount * Constants::CHARACTER_SIZE, rowCount * Constants::CHARACTER_SIZE, 
             Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
@@ -68,9 +87,10 @@ void Board::draw()
             rowCount++;
         }
     }
+}
 
-    // draw Pacman
-    std::shared_ptr<Pacman> pacman = characterManager->getPacman();
+void Board::drawPacman()
+{
     for (int i = 0; i < 2; i++)
     {
         for (int j = 0; j < 2; j++)
@@ -82,28 +102,34 @@ void Board::draw()
             spriteSheet->drawSelectedSprite(surface, &pacmanPos);
         }
     }
+}
+
+void Board::updatePacman()
+{
     pacman->move();
     pacman->changeDirection(userDirection);
-    
-    std::vector<std::shared_ptr<Ghost>> ghosts = characterManager->getGhosts();
+}
 
+void Board::drawGhosts()
+{
     for (std::shared_ptr<Ghost> ghost : ghosts)
     {
-    for (int i = 0; i < 2; i++)
-    {
-        for (int j = 0; j < 2; j++)
+        for (int i = 0; i < 2; i++)
         {
-            SDL_Rect ghostPos = {ghost->getX() + (i * Constants::CHARACTER_SIZE),
-                ghost->getY() + (j * Constants::CHARACTER_SIZE) - (Constants::CHARACTER_SIZE / 2),
-                Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
-            spriteSheet->selectSprite(ghost->getSrcCol() + i, ghost->getSrcRow() + j);
-            spriteSheet->drawSelectedSprite(surface, &ghostPos);
+            for (int j = 0; j < 2; j++)
+            {
+                SDL_Rect ghostPos = {ghost->getX() + (i * Constants::CHARACTER_SIZE),
+                    ghost->getY() + (j * Constants::CHARACTER_SIZE) - (Constants::CHARACTER_SIZE / 2),
+                    Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
+                spriteSheet->selectSprite(ghost->getSrcCol() + i, ghost->getSrcRow() + j);
+                spriteSheet->drawSelectedSprite(surface, &ghostPos);
+            }
         }
     }
-    }
+}
 
-    SDL_Delay(250);
-    SDL_UpdateWindowSurface(window);
+void Board::updateGhosts()
+{
 }
 
 } // namespace
