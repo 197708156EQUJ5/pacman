@@ -47,6 +47,10 @@ private:
     void updatePacman();
     void drawGhosts();
     void updateGhosts();
+    void drawScore();
+    void drawLives();
+    void drawFruits();
+
 };
 
 } // namespace

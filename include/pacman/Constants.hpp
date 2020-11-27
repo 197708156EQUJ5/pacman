@@ -11,6 +11,18 @@ static const int SS_ROWS = 20;
 static const int CHARACTER_SIZE = 24;
 static const char *SPRITESHEET_PATH = "resources/pacman-spritesheet.bmp";
 
+static const int NUM_ROW = 0;
+static const int NUM_COL_0 = 0;
+static const int NUM_COL_1 = 1;
+static const int NUM_COL_2 = 2;
+static const int NUM_COL_3 = 3;
+static const int NUM_COL_4 = 4;
+static const int NUM_COL_5 = 5;
+static const int NUM_COL_6 = 6;
+static const int NUM_COL_7 = 7;
+static const int NUM_COL_8 = 8;
+static const int NUM_COL_9 = 9;
+
 }
 
 namespace PacmanConstants

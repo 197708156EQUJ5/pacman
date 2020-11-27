@@ -59,6 +59,7 @@ void Board::draw()
     SDL_FillRect(surface, nullptr, SDL_MapRGB(surface->format, 0x00, 0x00, 0x00));
 
     drawBoard();
+    drawScore();
     
     drawPacman();
     updatePacman();
@@ -87,6 +88,46 @@ void Board::drawBoard()
             rowCount++;
         }
     }
+}
+
+void Board::drawScore()
+{
+    int col = 6;
+    int local_score = score;
+
+    for (int i = 1; i <= 1000000; i *= 10)
+    {
+        int digit = local_score % 10;
+        local_score = local_score / 10;
+        SDL_Rect position = {col * Constants::CHARACTER_SIZE, 1 * Constants::CHARACTER_SIZE, 
+            Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
+        if (digit == 0)
+        {
+            spriteSheet->selectSprite(Constants::NUM_COL_0, Constants::NUM_ROW);
+        }
+        else if (digit == 1)
+        {
+            spriteSheet->selectSprite(Constants::NUM_COL_1, Constants::NUM_ROW);
+        }
+        else if (digit == 2)
+        {
+            spriteSheet->selectSprite(Constants::NUM_COL_2, Constants::NUM_ROW);
+        }
+        else if (digit == 3)
+        {
+            spriteSheet->selectSprite(Constants::NUM_COL_3, Constants::NUM_ROW);
+        }
+        spriteSheet->drawSelectedSprite(surface, &position);
+        col--;
+    }
+}
+
+void Board::drawLives()
+{
+}
+
+void Board::drawFruits()
+{
 }
 
 void Board::drawPacman()
