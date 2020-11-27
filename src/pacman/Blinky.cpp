@@ -8,7 +8,6 @@ namespace pacman
 Blinky::Blinky(int x, int y, Direction direction, bool isOddMove) : 
     Ghost(x, y, direction, isOddMove)
 {
-    printf("Pinky %d, %d\n", x, y);
 }
 
 int Blinky::getSrcCol()

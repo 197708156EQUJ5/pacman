@@ -11,7 +11,7 @@ public:
 
     Pinky(int x = PinkyConstants::START_COL * Constants::CHARACTER_SIZE,
             int y = PinkyConstants::START_ROW * Constants::CHARACTER_SIZE, 
-            Direction direction = Direction::UP, bool isOddMove = false);
+            Direction direction = Direction::DOWN, bool isOddMove = false);
     ~Pinky() = default;
     
     int getSrcCol();

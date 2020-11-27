@@ -54,7 +54,7 @@ void Board::draw()
     SDL_FillRect(surface, nullptr, SDL_MapRGB(surface->format, 0x00, 0x00, 0x00));
 
     int colCount = 0;
-    int rowCount = 4;
+    int rowCount = 3;
     for (Cell cell : level)
     {
         SDL_Rect position = {colCount * Constants::CHARACTER_SIZE, rowCount * Constants::CHARACTER_SIZE, 
@@ -75,7 +75,8 @@ void Board::draw()
     {
         for (int j = 0; j < 2; j++)
         {
-            SDL_Rect pacmanPos = {pacman->getX() + (i * Constants::CHARACTER_SIZE), pacman->getY() + (j * Constants::CHARACTER_SIZE),
+            SDL_Rect pacmanPos = {pacman->getX() + (i * Constants::CHARACTER_SIZE),
+                pacman->getY() + (j * Constants::CHARACTER_SIZE) - (Constants::CHARACTER_SIZE / 2),
                 Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
             spriteSheet->selectSprite(pacman->getSrcCol() + i, pacman->getSrcRow() + j);
             spriteSheet->drawSelectedSprite(surface, &pacmanPos);
@@ -92,7 +93,8 @@ void Board::draw()
     {
         for (int j = 0; j < 2; j++)
         {
-            SDL_Rect ghostPos = {ghost->getX() + (i * Constants::CHARACTER_SIZE), ghost->getY() + (j * Constants::CHARACTER_SIZE),
+            SDL_Rect ghostPos = {ghost->getX() + (i * Constants::CHARACTER_SIZE),
+                ghost->getY() + (j * Constants::CHARACTER_SIZE) - (Constants::CHARACTER_SIZE / 2),
                 Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
             spriteSheet->selectSprite(ghost->getSrcCol() + i, ghost->getSrcRow() + j);
             spriteSheet->drawSelectedSprite(surface, &ghostPos);

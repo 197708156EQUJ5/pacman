@@ -11,7 +11,7 @@ public:
 
     Clyde(int x = ClydeConstants::START_COL * Constants::CHARACTER_SIZE,
             int y = ClydeConstants::START_ROW * Constants::CHARACTER_SIZE, 
-            Direction direction = Direction::DOWN, bool isOddMove = false);
+            Direction direction = Direction::UP, bool isOddMove = false);
     ~Clyde() = default;
     
     int getSrcCol();
