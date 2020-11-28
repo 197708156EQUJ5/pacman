@@ -3,8 +3,9 @@
 namespace pacman
 {
 
-Ghost::Ghost(int x, int y, Direction direction, bool isOddMove) : 
-    Character(x, y, direction, isOddMove)
+Ghost::Ghost(int x, int y, Direction direction, bool isOddMove, bool isHome) : 
+    Character(x, y, direction, isOddMove),
+    isGhostHome(isHome)
 {
 }
 
@@ -32,6 +33,11 @@ void Ghost::move()
 void Ghost::changeDirection(Direction direction)
 {
     this->direction = direction;
+}
+
+bool Ghost::isHome()
+{
+    return this->isGhostHome;
 }
 
 }

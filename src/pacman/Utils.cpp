@@ -26,4 +26,16 @@ SDL_Surface *load_bmp(char const *path)
     return optimized_version;    
 }
 
+Direction getOpposite(Direction direction)
+{
+    if (direction == Direction::UP)
+    {
+        return Direction::DOWN;
+    }
+    else if (direction == Direction::DOWN)
+    {
+        return Direction::UP;
+    }
+}
+
 }

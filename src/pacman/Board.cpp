@@ -208,6 +208,11 @@ void Board::updateGhosts()
 
 bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
 {
+    if (ghost->isHome() && !canMove(ghost))
+    {
+        ghost->changeDirection(pacman::getOpposite(ghost->getDirection()));
+    }
+
     return canMove(ghost);
 }
 

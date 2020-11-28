@@ -5,8 +5,8 @@
 namespace pacman
 {
 
-Pinky::Pinky(int x, int y, Direction direction, bool isOddMove) : 
-    Ghost(x, y, direction, isOddMove)
+Pinky::Pinky(int x, int y, Direction direction, bool isOddMove, bool isHome) : 
+    Ghost(x, y, direction, isOddMove, isHome)
 {
 }
 
