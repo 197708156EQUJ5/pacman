@@ -2,6 +2,7 @@
 
 #include "pacman/Constants.hpp"
 
+#include <typeinfo>
 #include <algorithm>
 
 namespace pacman
@@ -145,17 +146,7 @@ void Board::drawFruits()
 
 void Board::drawPacman()
 {
-    for (int i = 0; i < 2; i++)
-    {
-        for (int j = 0; j < 2; j++)
-        {
-            SDL_Rect pacmanPos = {pacman->getX() + (i * Constants::CHARACTER_SIZE),
-                pacman->getY() + (j * Constants::CHARACTER_SIZE) - (Constants::CHARACTER_SIZE / 2),
-                Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
-            spriteSheet->selectSprite(pacman->getSrcCol() + i, pacman->getSrcRow() + j);
-            spriteSheet->drawSelectedSprite(surface, &pacmanPos);
-        }
-    }
+    drawCharacter(pacman);
 }
 
 void Board::updatePacman()
@@ -184,30 +175,40 @@ void Board::drawGhosts()
 {
     for (std::shared_ptr<Ghost> ghost : ghosts)
     {
-        for (int i = 0; i < 2; i++)
+        drawCharacter(ghost);
+    }
+}
+
+void Board::drawCharacter(std::shared_ptr<Character> character)
+{
+    for (int i = 0; i < 2; i++)
+    {
+        for (int j = 0; j < 2; j++)
         {
-            for (int j = 0; j < 2; j++)
-            {
-                SDL_Rect ghostPos = {ghost->getX() + (i * Constants::CHARACTER_SIZE),
-                    ghost->getY() + (j * Constants::CHARACTER_SIZE) - (Constants::CHARACTER_SIZE / 2),
-                    Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
-                spriteSheet->selectSprite(ghost->getSrcCol() + i, ghost->getSrcRow() + j);
-                spriteSheet->drawSelectedSprite(surface, &ghostPos);
-            }
+            SDL_Rect position = {character->getX() + (i * Constants::CHARACTER_SIZE),
+                character->getY() + (j * Constants::CHARACTER_SIZE) - (Constants::CHARACTER_SIZE / 2),
+                Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
+            spriteSheet->selectSprite(character->getSrcCol() + i, character->getSrcRow() + j);
+            spriteSheet->drawSelectedSprite(surface, &position);
         }
     }
+
 }
 
 void Board::updateGhosts()
 {
-    //if (canMoveGhosts())
-    //{
-    //    pacman->move();
-    //}    
+    for (std::shared_ptr<Ghost> ghost : ghosts)
+    {
+        if (canMoveGhost(ghost))
+        {
+            ghost->move();
+        }
+    }
 }
 
-bool Board::canMoveGhosts()
+bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
 {
+    return canMove(ghost);
 }
 
 bool Board::canMove(std::shared_ptr<Character> character)
@@ -243,6 +244,11 @@ bool Board::canMove(std::shared_ptr<Character> character)
     Cell cell = maze.at(((centerY / Constants::CHARACTER_SIZE) * Constants::COLUMN_COUNT) + (centerX/ Constants::CHARACTER_SIZE));
     Cell nextCell = maze.at(nextRow * Constants::COLUMN_COUNT + nextCol);
 
+    //if (typeid(*character) == typeid(Blinky))
+    //{
+    //    printf("cell col/row: (%3d, %3d) next col/row: (%3d, %3d)\n", 
+    //            cell.col, cell.row, nextCell.col, nextCell.row);
+    //}
     //printf("Cell (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d)\n", 
     //        cell.col, cell.row, nextCell.col, nextCell.row, nextCol, nextRow, col, row, centerX, centerY);
     if (find (legalTiles.begin(), legalTiles.end(), nextCell) == legalTiles.end())

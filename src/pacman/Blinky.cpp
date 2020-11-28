@@ -43,8 +43,21 @@ void Blinky::move()
 {
     if (direction == Direction::LEFT)
     {
-        x++;
+        x -= 9;
     }
+    else if (direction == Direction::RIGHT)
+    {
+        x += 9;
+    }
+    else if (direction == Direction::DOWN)
+    {
+        y += 9;
+    }
+    else if (direction == Direction::UP)
+    {
+        y -= 9;
+    }
+    isOddMove = !isOddMove;    
 }
 
 void Blinky::changeDirection(Direction direction)
