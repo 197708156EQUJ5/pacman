@@ -95,7 +95,7 @@ void Board::drawBoard()
         spriteSheet->selectSprite(cell.col, cell.row);
         spriteSheet->drawSelectedSprite(surface, &position);
         colCount++;
-        if (colCount % 28 == 0 )
+        if (colCount % Constants::COLUMN_COUNT == 0 )
         {
             colCount = 0;
             rowCount++;
@@ -196,11 +196,11 @@ bool Board::canMovePacman()
         nextRow++;
     }
 
-    Cell cell = maze.at(((centerY / Constants::CHARACTER_SIZE) * 28) + (centerX/ Constants::CHARACTER_SIZE));
-    Cell nextCell = maze.at(nextRow * 28 + nextCol);
+    Cell cell = maze.at(((centerY / Constants::CHARACTER_SIZE) * Constants::COLUMN_COUNT) + (centerX/ Constants::CHARACTER_SIZE));
+    Cell nextCell = maze.at(nextRow * Constants::COLUMN_COUNT + nextCol);
 
-    //printf("Cell (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d)\n", 
-    //        cell.col, cell.row, nextCell.col, nextCell.row, nextCol, nextRow, col, row, centerX, centerY);
+    printf("Cell (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d)\n", 
+            cell.col, cell.row, nextCell.col, nextCell.row, nextCol, nextRow, col, row, centerX, centerY);
     if (find (legalTiles.begin(), legalTiles.end(), nextCell) == legalTiles.end())
     {
         return false;
