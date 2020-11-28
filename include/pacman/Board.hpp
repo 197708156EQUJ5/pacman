@@ -53,6 +53,9 @@ private:
     bool canChangeDirection();
     void drawGhosts();
     void updateGhosts();
+    bool canMoveGhosts();
+    bool canMove(std::shared_ptr<Character> character);
+
     void drawScore();
     void drawLives();
     void drawFruits();

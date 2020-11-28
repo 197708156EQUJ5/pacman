@@ -169,44 +169,7 @@ void Board::updatePacman()
 
 bool Board::canMovePacman()
 {
-    int centerX = pacman->getX() + Constants::CHARACTER_SIZE;
-    int centerY = pacman->getY() + Constants::CHARACTER_SIZE - (4 * Constants::CHARACTER_SIZE);
-    Direction direction = pacman->getDirection();
-
-    //printf("left-corner: (%d, %d) center: (%d, %d) maze size: %d\n", pacman->getX(), pacman->getY(), centerX, centerY, maze.size());
-
-    int row = centerY / Constants::CHARACTER_SIZE;
-    int col = centerX / Constants::CHARACTER_SIZE;
-    int nextRow = row;
-    int nextCol = col;
-    if (direction == Direction::LEFT)
-    {
-        nextCol--;
-    }
-    else if (direction == Direction::RIGHT)
-    {
-        nextCol++;
-    }
-    else if (direction == Direction::UP)
-    {
-        nextRow--;
-    }
-    else if (direction == Direction::DOWN)
-    {
-        nextRow++;
-    }
-
-    Cell cell = maze.at(((centerY / Constants::CHARACTER_SIZE) * Constants::COLUMN_COUNT) + (centerX/ Constants::CHARACTER_SIZE));
-    Cell nextCell = maze.at(nextRow * Constants::COLUMN_COUNT + nextCol);
-
-    printf("Cell (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d)\n", 
-            cell.col, cell.row, nextCell.col, nextCell.row, nextCol, nextRow, col, row, centerX, centerY);
-    if (find (legalTiles.begin(), legalTiles.end(), nextCell) == legalTiles.end())
-    {
-        return false;
-    }
-
-    return true;
+    return canMove(pacman);
 }
 
 bool Board::canChangeDirection()
@@ -237,6 +200,57 @@ void Board::drawGhosts()
 
 void Board::updateGhosts()
 {
+    //if (canMoveGhosts())
+    //{
+    //    pacman->move();
+    //}    
+}
+
+bool Board::canMoveGhosts()
+{
+}
+
+bool Board::canMove(std::shared_ptr<Character> character)
+{
+    int centerX = character->getX() + Constants::CHARACTER_SIZE;
+    int centerY = character->getY() + Constants::CHARACTER_SIZE - (4 * Constants::CHARACTER_SIZE);
+    Direction direction = character->getDirection();
+
+    //printf("left-corner: (%d, %d) center: (%d, %d) maze size: %d\n", 
+    //       character->getX(), character->getY(), centerX, centerY, maze.size());
+
+    int row = centerY / Constants::CHARACTER_SIZE;
+    int col = centerX / Constants::CHARACTER_SIZE;
+    int nextRow = row;
+    int nextCol = col;
+    if (direction == Direction::LEFT)
+    {
+        nextCol--;
+    }
+    else if (direction == Direction::RIGHT)
+    {
+        nextCol++;
+    }
+    else if (direction == Direction::UP)
+    {
+        nextRow--;
+    }
+    else if (direction == Direction::DOWN)
+    {
+        nextRow++;
+    }
+
+    Cell cell = maze.at(((centerY / Constants::CHARACTER_SIZE) * Constants::COLUMN_COUNT) + (centerX/ Constants::CHARACTER_SIZE));
+    Cell nextCell = maze.at(nextRow * Constants::COLUMN_COUNT + nextCol);
+
+    //printf("Cell (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d)\n", 
+    //        cell.col, cell.row, nextCell.col, nextCell.row, nextCol, nextRow, col, row, centerX, centerY);
+    if (find (legalTiles.begin(), legalTiles.end(), nextCell) == legalTiles.end())
+    {
+        return false;
+    }
+
+    return true;
 }
 
 } // namespace
