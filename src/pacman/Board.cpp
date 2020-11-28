@@ -210,17 +210,42 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
 {
     std::vector<Cell> surroundingCells = getNextTiles(ghost);
     
-    bool hasLegalMove = canMove(surroundingCells.at(0));
-    if (!hasLegalMove)
+    bool hasNextMove = canMove(surroundingCells.at(0));
+    if (!hasNextMove)
     {
         if (ghost->isHome())
         {
             ghost->changeDirection(pacman::getOpposite(ghost->getDirection()));
             return true;
         }
+        std::vector<Cell>::iterator it = surroundingCells.begin() + 2;
+        int index = 1;
+        Cell prevCell = surroundingCells.at(1);
+        for (it; it != surroundingCells.end(); ++it)
+        {
+            Cell cell = *it;
+            
+            Cell cellType = maze.at(cell.row * Constants::COLUMN_COUNT + cell.col);
+            Cell prevCellType = maze.at(prevCell.row * Constants::COLUMN_COUNT + prevCell.col);
+            /*
+            if (typeid(*ghost) == typeid(Blinky))
+            {
+                printf("cell[%d] (%2d, %2d) prevCell (%2d, %2d) type (%2d, %2d) (%2d, %2d)\n", index, cell.col, cell.row, prevCell.col, prevCell.row,
+                        cellType.col, cellType.row, prevCellType.col, prevCellType.row);
+                printf("canMove? %d cells don't equal? %d\n", canMove(cellType), !(cell == prevCell));
+            }
+            */
+            if (canMove(cellType) && cell != prevCell)
+            {
+                ghost->changeDirection((Direction)index);
+                //printf("ghost direction: %d\n", ghost->getDirection());
+                return true;
+            }
+            index++;
+        }
     }
 
-    return hasLegalMove;
+    return hasNextMove;
 }
 
 std::vector<Cell> Board::getNextTiles(std::shared_ptr<Character> character)
@@ -228,38 +253,50 @@ std::vector<Cell> Board::getNextTiles(std::shared_ptr<Character> character)
     int centerX = character->getX() + Constants::CHARACTER_SIZE;
     int centerY = character->getY() + Constants::CHARACTER_SIZE - (4 * Constants::CHARACTER_SIZE);
     Direction direction = character->getDirection();
-
+    
     int row = centerY / Constants::CHARACTER_SIZE;
     int col = centerX / Constants::CHARACTER_SIZE;
+
+    /*
+    if (typeid(*character) == typeid(Blinky))
+    {
+        printf("Blinky col, row (%2d, %2d)\n", col, row);
+    }
+    */
+
     int nextRow = row;
     int nextCol = col;
+    int prevRow = row;
+    int prevCol = col;
     if (direction == Direction::LEFT)
     {
         nextCol--;
+        prevCol++;
     }
     else if (direction == Direction::RIGHT)
     {
         nextCol++;
+        prevCol--;
     }
     else if (direction == Direction::UP)
     {
         nextRow--;
+        prevRow++;
     }
     else if (direction == Direction::DOWN)
     {
         nextRow++;
+        prevRow--;
     }
 
     Cell cell = maze.at(((centerY / Constants::CHARACTER_SIZE) * Constants::COLUMN_COUNT) + (centerX/ Constants::CHARACTER_SIZE));
     Cell nextCell = maze.at(nextRow * Constants::COLUMN_COUNT + nextCol);
+    Cell prevCell = maze.at(prevRow * Constants::COLUMN_COUNT + prevCol);
 
-    return {nextCell, maze.at((row - 1) * Constants::COLUMN_COUNT + col), 
-            maze.at(row * Constants::COLUMN_COUNT + (col + 1)), 
-            maze.at((row + 1) * Constants::COLUMN_COUNT + col), 
-            maze.at(row * Constants::COLUMN_COUNT + (col - 1))};
+    return {nextCell, Cell{prevCol, prevRow}, Cell{col, row - 1}, Cell{col + 1, row}, Cell{col, row + 1}, Cell{col - 1, row}};
 }
 
-bool Board::canMove(Cell nextCell)
+bool Board::canMove(Cell cell)
 {
 
     //if (typeid(*character) == typeid(Clyde))
@@ -269,7 +306,7 @@ bool Board::canMove(Cell nextCell)
     //}
     //printf("Cell (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d)\n", 
     //        cell.col, cell.row, nextCell.col, nextCell.row, nextCol, nextRow, col, row, centerX, centerY);
-    if (find (legalTiles.begin(), legalTiles.end(), nextCell) == legalTiles.end())
+    if (find (legalTiles.begin(), legalTiles.end(), cell) == legalTiles.end())
     {
         return false;
     }
