@@ -89,6 +89,16 @@ void Board::drawBoard()
 {
     int colCount = 0;
     int rowCount = 3;
+    // Draw H
+    std::vector<Cell> highScoreText{Cell{8, 2}, Cell{9,2}, Cell{7,2}, Cell{8,2}, Cell{30,5}, Cell{19,2}, Cell{3,2}, Cell{15,2}, Cell{18,2}, Cell{5,2}};
+    for (int i = 0; i < 10; i++)
+    {
+        SDL_Rect position = {(i + 9) * Constants::CHARACTER_SIZE, 0 * Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
+        Cell text = highScoreText.at(i);
+        spriteSheet->selectSprite(text.col, text.row);
+        spriteSheet->drawSelectedSprite(surface, &position);
+    }
+
     for (Cell cell : maze)
     {
         SDL_Rect position = {colCount * Constants::CHARACTER_SIZE, rowCount * Constants::CHARACTER_SIZE, 
@@ -115,22 +125,7 @@ void Board::drawScore()
         local_score = local_score / 10;
         SDL_Rect position = {col * Constants::CHARACTER_SIZE, 1 * Constants::CHARACTER_SIZE, 
             Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
-        if (digit == 0)
-        {
-            spriteSheet->selectSprite(Constants::NUM_COL_0, Constants::NUM_ROW);
-        }
-        else if (digit == 1)
-        {
-            spriteSheet->selectSprite(Constants::NUM_COL_1, Constants::NUM_ROW);
-        }
-        else if (digit == 2)
-        {
-            spriteSheet->selectSprite(Constants::NUM_COL_2, Constants::NUM_ROW);
-        }
-        else if (digit == 3)
-        {
-            spriteSheet->selectSprite(Constants::NUM_COL_3, Constants::NUM_ROW);
-        }
+        spriteSheet->selectSprite(digit, Constants::NUM_ROW);
         spriteSheet->drawSelectedSprite(surface, &position);
         col--;
     }
@@ -251,7 +246,7 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
 std::vector<Cell> Board::getNextTiles(std::shared_ptr<Character> character)
 {
     int centerX = character->getX() + Constants::CHARACTER_SIZE;
-    int centerY = character->getY() + Constants::CHARACTER_SIZE - (4 * Constants::CHARACTER_SIZE);
+    int centerY = character->getY() + Constants::CHARACTER_SIZE - (Constants::MAZE_ROW_OFFSET * Constants::CHARACTER_SIZE);
     Direction direction = character->getDirection();
     
     int row = centerY / Constants::CHARACTER_SIZE;

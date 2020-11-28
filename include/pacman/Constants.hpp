@@ -11,6 +11,7 @@ static const int SS_ROWS = 20;
 static const int CHARACTER_SIZE = 24;
 static const int COLUMN_COUNT = 28;
 static const char *SPRITESHEET_PATH = "resources/pacman-spritesheet2.bmp";
+static const int MAZE_ROW_OFFSET = 4;
 
 static const int NUM_ROW = 0;
 static const int NUM_COL_0 = 0;
