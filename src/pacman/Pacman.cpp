@@ -53,19 +53,19 @@ void Pacman::move()
 {
     if (direction == Direction::LEFT)
     {
-        x -= Constants::CHARACTER_SIZE;
+        x -= 9;
     }
     else if (direction == Direction::RIGHT)
     {
-        x += Constants::CHARACTER_SIZE;
+        x += 9;
     }
     else if (direction == Direction::DOWN)
     {
-        y += Constants::CHARACTER_SIZE;
+        y += 9;
     }
     else if (direction == Direction::UP)
     {
-        y -= Constants::CHARACTER_SIZE;
+        y -= 9;
     }
     isOddMove = !isOddMove;
 }

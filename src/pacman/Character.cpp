@@ -21,4 +21,9 @@ int Character::getX() const
     return x;
 }
 
+Direction Character::getDirection()
+{
+    return direction;
+}
+
 }

@@ -20,6 +20,7 @@ public:
     virtual int getSrcRow() = 0;
     virtual void move() = 0;
     virtual void changeDirection(Direction direction) = 0;
+    Direction getDirection();
     //virtual void respawn();
 
 protected:

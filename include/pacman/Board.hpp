@@ -38,6 +38,7 @@ private:
     int score;
     int lives;
     int level;
+    int count;
     std::chrono::time_point<std::chrono::system_clock> gameStartTime;
     
     SDL_Window *window;
@@ -47,6 +48,7 @@ private:
     void drawBoard();
     void drawPacman();
     void updatePacman();
+    bool canUpdatePacman();
     void drawGhosts();
     void updateGhosts();
     void drawScore();

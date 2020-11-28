@@ -7,7 +7,8 @@ Board::Board() :
     userDirection(Direction::LEFT),
     score(0),
     lives(2),
-    level(1)
+    level(1),
+    count(0)
 {
 }
 
@@ -72,9 +73,10 @@ void Board::draw()
     {
         updatePacman();
         updateGhosts();
+        count++;
     }
 
-    SDL_Delay(100);
+    SDL_Delay(33.333);
     SDL_UpdateWindowSurface(window);
 }
 
@@ -154,8 +156,50 @@ void Board::drawPacman()
 
 void Board::updatePacman()
 {
-    pacman->move();
+    if (canUpdatePacman())
+    {
+        pacman->move();
+    }
     pacman->changeDirection(userDirection);
+}
+
+bool Board::canUpdatePacman()
+{
+    int centerX = pacman->getX() + Constants::CHARACTER_SIZE;
+    int centerY = pacman->getY() + Constants::CHARACTER_SIZE - (4 * Constants::CHARACTER_SIZE);
+    Direction direction = pacman->getDirection();
+
+    //printf("left-corner: (%d, %d) center: (%d, %d) maze size: %d\n", pacman->getX(), pacman->getY(), centerX, centerY, maze.size());
+
+    int row = centerY / Constants::CHARACTER_SIZE;
+    int col = centerX / Constants::CHARACTER_SIZE;
+    int nextRow = row;
+    int nextCol = col;
+    if (direction == Direction::LEFT)
+    {
+        nextCol--;
+    }
+    else if (direction == Direction::RIGHT)
+    {
+        nextCol++;
+    }
+    else if (direction == Direction::UP)
+    {
+        nextRow--;
+    }
+    else if (direction == Direction::DOWN)
+    {
+        nextRow++;
+    }
+
+    Cell cell = maze.at(((centerY / Constants::CHARACTER_SIZE) * 28) + (centerX/ Constants::CHARACTER_SIZE));
+    Cell nextCell = maze.at(nextRow * 28 + nextCol);
+
+    printf("Cell (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d)\n", 
+            cell.srcCol, cell.srcRow, nextCell.srcCol, nextCell.srcRow, nextCol, nextRow, col, row, centerX, centerY);
+    //if (cell.srcCol == 
+
+    return true;
 }
 
 void Board::drawGhosts()
