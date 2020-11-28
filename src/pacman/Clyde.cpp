@@ -37,17 +37,4 @@ int Clyde::getSrcRow()
     return ClydeConstants::SRC_ROW;
 }
 
-void Clyde::move()
-{
-    if (direction == Direction::LEFT)
-    {
-        x++;
-    }
-}
-
-void Clyde::changeDirection(Direction direction)
-{
-    this->direction = direction;
-}
-
 }

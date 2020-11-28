@@ -16,8 +16,6 @@ public:
     
     int getSrcCol();
     int getSrcRow();
-    void move();
-    void changeDirection(Direction direction);
 };
 
 } // namespace pacman

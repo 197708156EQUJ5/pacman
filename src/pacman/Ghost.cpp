@@ -12,8 +12,21 @@ void Ghost::move()
 {
     if (direction == Direction::LEFT)
     {
-        x++;
+        x -= 9;
     }
+    else if (direction == Direction::RIGHT)
+    {
+        x += 9;
+    }
+    else if (direction == Direction::DOWN)
+    {
+        y += 9;
+    }
+    else if (direction == Direction::UP)
+    {
+        y -= 9;
+    }
+    isOddMove = !isOddMove;    
 }
 
 void Ghost::changeDirection(Direction direction)

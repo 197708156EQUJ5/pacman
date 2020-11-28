@@ -39,17 +39,4 @@ int Pinky::getSrcRow()
     return PinkyConstants::SRC_ROW;
 }
 
-void Pinky::move()
-{
-    if (direction == Direction::LEFT)
-    {
-        x++;
-    }
-}
-
-void Pinky::changeDirection(Direction direction)
-{
-    this->direction = direction;
-}
-
 }

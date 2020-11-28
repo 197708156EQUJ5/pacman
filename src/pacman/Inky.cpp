@@ -39,17 +39,4 @@ int Inky::getSrcRow()
     return InkyConstants::SRC_ROW;
 }
 
-void Inky::move()
-{
-    if (direction == Direction::LEFT)
-    {
-        x++;
-    }
-}
-
-void Inky::changeDirection(Direction direction)
-{
-    this->direction = direction;
-}
-
 }

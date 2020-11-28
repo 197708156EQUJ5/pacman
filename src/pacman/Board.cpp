@@ -244,10 +244,10 @@ bool Board::canMove(std::shared_ptr<Character> character)
     Cell cell = maze.at(((centerY / Constants::CHARACTER_SIZE) * Constants::COLUMN_COUNT) + (centerX/ Constants::CHARACTER_SIZE));
     Cell nextCell = maze.at(nextRow * Constants::COLUMN_COUNT + nextCol);
 
-    //if (typeid(*character) == typeid(Blinky))
+    //if (typeid(*character) == typeid(Clyde))
     //{
-    //    printf("cell col/row: (%3d, %3d) next col/row: (%3d, %3d)\n", 
-    //            cell.col, cell.row, nextCell.col, nextCell.row);
+    //    printf("cell_src col/row: (%2d, %2d) next_src col/row: (%2d, %2d) curr_index (%2d, %2d) next_index COL/ROW (%2d, %2d)\n", 
+    //            cell.col, cell.row, nextCell.col, nextCell.row, col, row, nextCol, nextRow);
     //}
     //printf("Cell (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d)\n", 
     //        cell.col, cell.row, nextCell.col, nextCell.row, nextCol, nextRow, col, row, centerX, centerY);
