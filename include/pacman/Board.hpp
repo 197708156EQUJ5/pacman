@@ -54,8 +54,10 @@ private:
     void drawGhosts();
     void updateGhosts();
     bool canMoveGhost(std::shared_ptr<Ghost> ghost);
-    bool canMove(std::shared_ptr<Character> character);
+    bool canMove(Cell cell);
     void drawCharacter(std::shared_ptr<Character> character);
+
+    std::vector<Cell> getNextTiles(std::shared_ptr<Character> character);
 
     void drawScore();
     void drawLives();

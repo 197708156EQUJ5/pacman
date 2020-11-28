@@ -160,7 +160,7 @@ void Board::updatePacman()
 
 bool Board::canMovePacman()
 {
-    return canMove(pacman);
+    return canMove(getNextTiles(pacman).at(0));
 }
 
 bool Board::canChangeDirection()
@@ -208,22 +208,26 @@ void Board::updateGhosts()
 
 bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
 {
-    if (ghost->isHome() && !canMove(ghost))
+    std::vector<Cell> surroundingCells = getNextTiles(ghost);
+    
+    bool hasLegalMove = canMove(surroundingCells.at(0));
+    if (!hasLegalMove)
     {
-        ghost->changeDirection(pacman::getOpposite(ghost->getDirection()));
+        if (ghost->isHome())
+        {
+            ghost->changeDirection(pacman::getOpposite(ghost->getDirection()));
+            return true;
+        }
     }
 
-    return canMove(ghost);
+    return hasLegalMove;
 }
 
-bool Board::canMove(std::shared_ptr<Character> character)
+std::vector<Cell> Board::getNextTiles(std::shared_ptr<Character> character)
 {
     int centerX = character->getX() + Constants::CHARACTER_SIZE;
     int centerY = character->getY() + Constants::CHARACTER_SIZE - (4 * Constants::CHARACTER_SIZE);
     Direction direction = character->getDirection();
-
-    //printf("left-corner: (%d, %d) center: (%d, %d) maze size: %d\n", 
-    //       character->getX(), character->getY(), centerX, centerY, maze.size());
 
     int row = centerY / Constants::CHARACTER_SIZE;
     int col = centerX / Constants::CHARACTER_SIZE;
@@ -248,6 +252,15 @@ bool Board::canMove(std::shared_ptr<Character> character)
 
     Cell cell = maze.at(((centerY / Constants::CHARACTER_SIZE) * Constants::COLUMN_COUNT) + (centerX/ Constants::CHARACTER_SIZE));
     Cell nextCell = maze.at(nextRow * Constants::COLUMN_COUNT + nextCol);
+
+    return {nextCell, maze.at((row - 1) * Constants::COLUMN_COUNT + col), 
+            maze.at(row * Constants::COLUMN_COUNT + (col + 1)), 
+            maze.at((row + 1) * Constants::COLUMN_COUNT + col), 
+            maze.at(row * Constants::COLUMN_COUNT + (col - 1))};
+}
+
+bool Board::canMove(Cell nextCell)
+{
 
     //if (typeid(*character) == typeid(Clyde))
     //{
