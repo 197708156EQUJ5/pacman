@@ -3,6 +3,11 @@
 namespace pacman
 {
 
+const std::vector<Cell> LevelDesign::LEGAL_TILES(
+{
+    Cell{17, 0}, Cell{21, 0}, Cell{30, 5}
+});
+
 const std::vector<Cell> LevelDesign::LEVEL_1(
 {
     // Row 1

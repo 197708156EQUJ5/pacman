@@ -2,14 +2,20 @@
 
 #include <cstdint>
 #include <vector>
+#include <iostream>
 
 namespace pacman
 {
 
 struct Cell
 {
-    int srcCol;
-    int srcRow;
+    int col;
+    int row;
+
+    bool operator==(const Cell& rhs)
+    {
+        return col == rhs.col && row == rhs.row;
+    }
 };
 
 class LevelDesign

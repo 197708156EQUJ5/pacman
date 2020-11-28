@@ -31,6 +31,7 @@ private:
     std::unique_ptr<SpriteSheet> spriteSheet;
     std::unique_ptr<CharacterManager> characterManager;
     std::vector<Cell> maze;
+    std::vector<Cell> legalTiles;
     std::shared_ptr<Pacman> pacman;
     std::vector<std::shared_ptr<Ghost>> ghosts;
 
@@ -48,7 +49,8 @@ private:
     void drawBoard();
     void drawPacman();
     void updatePacman();
-    bool canUpdatePacman();
+    bool canMovePacman();
+    bool canChangeDirection();
     void drawGhosts();
     void updateGhosts();
     void drawScore();

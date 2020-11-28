@@ -1,5 +1,8 @@
 #include "pacman/Board.hpp"
+
 #include "pacman/Constants.hpp"
+
+#include <algorithm>
 
 namespace pacman
 {
@@ -44,6 +47,7 @@ bool Board::init()
     spriteSheet = std::make_unique<SpriteSheet>();
     characterManager = std::make_unique<CharacterManager>();
     maze = LevelDesign::LEVEL_1;
+    legalTiles = LevelDesign::LEGAL_TILES;
     pacman = this->characterManager->getPacman();
     ghosts = characterManager->getGhosts();
     gameStartTime = std::chrono::system_clock::now();
@@ -88,7 +92,7 @@ void Board::drawBoard()
     {
         SDL_Rect position = {colCount * Constants::CHARACTER_SIZE, rowCount * Constants::CHARACTER_SIZE, 
             Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
-        spriteSheet->selectSprite(cell.srcCol, cell.srcRow);
+        spriteSheet->selectSprite(cell.col, cell.row);
         spriteSheet->drawSelectedSprite(surface, &position);
         colCount++;
         if (colCount % 28 == 0 )
@@ -156,14 +160,14 @@ void Board::drawPacman()
 
 void Board::updatePacman()
 {
-    if (canUpdatePacman())
+    if (canMovePacman())
     {
         pacman->move();
     }
     pacman->changeDirection(userDirection);
 }
 
-bool Board::canUpdatePacman()
+bool Board::canMovePacman()
 {
     int centerX = pacman->getX() + Constants::CHARACTER_SIZE;
     int centerY = pacman->getY() + Constants::CHARACTER_SIZE - (4 * Constants::CHARACTER_SIZE);
@@ -195,11 +199,22 @@ bool Board::canUpdatePacman()
     Cell cell = maze.at(((centerY / Constants::CHARACTER_SIZE) * 28) + (centerX/ Constants::CHARACTER_SIZE));
     Cell nextCell = maze.at(nextRow * 28 + nextCol);
 
-    printf("Cell (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d)\n", 
-            cell.srcCol, cell.srcRow, nextCell.srcCol, nextCell.srcRow, nextCol, nextRow, col, row, centerX, centerY);
-    //if (cell.srcCol == 
+    //printf("Cell (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d)\n", 
+    //        cell.col, cell.row, nextCell.col, nextCell.row, nextCol, nextRow, col, row, centerX, centerY);
+    if (find (legalTiles.begin(), legalTiles.end(), nextCell) == legalTiles.end())
+    {
+        return false;
+    }
 
     return true;
+}
+
+bool Board::canChangeDirection()
+{
+    if (pacman->getX() % Constants::CHARACTER_SIZE == 0|| pacman->getY() % Constants::CHARACTER_SIZE == 0)
+    {
+        return false;
+    }    
 }
 
 void Board::drawGhosts()
