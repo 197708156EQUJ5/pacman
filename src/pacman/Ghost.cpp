@@ -13,19 +13,19 @@ void Ghost::move()
 {
     if (direction == Direction::LEFT)
     {
-        x -= 9;
+        x -= GhostConstants::MAXIMUM_PIXEL_SPEED;
     }
     else if (direction == Direction::RIGHT)
     {
-        x += 9;
+        x += GhostConstants::MAXIMUM_PIXEL_SPEED;
     }
     else if (direction == Direction::DOWN)
     {
-        y += 9;
+        y += GhostConstants::MAXIMUM_PIXEL_SPEED;
     }
     else if (direction == Direction::UP)
     {
-        y -= 9;
+        y -= GhostConstants::MAXIMUM_PIXEL_SPEED;
     }
     isOddMove = !isOddMove;    
 }

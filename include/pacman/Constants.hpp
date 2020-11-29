@@ -75,6 +75,13 @@ static const int SRC_DOWN_2 = 14;
 
 }
 
+namespace GhostConstants
+{
+
+static const int MAXIMUM_PIXEL_SPEED = 8;
+
+}
+
 namespace PinkyConstants
 {
 

@@ -224,7 +224,7 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
             return true;
         }
         std::vector<Cell>::iterator it = surroundingCells.begin() + 2;
-        int index = 1;
+        int directionIndex = 1;
         Cell prevCell = surroundingCells.at(1);
         for (it; it != surroundingCells.end(); ++it)
         {
@@ -235,18 +235,18 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
             /*
             if (typeid(*ghost) == typeid(Blinky))
             {
-                printf("cell[%d] (%2d, %2d) prevCell (%2d, %2d) type (%2d, %2d) (%2d, %2d)\n", index, cell.col, cell.row, prevCell.col, prevCell.row,
+                printf("cell[%d] (%2d, %2d) prevCell (%2d, %2d) type (%2d, %2d) (%2d, %2d)\n", directionIndex, cell.col, cell.row, prevCell.col, prevCell.row,
                         cellType.col, cellType.row, prevCellType.col, prevCellType.row);
                 printf("canMove? %d cells don't equal? %d\n", canMove(cellType), !(cell == prevCell));
             }
             */
             if (canMove(cellType) && cell != prevCell)
             {
-                ghost->changeDirection((Direction)index);
+                ghost->changeDirection((Direction)directionIndex);
                 //printf("ghost direction: %d\n", ghost->getDirection());
                 return true;
             }
-            index++;
+            directionIndex++;
         }
     }
 
