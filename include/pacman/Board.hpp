@@ -1,5 +1,6 @@
 #pragma once
 
+#include "pacman/AdjacentTile.hpp"
 #include "pacman/Direction.hpp"
 #include "pacman/CharacterManager.hpp"
 #include "pacman/LevelDesign.hpp"
@@ -60,7 +61,7 @@ private:
     bool canMove(Cell cell);
     void drawCharacter(std::shared_ptr<Character> character);
 
-    std::vector<Cell> getNextTiles(std::shared_ptr<Character> character);
+    AdjacentTile getAdjacentTiles(std::shared_ptr<Character> character);
 
     void drawScore();
     void drawLives();

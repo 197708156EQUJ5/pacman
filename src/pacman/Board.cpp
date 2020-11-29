@@ -165,7 +165,7 @@ void Board::updatePacman()
 
 bool Board::canMovePacman()
 {
-    return canMove(getNextTiles(pacman).at(0));
+    return canMove(getAdjacentTiles(pacman).nextTile);
 }
 
 bool Board::canChangeDirection()
@@ -213,9 +213,9 @@ void Board::updateGhosts()
 
 bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
 {
-    std::vector<Cell> surroundingCells = getNextTiles(ghost);
+    AdjacentTile adjacentTile = getAdjacentTiles(ghost);
     
-    bool hasNextMove = canMove(surroundingCells.at(0));
+    bool hasNextMove = canMove(adjacentTile.nextTile);
     if (!hasNextMove)
     {
         if (ghost->isHome())
@@ -223,15 +223,14 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
             ghost->changeDirection(pacman::getOpposite(ghost->getDirection()));
             return true;
         }
-        std::vector<Cell>::iterator it = surroundingCells.begin() + 2;
+        std::vector<Cell>::iterator it = adjacentTile.tiles.begin();
         int directionIndex = 1;
-        Cell prevCell = surroundingCells.at(1);
-        for (it; it != surroundingCells.end(); ++it)
+        Cell prevCell = adjacentTile.prevTile;
+        for (it; it != adjacentTile.tiles.end(); ++it)
         {
             Cell cell = *it;
             
-            Cell cellType = maze.at(cell.row * Constants::COLUMN_COUNT + cell.col);
-            Cell prevCellType = maze.at(prevCell.row * Constants::COLUMN_COUNT + prevCell.col);
+            //Cell prevCellType = maze.at(prevCell.row * Constants::COLUMN_COUNT + prevCell.col);
             /*
             if (typeid(*ghost) == typeid(Blinky))
             {
@@ -240,7 +239,7 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
                 printf("canMove? %d cells don't equal? %d\n", canMove(cellType), !(cell == prevCell));
             }
             */
-            if (canMove(cellType) && cell != prevCell)
+            if (canMove(cell) && cell != prevCell)
             {
                 ghost->changeDirection((Direction)directionIndex);
                 //printf("ghost direction: %d\n", ghost->getDirection());
@@ -253,7 +252,7 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
     return hasNextMove;
 }
 
-std::vector<Cell> Board::getNextTiles(std::shared_ptr<Character> character)
+AdjacentTile Board::getAdjacentTiles(std::shared_ptr<Character> character)
 {
     int centerX = character->getX() + Constants::CHARACTER_SIZE;
     int centerY = character->getY() + Constants::CHARACTER_SIZE - (Constants::MAZE_ROW_OFFSET * Constants::CHARACTER_SIZE);
@@ -294,11 +293,7 @@ std::vector<Cell> Board::getNextTiles(std::shared_ptr<Character> character)
         prevRow--;
     }
 
-    Cell cell = maze.at(((centerY / Constants::CHARACTER_SIZE) * Constants::COLUMN_COUNT) + (centerX/ Constants::CHARACTER_SIZE));
-    Cell nextCell = maze.at(nextRow * Constants::COLUMN_COUNT + nextCol);
-    Cell prevCell = maze.at(prevRow * Constants::COLUMN_COUNT + prevCol);
-
-    return {nextCell, Cell{prevCol, prevRow}, Cell{col, row - 1}, Cell{col + 1, row}, Cell{col, row + 1}, Cell{col - 1, row}};
+    return {Cell{nextCol, nextRow}, Cell{prevCol, prevRow}, Cell{col, row - 1}, Cell{col + 1, row}, Cell{col, row + 1}, Cell{col - 1, row}};
 }
 
 bool Board::canMove(Cell cell)
@@ -311,7 +306,7 @@ bool Board::canMove(Cell cell)
     //}
     //printf("Cell (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d)\n", 
     //        cell.col, cell.row, nextCell.col, nextCell.row, nextCol, nextRow, col, row, centerX, centerY);
-    if (find (legalTiles.begin(), legalTiles.end(), cell) == legalTiles.end())
+    if (find (legalTiles.begin(), legalTiles.end(), LevelDesign::getCellType(cell.col, cell.row)) == legalTiles.end())
     {
         return false;
     }

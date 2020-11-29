@@ -1,5 +1,7 @@
 #include "pacman/LevelDesign.hpp"
 
+#include "pacman/Constants.hpp"
+
 namespace pacman
 {
 
@@ -166,4 +168,10 @@ const std::vector<Cell> LevelDesign::LEVEL_1(
     Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4},
     Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{20, 4}
 });
+
+Cell LevelDesign::getCellType(int col, int row)
+{
+    return LevelDesign::LEVEL_1.at(row * Constants::COLUMN_COUNT + col);
+}
+
 }
