@@ -3,7 +3,6 @@
 #include "pacman/Constants.hpp"
 
 #include <typeinfo>
-#include <algorithm>
 
 namespace pacman
 {
@@ -48,7 +47,6 @@ bool Board::init()
     spriteSheet = std::make_unique<SpriteSheet>();
     characterManager = std::make_unique<CharacterManager>();
     maze = LevelDesign::LEVEL_1;
-    legalTiles = LevelDesign::LEGAL_TILES;
     pacman = this->characterManager->getPacman();
     ghosts = characterManager->getGhosts();
     gameStartTime = std::chrono::system_clock::now();
@@ -165,7 +163,7 @@ void Board::updatePacman()
 
 bool Board::canMovePacman()
 {
-    return canMove(getAdjacentTiles(pacman).nextTile);
+    return LevelDesign::canMove(getAdjacentTiles(pacman).nextTile);
 }
 
 bool Board::canChangeDirection()
@@ -215,7 +213,7 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
 {
     AdjacentTile adjacentTile = getAdjacentTiles(ghost);
     
-    bool hasNextMove = canMove(adjacentTile.nextTile);
+    bool hasNextMove = LevelDesign::canMove(adjacentTile.nextTile);
     if (!hasNextMove)
     {
         if (ghost->isHome())
@@ -236,10 +234,10 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
             {
                 printf("cell[%d] (%2d, %2d) prevCell (%2d, %2d) type (%2d, %2d) (%2d, %2d)\n", directionIndex, cell.col, cell.row, prevCell.col, prevCell.row,
                         cellType.col, cellType.row, prevCellType.col, prevCellType.row);
-                printf("canMove? %d cells don't equal? %d\n", canMove(cellType), !(cell == prevCell));
+                printf("canMove? %d cells don't equal? %d\n", LevelDesign::canMove(cellType), !(cell == prevCell));
             }
             */
-            if (canMove(cell) && cell != prevCell)
+            if (LevelDesign::canMove(cell) && cell != prevCell)
             {
                 ghost->changeDirection((Direction)directionIndex);
                 //printf("ghost direction: %d\n", ghost->getDirection());
@@ -294,24 +292,6 @@ AdjacentTile Board::getAdjacentTiles(std::shared_ptr<Character> character)
     }
 
     return {Cell{nextCol, nextRow}, Cell{prevCol, prevRow}, Cell{col, row - 1}, Cell{col + 1, row}, Cell{col, row + 1}, Cell{col - 1, row}};
-}
-
-bool Board::canMove(Cell cell)
-{
-
-    //if (typeid(*character) == typeid(Clyde))
-    //{
-    //    printf("cell_src col/row: (%2d, %2d) next_src col/row: (%2d, %2d) curr_index (%2d, %2d) next_index COL/ROW (%2d, %2d)\n", 
-    //            cell.col, cell.row, nextCell.col, nextCell.row, col, row, nextCol, nextRow);
-    //}
-    //printf("Cell (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d)\n", 
-    //        cell.col, cell.row, nextCell.col, nextCell.row, nextCol, nextRow, col, row, centerX, centerY);
-    if (find (legalTiles.begin(), legalTiles.end(), LevelDesign::getCellType(cell.col, cell.row)) == legalTiles.end())
-    {
-        return false;
-    }
-
-    return true;
 }
 
 } // namespace

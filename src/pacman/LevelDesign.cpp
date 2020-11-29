@@ -2,6 +2,8 @@
 
 #include "pacman/Constants.hpp"
 
+#include <algorithm>
+
 namespace pacman
 {
 
@@ -172,6 +174,25 @@ const std::vector<Cell> LevelDesign::LEVEL_1(
 Cell LevelDesign::getCellType(int col, int row)
 {
     return LevelDesign::LEVEL_1.at(row * Constants::COLUMN_COUNT + col);
+}
+
+bool LevelDesign::canMove(Cell cell)
+{
+
+    //if (typeid(*character) == typeid(Clyde))
+    //{
+    //    printf("cell_src col/row: (%2d, %2d) next_src col/row: (%2d, %2d) curr_index (%2d, %2d) next_index COL/ROW (%2d, %2d)\n", 
+    //            cell.col, cell.row, nextCell.col, nextCell.row, col, row, nextCol, nextRow);
+    //}
+    //printf("Cell (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d)\n", 
+    //        cell.col, cell.row, nextCell.col, nextCell.row, nextCol, nextRow, col, row, centerX, centerY);
+    std::vector<Cell> legalTiles = LevelDesign::LEGAL_TILES;
+    if (find (legalTiles.begin(), legalTiles.end(), LevelDesign::getCellType(cell.col, cell.row)) == legalTiles.end())
+    {
+        return false;
+    }
+
+    return true;
 }
 
 }
