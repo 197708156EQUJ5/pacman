@@ -65,22 +65,22 @@ const std::vector<Cell> LevelDesign::LEVEL_1(
     Cell{4, 8}, Cell{23, 5}, Cell{0, 9}, Cell{0, 9}, Cell{24, 5}, Cell{30, 5}, Cell{25, 5}, 
     Cell{24, 5}, Cell{30, 5}, Cell{25, 5}, Cell{0, 9}, Cell{0, 9}, Cell{22, 5}, Cell{3, 8}, 
     Cell{17, 0}, Cell{18, 4}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, 
-    // Row 12
+    // Row 12 Blinky's start row
     Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{19, 4}, Cell{17, 0}, 
     Cell{4, 8}, Cell{3, 8}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, 
     Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{4, 8}, Cell{3, 8}, 
     Cell{17, 0}, Cell{18, 4}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, 
     // Row 13
     Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{19, 4}, Cell{17, 0}, 
-    Cell{4, 8}, Cell{3, 8}, Cell{30, 5}, Cell{29, 3}, Cell{28, 4}, Cell{17, 5}, Cell{30, 5}, 
-    Cell{30, 5}, Cell{16, 5}, Cell{28, 4}, Cell{28, 3}, Cell{30, 5}, Cell{4, 8}, Cell{3, 8}, 
+    Cell{4, 8}, Cell{3, 8}, Cell{30, 5}, Cell{29, 3}, Cell{28, 4}, Cell{17, 5}, Cell{15, 1}, 
+    Cell{15, 1}, Cell{16, 5}, Cell{28, 4}, Cell{28, 3}, Cell{30, 5}, Cell{4, 8}, Cell{3, 8}, 
     Cell{17, 0}, Cell{18, 4}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, 
     // Row 14
     Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, Cell{30, 3}, Cell{17, 0},
     Cell{25, 5}, Cell{24, 5}, Cell{30, 5}, Cell{18, 4}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5},
     Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{19, 4}, Cell{30, 5}, Cell{25, 5}, Cell{24, 5},
     Cell{17, 0}, Cell{31, 3}, Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, 
-    // Row 15
+    // Row 15 Inky, Pinky, and Clyde's start row
     Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{17, 0},
     Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{18, 4}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5},
     Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{19, 4}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5},
@@ -125,7 +125,7 @@ const std::vector<Cell> LevelDesign::LEVEL_1(
     Cell{25, 5}, Cell{0, 9},  Cell{0, 9},  Cell{0, 9}, Cell{24, 5}, Cell{17, 0}, Cell{25, 5}, 
     Cell{24, 5}, Cell{17, 0}, Cell{25, 5}, Cell{0, 9}, Cell{0, 9}, Cell{0, 9}, Cell{24, 5}, 
     Cell{17, 0}, Cell{4, 8}, Cell{23, 5},  Cell{0, 9}, Cell{24, 5}, Cell{17, 0}, Cell{18, 4},
-    // Row 24
+    // Row 24 Pacman's start row
     Cell{19, 4}, Cell{21, 0}, Cell{17, 0}, Cell{17, 0}, Cell{4, 8}, Cell{3, 8}, Cell{17, 0}, 
     Cell{17, 0}, Cell{17, 0}, Cell{17, 0}, Cell{17, 0}, Cell{17, 0}, Cell{17, 0}, Cell{30, 5}, 
     Cell{30, 5}, Cell{17, 0}, Cell{17, 0}, Cell{17, 0}, Cell{17, 0}, Cell{17, 0}, Cell{17, 0},
