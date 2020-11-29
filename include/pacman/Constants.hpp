@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Cell.hpp"
+
 namespace Constants
 {
 
@@ -24,6 +26,32 @@ static const int NUM_COL_6 = 6;
 static const int NUM_COL_7 = 7;
 static const int NUM_COL_8 = 8;
 static const int NUM_COL_9 = 9;
+static const pacman::Cell A{1, 2};
+static const pacman::Cell B{2, 2};
+static const pacman::Cell C{3, 2};
+static const pacman::Cell D{4, 2};
+static const pacman::Cell E{5, 2};
+static const pacman::Cell F{6, 2};
+static const pacman::Cell G{7, 2};
+static const pacman::Cell H{8, 2};
+static const pacman::Cell I{9, 2};
+static const pacman::Cell J{10, 2};
+static const pacman::Cell K{11, 2};
+static const pacman::Cell L{12, 2};
+static const pacman::Cell M{13, 2};
+static const pacman::Cell N{14, 2};
+static const pacman::Cell O{15, 2};
+static const pacman::Cell P{16, 2};
+static const pacman::Cell Q{17, 2};
+static const pacman::Cell R{18, 2};
+static const pacman::Cell S{19, 2};
+static const pacman::Cell T{20, 2};
+static const pacman::Cell U{21, 2};
+static const pacman::Cell V{22, 2};
+static const pacman::Cell W{23, 2};
+static const pacman::Cell X{24, 2};
+static const pacman::Cell Y{25, 2};
+static const pacman::Cell Z{26, 2};
 
 }
 

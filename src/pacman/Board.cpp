@@ -87,10 +87,14 @@ void Board::draw()
 
 void Board::drawBoard()
 {
-    int colCount = 0;
-    int rowCount = 3;
-    // Draw H
-    std::vector<Cell> highScoreText{Cell{8, 2}, Cell{9,2}, Cell{7,2}, Cell{8,2}, Cell{30,5}, Cell{19,2}, Cell{3,2}, Cell{15,2}, Cell{18,2}, Cell{5,2}};
+    drawText();
+    drawMaze();
+}
+
+void Board::drawText()
+{
+    std::vector<Cell> highScoreText{Constants::H, Constants::I, Constants::G, Constants::H, Cell{30, 5}, 
+        Constants::S, Constants::C, Constants::O, Constants::R, Constants::E};
     for (int i = 0; i < 10; i++)
     {
         SDL_Rect position = {(i + 9) * Constants::CHARACTER_SIZE, 0 * Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
@@ -98,6 +102,12 @@ void Board::drawBoard()
         spriteSheet->selectSprite(text.col, text.row);
         spriteSheet->drawSelectedSprite(surface, &position);
     }
+}
+
+void Board::drawMaze()
+{
+    int colCount = 0;
+    int rowCount = 3;
 
     for (Cell cell : maze)
     {

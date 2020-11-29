@@ -47,6 +47,9 @@ private:
     SDL_Event event;
 
     void drawBoard();
+    void drawText();
+    void drawMaze();
+
     void drawPacman();
     void updatePacman();
     bool canMovePacman();
