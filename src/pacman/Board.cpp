@@ -3,6 +3,7 @@
 #include "pacman/Constants.hpp"
 
 #include <typeinfo>
+#include <cstdlib>
 
 namespace pacman
 {
@@ -213,6 +214,7 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
 {
     AdjacentTile adjacentTile = getAdjacentTiles(ghost);
     
+    // TODO eliminate the bool and the if statement when the character offset bug is fixed
     bool hasNextMove = LevelDesign::canMove(adjacentTile.nextTile);
     if (!hasNextMove)
     {
@@ -224,10 +226,31 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
         std::vector<Cell>::iterator it = adjacentTile.tiles.begin();
         int directionIndex = 1;
         Cell prevCell = adjacentTile.prevTile;
+        std::vector<Direction> legalDirections;
         for (it; it != adjacentTile.tiles.end(); ++it)
         {
             Cell cell = *it;
-            
+            Cell cellType = LevelDesign::getCellType(cell.col, cell.row);
+            //printf("cell (%2d, %2d) cellType: (%2d, %2d) legal move? %d prev cell? %d\n", cell.col, cell.row, cellType.col, cellType.row,
+            //        LevelDesign::isLegalMove(cell), (cell == prevCell));
+            if (LevelDesign::isLegalMove(cell) && cell != prevCell)
+            {
+                //printf("Adding direction: %d\n", directionIndex);
+                legalDirections.push_back((Direction)directionIndex);
+            }
+            directionIndex++;
+        }
+
+        Direction newDirection = Direction::NONE;
+        //printf("legalDirection count: %d\n", legalDirections.size());
+        if (legalDirections.size() == 1)
+        {
+            newDirection = legalDirections.at(0);
+        }
+
+        if (legalDirections.size() > 1)
+        {
+            newDirection = (Direction)(legalDirections.at(std::rand() % legalDirections.size()));
             //Cell prevCellType = maze.at(prevCell.row * Constants::COLUMN_COUNT + prevCell.col);
             /*
             if (typeid(*ghost) == typeid(Blinky))
@@ -237,14 +260,11 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
                 printf("canMove? %d cells don't equal? %d\n", LevelDesign::canMove(cellType), !(cell == prevCell));
             }
             */
-            if (LevelDesign::canMove(cell) && cell != prevCell)
-            {
-                ghost->changeDirection((Direction)directionIndex);
-                //printf("ghost direction: %d\n", ghost->getDirection());
-                return true;
-            }
-            directionIndex++;
         }
+        //printf("new direction: %d\n", newDirection);
+        ghost->changeDirection(newDirection);
+        //printf("ghost direction: %d\n", ghost->getDirection());
+        return true;
     }
 
     return hasNextMove;

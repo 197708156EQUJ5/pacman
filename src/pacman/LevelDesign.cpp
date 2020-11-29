@@ -195,4 +195,10 @@ bool LevelDesign::canMove(Cell cell)
     return true;
 }
 
+bool LevelDesign::isLegalMove(Cell cell)
+{
+    std::vector<Cell> legalTiles = LevelDesign::LEGAL_TILES;
+    return find (legalTiles.begin(), legalTiles.end(), LevelDesign::getCellType(cell.col, cell.row)) != legalTiles.end();
+}
+
 }
