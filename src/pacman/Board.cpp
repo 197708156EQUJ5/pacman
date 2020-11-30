@@ -74,15 +74,16 @@ void Board::draw()
 
 
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - gameStartTime);
-    if (duration.count() > 3000)
+    if (duration.count() > 100)
     {
         updatePacman();
         updateGhosts();
         count++;
     }
 
-    //SDL_Delay(33.333);
-    SDL_Delay(16.6666667);
+    SDL_Delay(33.333333);
+    //SDL_Delay(300);
+    //SDL_Delay(16.6666667);
     SDL_UpdateWindowSurface(window);
 }
 
@@ -170,14 +171,17 @@ void Board::updatePacman()
     if (canMovePacman())
     {
         pacman->move();
-        score += LevelDesign::getCellValue(getCharacterCenter(pacman));
+        //score += LevelDesign::getCellValue(getCharacterCenter(pacman));
     }
     pacman->changeDirection(userDirection);
 }
 
 bool Board::canMovePacman()
 {
-    return LevelDesign::canMove(getAdjacentTiles(pacman).nextTile);
+    Cell nt = getAdjacentTiles(pacman).nextTile;
+    Cell cellType = LevelDesign::getCellType(nt.col, nt.row);
+    printf("Pacman cell (%2d, %2d) nextTile cellType (%2d, %2d)\n", nt.col, nt.row, cellType.col, cellType.row);
+    return LevelDesign::isLegalMove(getAdjacentTiles(pacman).nextTile);
 }
 
 bool Board::canChangeDirection()
@@ -202,9 +206,15 @@ void Board::drawCharacter(std::shared_ptr<Character> character)
     {
         for (int j = 0; j < 2; j++)
         {
+            //SDL_Rect position = {character->getX() + (i * Constants::CHARACTER_SIZE),
+            //    character->getY() + (j * Constants::CHARACTER_SIZE) - (Constants::CHARACTER_SIZE / 2),
+            //    Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
             SDL_Rect position = {character->getX() + (i * Constants::CHARACTER_SIZE),
-                character->getY() + (j * Constants::CHARACTER_SIZE) - (Constants::CHARACTER_SIZE / 2),
+                (character->getY() - (Constants::CHARACTER_SIZE / 2 + 1)) + (j * Constants::CHARACTER_SIZE) - (Constants::CHARACTER_SIZE / 2),
                 Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
+            //SDL_Rect position = {(character->getX() - Constants::CHARACTER_SIZE - 1) + (i * Constants::CHARACTER_SIZE),
+            //    (character->getY() - Constants::CHARACTER_SIZE - 1) + (j * Constants::CHARACTER_SIZE) - (Constants::CHARACTER_SIZE / 2),
+            //    Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
             spriteSheet->selectSprite(character->getSrcCol() + i, character->getSrcRow() + j);
             spriteSheet->drawSelectedSprite(surface, &position);
         }
@@ -247,11 +257,13 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
             Cell cellType = LevelDesign::getCellType(cell.col, cell.row);
             //printf("cell (%2d, %2d) cellType: (%2d, %2d) legal move? %d prev cell? %d\n", cell.col, cell.row, cellType.col, cellType.row,
             //        LevelDesign::isLegalMove(cell), (cell == prevCell));
+            /*
             if (typeid(*ghost) == typeid(Pinky))
             {
                 printf("cell (%2d, %2d) cellType (%2d, %2d) door? %d direction? %d\n", cell.col, cell.row, 
                         cellType.col, cellType.row, LevelDesign::isGhostHouseDoor(cell), ghostDirection);
             }
+            */
             if (LevelDesign::isGhostHouseDoor(cell) && ghostDirection == Direction::UP)
             {
                 legalDirections.push_back((Direction)directionIndex);
@@ -294,53 +306,143 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
     return hasNextMove;
 }
 
-AdjacentTile Board::getAdjacentTiles(std::shared_ptr<Character> character)
+AdjacentTile Board::getAdjacentTiles(const std::shared_ptr<Character> character)
 {
-    Cell cell = getCharacterCenter(character);
-    int col = cell.col;
-    int row = cell.row;
-    /*
-    if (typeid(*character) == typeid(Blinky))
-    {
-        printf("Blinky col, row (%2d, %2d)\n", col, row);
-    }
-    */
+    const int centerX = character->getX();
+    const int centerY = character->getY() - (Constants::MAZE_ROW_OFFSET * Constants::CHARACTER_SIZE);
+    const int halfCell = Constants::CHARACTER_SIZE / 2;
 
-    int nextRow = row;
-    int nextCol = col;
-    int prevRow = row;
-    int prevCol = col;
+
+    const Cell west{((centerX - halfCell - 1) / Constants::CHARACTER_SIZE + 1), (centerY / Constants::CHARACTER_SIZE + 1)};
+    //const Cell west{((centerX - halfCell) / Constants::CHARACTER_SIZE + 1), (centerY / Constants::CHARACTER_SIZE + 1)};
+    const Cell east{((centerX + halfCell) / Constants::CHARACTER_SIZE + 1), (centerY / Constants::CHARACTER_SIZE + 1)};
+    const Cell north{(centerX / Constants::CHARACTER_SIZE + 1), ((centerY - halfCell - 1) / Constants::CHARACTER_SIZE + 1)};
+    //const Cell north{(centerX / Constants::CHARACTER_SIZE + 1), ((centerY - halfCell) / Constants::CHARACTER_SIZE + 1)};
+    const Cell south{(centerX / Constants::CHARACTER_SIZE + 1), ((centerY + halfCell) / Constants::CHARACTER_SIZE + 1)};
+    Cell nextCell{0, 0};
+    Cell prevCell{0, 0};
+
     Direction direction = character->getDirection();
     if (direction == Direction::LEFT)
     {
-        nextCol--;
-        prevCol++;
+        nextCell = west;
+        prevCell = east;
     }
     else if (direction == Direction::RIGHT)
     {
-        nextCol++;
-        prevCol--;
+        nextCell = east;
+        prevCell = west;
     }
     else if (direction == Direction::UP)
     {
-        nextRow--;
-        prevRow++;
+        nextCell = north;
+        prevCell = south;
     }
     else if (direction == Direction::DOWN)
     {
-        nextRow++;
-        prevRow--;
+        nextCell = south;
+        prevCell = north;
     }
 
-    return {Cell{nextCol, nextRow}, Cell{prevCol, prevRow}, Cell{col, row - 1}, Cell{col + 1, row}, Cell{col, row + 1}, Cell{col - 1, row}};
+    //printf("next (%2d, %2d)\n", nextCell);
+    if (typeid(*character) == typeid(Pacman))
+    {
+        printf("center (%2d, %2d)\n", centerX, centerY);
+        printf("next (%2d, %2d) prev (%2d, %2d) north (%2d, %2d) east (%2d, %2d) south (%2d, %2d) west (%2d, %2d)\n", 
+                nextCell.col, 
+                nextCell.row, 
+                prevCell.col, 
+                prevCell.row, 
+                north.col, 
+                north.row, 
+                east.col, 
+                east.row, 
+                south.col, 
+                south.row, 
+                west.col,
+                west.row);
+    }
+
+    return {nextCell, prevCell, north, east, south, west};
 }
+
+//AdjacentTile Board::getAdjacentTiles(std::shared_ptr<Character> character)
+//{
+//    Cell cell = getCharacterCenter(character);
+//    Cell cellOffset = getCharacterCenterOffset(character);
+//    int col = cell.col;
+//    int row = cell.row;
+//    int colOffset = cellOffset.col;
+//    int rowOffset = cellOffset.row;
+//    
+//    if (typeid(*character) == typeid(Pacman))
+//    {
+//        Cell& cellType = LevelDesign::getCellType(cell.col, cell.row);
+//        Cell east{col + 1, row};
+//        Cell west{col - 1, row};
+//        //Cell& cellType = LevelDesign::getCellType(cellOffset.col, cellOffset.row);
+//        //Cell east{colOffset + 1, rowOffset};
+//        Cell eastType = LevelDesign::getCellType(east.col, east.row);
+//        Cell westType = LevelDesign::getCellType(west.col, west.row);
+//        printf("Pacman (%2d, %2d : %2d, %2d) EAST (%2d, %2d : %2d, %2d) WEST (%2d, %2d : %2d, %2d)\n", 
+//                col, row, cellType.col, cellType.row, 
+//                east.col, east.row, eastType.col, eastType.row, 
+//                west.col, west.row, westType.col, westType.row);
+//        //printf("Pacman (%2d, %2d : %2d, %2d) EAST (%2d, %2d : %2d, %2d)\n", 
+//        //        colOffset, rowOffset, cellType.col, cellType.row, east.col, east.row, eastType.col, eastType.row);
+//    }
+//    
+//
+//    int nextRow = row;
+//    int nextCol = col;
+//    int prevRow = row;
+//    int prevCol = col;
+//    Direction direction = character->getDirection();
+//    if (direction == Direction::LEFT)
+//    {
+//        nextCol--;
+//        prevCol++;
+//    }
+//    else if (direction == Direction::RIGHT)
+//    {
+//        nextCol++;
+//        prevCol--;
+//    }
+//    else if (direction == Direction::UP)
+//    {
+//        nextRow--;
+//        prevRow++;
+//    }
+//    else if (direction == Direction::DOWN)
+//    {
+//        nextRow++;
+//        prevRow--;
+//    }
+//
+//    return {Cell{nextCol, nextRow}, Cell{prevCol, prevRow}, Cell{col, row - 1}, Cell{col + 1, row}, Cell{col, row + 1}, Cell{col - 1, row}};
+//}
 
 Cell Board::getCharacterCenter(std::shared_ptr<Character> character)
 {
+    int centerX = character->getX();
+    int centerY = character->getY() - (Constants::MAZE_ROW_OFFSET * Constants::CHARACTER_SIZE);
+    int col = ((centerX + (Constants::CHARACTER_SIZE / 2)) / Constants::CHARACTER_SIZE) + 1;
+    int row = (centerY / Constants::CHARACTER_SIZE) + 1;
+
+    if (typeid(*character) == typeid(Pacman))
+    {
+        printf("center (%2d, %2d) col/row (%2d, %2d)\n", centerX, centerY, col, row);
+    }
+
+    return Cell{col, row};
+}
+
+Cell Board::getCharacterCenterOffset(std::shared_ptr<Character> character)
+{
     int centerX = character->getX() + Constants::CHARACTER_SIZE;
     int centerY = character->getY() + Constants::CHARACTER_SIZE - (Constants::MAZE_ROW_OFFSET * Constants::CHARACTER_SIZE);
-    int row = centerY / Constants::CHARACTER_SIZE;
-    int col = centerX / Constants::CHARACTER_SIZE;
+    int col = (centerX - (Constants::CHARACTER_SIZE/2)) / Constants::CHARACTER_SIZE;
+    int row = (centerY + (Constants::CHARACTER_SIZE/2)) / Constants::CHARACTER_SIZE;
 
     return Cell{col, row};
 }

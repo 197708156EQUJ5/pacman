@@ -9,9 +9,7 @@ class Pacman : public Character
 {
 public:
 
-    Pacman(int x = PacmanConstants::START_COL * Constants::CHARACTER_SIZE, 
-            int y = PacmanConstants::START_ROW * Constants::CHARACTER_SIZE, 
-            Direction direction = Direction::NONE);
+    Pacman();
     ~Pacman() = default;
     
     int getSrcCol();

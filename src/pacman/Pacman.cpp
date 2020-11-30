@@ -6,8 +6,12 @@
 namespace pacman
 {
 
-Pacman::Pacman(int x, int y, Direction direction) : 
-    Character(x, y, direction)
+Pacman::Pacman() :
+    Character(PacmanConstants::START_COL * Constants::CHARACTER_SIZE, 
+    //Character(PacmanConstants::START_COL * Constants::CHARACTER_SIZE - (Constants::CHARACTER_SIZE / 2),
+            //PacmanConstants::START_ROW * Constants::CHARACTER_SIZE,
+            PacmanConstants::START_ROW * Constants::CHARACTER_SIZE - (Constants::CHARACTER_SIZE / 2),
+            Direction::NONE)
 {
 }
 
@@ -53,19 +57,19 @@ void Pacman::move()
 {
     if (direction == Direction::LEFT)
     {
-        x -= 9;
+        x -= 4;
     }
     else if (direction == Direction::RIGHT)
     {
-        x += 9;
+        x += 4;
     }
     else if (direction == Direction::DOWN)
     {
-        y += 9;
+        y += 4;
     }
     else if (direction == Direction::UP)
     {
-        y -= 9;
+        y -= 4;
     }
     isOddMove = !isOddMove;
 }

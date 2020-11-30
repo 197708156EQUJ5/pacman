@@ -61,6 +61,7 @@ private:
 
     AdjacentTile getAdjacentTiles(std::shared_ptr<Character> character);
     Cell getCharacterCenter(std::shared_ptr<Character> character);
+    Cell getCharacterCenterOffset(std::shared_ptr<Character> character);
 
     void drawScore();
     void drawLives();

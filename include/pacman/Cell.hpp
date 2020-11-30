@@ -1,5 +1,7 @@
 #pragma once
 
+#include <sstream>
+
 namespace pacman
 {
 
@@ -18,6 +20,7 @@ struct Cell
     {
         return col != rhs.col || row != rhs.row;
     }
+
 };
 
 } // namespace pacman

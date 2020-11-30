@@ -62,7 +62,7 @@ namespace PacmanConstants
 {
 
 static const int START_COL = 13;
-static const int START_ROW = 26;
+static const int START_ROW = 27;
 
 static const int SRC_ROW = 6;
 static const int SRC_START_COL = 0;
