@@ -8,7 +8,7 @@ namespace pacman
 Inky::Inky() :
     Ghost(InkyConstants::START_COL * Constants::CHARACTER_SIZE,
             InkyConstants::START_ROW * Constants::CHARACTER_SIZE, 
-            Direction::UP)
+            Direction::UP, true, false)
 {
 }
 

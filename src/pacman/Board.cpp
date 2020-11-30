@@ -98,7 +98,8 @@ void Board::drawText()
         Constants::S, Constants::C, Constants::O, Constants::R, Constants::E};
     for (int i = 0; i < 10; i++)
     {
-        SDL_Rect position = {(i + 9) * Constants::CHARACTER_SIZE, 0 * Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
+        SDL_Rect position = {(i + 9) * Constants::CHARACTER_SIZE, 0 * Constants::CHARACTER_SIZE, 
+            Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
         Cell text = highScoreText.at(i);
         spriteSheet->selectSprite(text.col, text.row);
         spriteSheet->drawSelectedSprite(surface, &position);
@@ -230,9 +231,10 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
     bool hasNextMove = LevelDesign::canMove(adjacentTile.nextTile);
     if (!hasNextMove)
     {
+        Direction ghostDirection = ghost->getDirection();
         if (ghost->isHome())
         {
-            ghost->changeDirection(pacman::getOpposite(ghost->getDirection()));
+            ghost->changeDirection(pacman::getOpposite(ghostDirection));
             return true;
         }
         std::vector<Cell>::iterator it = adjacentTile.tiles.begin();
@@ -245,6 +247,16 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
             Cell cellType = LevelDesign::getCellType(cell.col, cell.row);
             //printf("cell (%2d, %2d) cellType: (%2d, %2d) legal move? %d prev cell? %d\n", cell.col, cell.row, cellType.col, cellType.row,
             //        LevelDesign::isLegalMove(cell), (cell == prevCell));
+            if (typeid(*ghost) == typeid(Pinky))
+            {
+                printf("cell (%2d, %2d) cellType (%2d, %2d) door? %d direction? %d\n", cell.col, cell.row, 
+                        cellType.col, cellType.row, LevelDesign::isGhostHouseDoor(cell), ghostDirection);
+            }
+            if (LevelDesign::isGhostHouseDoor(cell) && ghostDirection == Direction::UP)
+            {
+                legalDirections.push_back((Direction)directionIndex);
+                break;
+            }
             if (LevelDesign::isLegalMove(cell) && cell != prevCell)
             {
                 //printf("Adding direction: %d\n", directionIndex);

@@ -9,12 +9,12 @@ struct Cell
     int row;
     bool hasVisited = false;
 
-    bool operator==(const Cell& rhs)
+    bool operator==(const Cell& rhs) const
     {
         return col == rhs.col && row == rhs.row;
     }
 
-    bool operator!=(const Cell& rhs)
+    bool operator!=(const Cell& rhs) const
     {
         return col != rhs.col || row != rhs.row;
     }

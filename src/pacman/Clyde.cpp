@@ -6,7 +6,7 @@ namespace pacman
 Clyde::Clyde() :
     Ghost(ClydeConstants::START_COL * Constants::CHARACTER_SIZE, 
             ClydeConstants::START_ROW * Constants::CHARACTER_SIZE, 
-            Direction::UP)
+            Direction::UP, true, false)
 {
 }
 
