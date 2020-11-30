@@ -7,6 +7,7 @@ struct Cell
 {
     int col;
     int row;
+    bool hasVisited = false;
 
     bool operator==(const Cell& rhs)
     {

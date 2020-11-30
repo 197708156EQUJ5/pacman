@@ -52,6 +52,9 @@ static const pacman::Cell W{23, 2};
 static const pacman::Cell X{24, 2};
 static const pacman::Cell Y{25, 2};
 static const pacman::Cell Z{26, 2};
+static const pacman::Cell PELLET{17, 0};
+static const pacman::Cell ENERGIZER{21, 0};
+static const pacman::Cell EMPTY{30, 5};
 
 }
 

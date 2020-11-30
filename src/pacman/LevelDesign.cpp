@@ -3,6 +3,7 @@
 #include "pacman/Constants.hpp"
 
 #include <algorithm>
+#include <iostream>
 
 namespace pacman
 {
@@ -12,7 +13,7 @@ const std::vector<Cell> LevelDesign::LEGAL_TILES(
     Cell{17, 0}, Cell{21, 0}, Cell{30, 5}
 });
 
-const std::vector<Cell> LevelDesign::LEVEL_1(
+std::vector<Cell> LevelDesign::LEVEL_1(
 {
     // Row 1
     Cell{17, 4}, Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, 
@@ -171,7 +172,13 @@ const std::vector<Cell> LevelDesign::LEVEL_1(
     Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{20, 4}
 });
 
-Cell LevelDesign::getCellType(int col, int row)
+std::vector<Cell>& LevelDesign::getLevel()
+{
+    std::vector<Cell>& vec = LEVEL_1;
+    return vec;
+}
+
+Cell& LevelDesign::getCellType(int col, int row)
 {
     return LevelDesign::LEVEL_1.at(row * Constants::COLUMN_COUNT + col);
 }
@@ -199,6 +206,25 @@ bool LevelDesign::isLegalMove(Cell cell)
 {
     std::vector<Cell> legalTiles = LevelDesign::LEGAL_TILES;
     return find (legalTiles.begin(), legalTiles.end(), LevelDesign::getCellType(cell.col, cell.row)) != legalTiles.end();
+}
+
+int LevelDesign::getCellValue(Cell cell)
+{
+    Cell& cellType = getCellType(cell.col, cell.row);
+
+    if (cellType == Constants::PELLET && !cellType.hasVisited)
+    {
+        cellType.hasVisited = true;
+        //printf("CellType (%2d, %2d) visted? %d\n", cellType.col, cellType.row, cellType.hasVisited);
+        return 10;
+    }
+    else if (cellType == Constants::ENERGIZER && !cellType.hasVisited)
+    {
+        cellType.hasVisited = true;
+        return 50;
+    }
+
+    return 0;
 }
 
 }

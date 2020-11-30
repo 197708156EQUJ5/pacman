@@ -47,7 +47,8 @@ bool Board::init()
 
     spriteSheet = std::make_unique<SpriteSheet>();
     characterManager = std::make_unique<CharacterManager>();
-    maze = LevelDesign::LEVEL_1;
+    //maze = LevelDesign::LEVEL_1;
+    maze = LevelDesign::getLevel();
     pacman = this->characterManager->getPacman();
     ghosts = characterManager->getGhosts();
     gameStartTime = std::chrono::system_clock::now();
@@ -108,11 +109,19 @@ void Board::drawMaze()
     int colCount = 0;
     int rowCount = 3;
 
-    for (Cell cell : maze)
+    maze = LevelDesign::getLevel();
+    for (Cell &cell : maze)
     {
         SDL_Rect position = {colCount * Constants::CHARACTER_SIZE, rowCount * Constants::CHARACTER_SIZE, 
             Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
-        spriteSheet->selectSprite(cell.col, cell.row);
+        if (cell.hasVisited)
+        {
+            spriteSheet->selectSprite(Constants::EMPTY.col, Constants::EMPTY.row);
+        }
+        else
+        {
+            spriteSheet->selectSprite(cell.col, cell.row);
+        }
         spriteSheet->drawSelectedSprite(surface, &position);
         colCount++;
         if (colCount % Constants::COLUMN_COUNT == 0 )
@@ -158,6 +167,7 @@ void Board::updatePacman()
     if (canMovePacman())
     {
         pacman->move();
+        score += LevelDesign::getCellValue(getCharacterCenter(pacman));
     }
     pacman->changeDirection(userDirection);
 }
@@ -272,13 +282,9 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
 
 AdjacentTile Board::getAdjacentTiles(std::shared_ptr<Character> character)
 {
-    int centerX = character->getX() + Constants::CHARACTER_SIZE;
-    int centerY = character->getY() + Constants::CHARACTER_SIZE - (Constants::MAZE_ROW_OFFSET * Constants::CHARACTER_SIZE);
-    Direction direction = character->getDirection();
-    
-    int row = centerY / Constants::CHARACTER_SIZE;
-    int col = centerX / Constants::CHARACTER_SIZE;
-
+    Cell cell = getCharacterCenter(character);
+    int col = cell.col;
+    int row = cell.row;
     /*
     if (typeid(*character) == typeid(Blinky))
     {
@@ -290,6 +296,7 @@ AdjacentTile Board::getAdjacentTiles(std::shared_ptr<Character> character)
     int nextCol = col;
     int prevRow = row;
     int prevCol = col;
+    Direction direction = character->getDirection();
     if (direction == Direction::LEFT)
     {
         nextCol--;
@@ -312,6 +319,16 @@ AdjacentTile Board::getAdjacentTiles(std::shared_ptr<Character> character)
     }
 
     return {Cell{nextCol, nextRow}, Cell{prevCol, prevRow}, Cell{col, row - 1}, Cell{col + 1, row}, Cell{col, row + 1}, Cell{col - 1, row}};
+}
+
+Cell Board::getCharacterCenter(std::shared_ptr<Character> character)
+{
+    int centerX = character->getX() + Constants::CHARACTER_SIZE;
+    int centerY = character->getY() + Constants::CHARACTER_SIZE - (Constants::MAZE_ROW_OFFSET * Constants::CHARACTER_SIZE);
+    int row = centerY / Constants::CHARACTER_SIZE;
+    int col = centerX / Constants::CHARACTER_SIZE;
+
+    return Cell{col, row};
 }
 
 } // namespace
