@@ -47,8 +47,8 @@ bool Board::init()
 
     spriteSheet = std::make_unique<SpriteSheet>();
     characterManager = std::make_unique<CharacterManager>();
-    //maze = LevelDesign::LEVEL_1;
-    maze = LevelDesign::getLevel();
+    maze = LevelDesign::LEVEL_1;
+    //maze = LevelDesign::getLevel();
     pacman = this->characterManager->getPacman();
     ghosts = characterManager->getGhosts();
     gameStartTime = std::chrono::system_clock::now();
@@ -109,8 +109,9 @@ void Board::drawMaze()
     int colCount = 0;
     int rowCount = 3;
 
+    // TODO Potential memory leak
     maze = LevelDesign::getLevel();
-    for (Cell &cell : maze)
+    for (Cell cell : maze)
     {
         SDL_Rect position = {colCount * Constants::CHARACTER_SIZE, rowCount * Constants::CHARACTER_SIZE, 
             Constants::CHARACTER_SIZE, Constants::CHARACTER_SIZE};
