@@ -3,11 +3,11 @@
 namespace pacman
 {
 
-Character::Character(int x, int y, Direction direction, bool isOddMove) :
+Character::Character(int x, int y, Direction direction) :
     x(x),
     y(y),
     direction(direction),
-    isOddMove(isOddMove)
+    isOddMove(false)
 {
 }
 

@@ -11,7 +11,7 @@ class Character
     
 public:
 
-    Character(int x = 0, int y = 0, Direction direction = Direction::LEFT, bool isOddMove = false);
+    Character(int x = 0, int y = 0, Direction direction = Direction::LEFT);
     virtual ~Character() {};
 
     int getX() const;

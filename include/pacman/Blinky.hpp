@@ -11,7 +11,7 @@ public:
 
     Blinky(int x = BlinkyConstants::START_COL * Constants::CHARACTER_SIZE,
             int y = BlinkyConstants::START_ROW * Constants::CHARACTER_SIZE, 
-            Direction direction = Direction::LEFT, bool isOddMove = false, bool isHome = false);
+            Direction direction = Direction::LEFT, bool isHome = false);
     ~Blinky() = default;
     
     int getSrcCol();

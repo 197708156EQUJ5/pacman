@@ -6,8 +6,8 @@
 namespace pacman
 {
 
-Pacman::Pacman(int x, int y, Direction direction, bool isOddMove) : 
-    Character(x, y, direction, isOddMove)
+Pacman::Pacman(int x, int y, Direction direction) : 
+    Character(x, y, direction)
 {
 }
 

@@ -9,7 +9,7 @@ class Ghost : public Character
 {
 public:
 
-    Ghost(int x = 0, int y = 0, Direction direction = Direction::LEFT, bool isOddMove = false, bool isHome = false);
+    Ghost(int x = 0, int y = 0, Direction direction = Direction::LEFT, bool isHome = false);
     ~Ghost() = default;
     
     virtual int getSrcCol() {};
@@ -17,10 +17,13 @@ public:
     void move();
     void changeDirection(Direction direction);
     bool isHome();
+    void resetPelletCounter();
 
 protected:
     
     bool isGhostHome;
+    int pelletCounter;
+    bool isPelletCounterActive;
 };
 
 } // namespace pacman

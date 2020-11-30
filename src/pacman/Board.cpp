@@ -81,7 +81,8 @@ void Board::draw()
         count++;
     }
 
-    SDL_Delay(33.333);
+    //SDL_Delay(33.333);
+    SDL_Delay(16.6666667);
     SDL_UpdateWindowSurface(window);
 }
 
