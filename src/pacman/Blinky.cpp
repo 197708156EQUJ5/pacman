@@ -5,8 +5,10 @@
 namespace pacman
 {
 
-Blinky::Blinky(int x, int y, Direction direction, bool isHome) : 
-    Ghost(x, y, direction, isHome)
+Blinky::Blinky() :
+    Ghost(BlinkyConstants::START_COL * Constants::CHARACTER_SIZE, 
+            BlinkyConstants::START_ROW * Constants::CHARACTER_SIZE, 
+            Direction::LEFT)
 {
 }
 

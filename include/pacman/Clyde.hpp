@@ -9,9 +9,7 @@ class Clyde : public Ghost
 {
 public:
 
-    Clyde(int x = ClydeConstants::START_COL * Constants::CHARACTER_SIZE,
-            int y = ClydeConstants::START_ROW * Constants::CHARACTER_SIZE, 
-            Direction direction = Direction::UP, bool isHome = true);
+    Clyde();
     ~Clyde() = default;
     
     int getSrcCol();

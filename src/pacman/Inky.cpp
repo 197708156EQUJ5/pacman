@@ -5,8 +5,10 @@
 namespace pacman
 {
 
-Inky::Inky(int x, int y, Direction direction, bool isHome) : 
-    Ghost(x, y, direction, isHome)
+Inky::Inky() :
+    Ghost(InkyConstants::START_COL * Constants::CHARACTER_SIZE,
+            InkyConstants::START_ROW * Constants::CHARACTER_SIZE, 
+            Direction::UP)
 {
 }
 

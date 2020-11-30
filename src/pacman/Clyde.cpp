@@ -3,8 +3,10 @@
 namespace pacman
 {
 
-Clyde::Clyde(int x, int y, Direction direction, bool isHome) : 
-    Ghost(x, y, direction, isHome)
+Clyde::Clyde() :
+    Ghost(ClydeConstants::START_COL * Constants::CHARACTER_SIZE, 
+            ClydeConstants::START_ROW * Constants::CHARACTER_SIZE, 
+            Direction::UP)
 {
 }
 

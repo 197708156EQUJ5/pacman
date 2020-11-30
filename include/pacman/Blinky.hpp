@@ -9,9 +9,7 @@ class Blinky : public Ghost
 {
 public:
 
-    Blinky(int x = BlinkyConstants::START_COL * Constants::CHARACTER_SIZE,
-            int y = BlinkyConstants::START_ROW * Constants::CHARACTER_SIZE, 
-            Direction direction = Direction::LEFT, bool isHome = false);
+    Blinky();
     ~Blinky() = default;
     
     int getSrcCol();

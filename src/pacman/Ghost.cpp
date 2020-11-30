@@ -3,9 +3,11 @@
 namespace pacman
 {
 
-Ghost::Ghost(int x, int y, Direction direction, bool isHome) : 
+Ghost::Ghost(int x, int y, Direction direction, bool isHome, bool isCounterActive) : 
     Character(x, y, direction),
-    isGhostHome(isHome)
+    isGhostHome(isHome),
+    pelletCounter(0),
+    isCounterActive(isCounterActive)
 {
 }
 
