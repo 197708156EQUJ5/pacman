@@ -58,13 +58,11 @@ private:
     bool canMoveGhost(std::shared_ptr<Ghost> ghost);
     void drawCharacter(std::shared_ptr<Character> character);
 
-    AdjacentTile getAdjacentTiles(std::shared_ptr<Character> character);
-    Cell getCharacterCenter(std::shared_ptr<Character> character);
-    Cell getCharacterCenterOffset(std::shared_ptr<Character> character);
-
     void drawScore();
     void drawLives();
     void drawFruits();
+    
+    void printCells(AdjacentTile adjacentTile, std::shared_ptr<Character> character);
 
 };
 

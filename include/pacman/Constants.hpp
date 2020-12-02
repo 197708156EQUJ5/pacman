@@ -12,6 +12,9 @@ static const int SS_COLS = 32;
 static const int SS_ROWS = 20;
 static const int TILE_DISPLAY_RATIO = 3;
 static const int TILE_SIZE = 8;
+static const int TITLE_ROW_COUNT = 3;
+static const int TOP_ROW_OFFSET = TITLE_ROW_COUNT * TILE_SIZE;
+
 static const int COLUMN_COUNT = 28;
 static const char *SPRITESHEET_PATH = "resources/pacman-spritesheet.bmp";
 static const int MAZE_ROW_OFFSET = 4;

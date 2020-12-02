@@ -2,6 +2,7 @@
 
 #include "pacman/AdjacentTile.hpp"
 #include "pacman/Cell.hpp"
+#include "pacman/Direction.hpp"
 
 #include <cstdint>
 #include <vector>
@@ -21,7 +22,7 @@ public:
     static bool isGhostHouseDoor(Cell cell);
     static int getCellValue(Cell cell);
     static std::vector<Cell>& getLevel();
-    AdjacentTile getAdjacentTiles(int x, int y);
+    static AdjacentTile getAdjacentTiles(int x, int y, Direction direction);
     
 };
 

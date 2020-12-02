@@ -215,8 +215,38 @@ int Level::getCellValue(Cell cell)
     return 0;
 }
 
-AdjacentTile Level::getAdjacentTiles(int x, int y)
+AdjacentTile Level::getAdjacentTiles(int centerX, int centerY, Direction direction)
 {
+    const Cell west{centerX - Constants::TILE_SIZE, centerY};
+    const Cell east{centerX + Constants::TILE_SIZE, centerY};
+    const Cell north{centerX, centerY - Constants::TILE_SIZE};
+    const Cell south{centerX, centerY + Constants::TILE_SIZE};
+    Cell nextCell{0, 0};
+    Cell prevCell{0, 0};
+
+    
+    if (direction == Direction::LEFT)
+    {
+        nextCell = west;
+        prevCell = east;
+    }
+    else if (direction == Direction::RIGHT)
+    {
+        nextCell = east;
+        prevCell = west;
+    }
+    else if (direction == Direction::UP)
+    {
+        nextCell = north;
+        prevCell = south;
+    }
+    else if (direction == Direction::DOWN)
+    {
+        nextCell = south;
+        prevCell = north;
+    }
+
+    return {nextCell, prevCell, north, east, south, west};
 }
 
 }
