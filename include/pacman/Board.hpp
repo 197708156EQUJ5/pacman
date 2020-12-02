@@ -3,7 +3,7 @@
 #include "pacman/AdjacentTile.hpp"
 #include "pacman/Direction.hpp"
 #include "pacman/CharacterManager.hpp"
-#include "pacman/LevelDesign.hpp"
+#include "pacman/Level.hpp"
 #include "pacman/SpriteSheet.hpp"
 
 #include <SDL2/SDL.h>
@@ -53,7 +53,6 @@ private:
     void drawPacman();
     void updatePacman();
     bool canMovePacman();
-    bool canChangeDirection();
     void drawGhosts();
     void updateGhosts();
     bool canMoveGhost(std::shared_ptr<Ghost> ghost);

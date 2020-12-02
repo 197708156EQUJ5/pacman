@@ -6,9 +6,7 @@ namespace pacman
 {
 
 Blinky::Blinky() :
-    Ghost(BlinkyConstants::START_COL * Constants::CHARACTER_SIZE, 
-            BlinkyConstants::START_ROW * Constants::CHARACTER_SIZE, 
-            Direction::LEFT)
+    Ghost(BlinkyConstants::START_COL, BlinkyConstants::START_ROW, Direction::LEFT)
 {
 }
 

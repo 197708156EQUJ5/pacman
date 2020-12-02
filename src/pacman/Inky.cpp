@@ -6,9 +6,7 @@ namespace pacman
 {
 
 Inky::Inky() :
-    Ghost(InkyConstants::START_COL * Constants::CHARACTER_SIZE,
-            InkyConstants::START_ROW * Constants::CHARACTER_SIZE, 
-            Direction::UP, true, false)
+    Ghost(InkyConstants::START_COL, InkyConstants::START_ROW, Direction::UP, true, false)
 {
 }
 

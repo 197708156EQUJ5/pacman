@@ -7,11 +7,7 @@ namespace pacman
 {
 
 Pacman::Pacman() :
-    Character(PacmanConstants::START_COL * Constants::CHARACTER_SIZE, 
-    //Character(PacmanConstants::START_COL * Constants::CHARACTER_SIZE - (Constants::CHARACTER_SIZE / 2),
-            //PacmanConstants::START_ROW * Constants::CHARACTER_SIZE,
-            PacmanConstants::START_ROW * Constants::CHARACTER_SIZE - (Constants::CHARACTER_SIZE / 2),
-            Direction::NONE)
+    Character(PacmanConstants::START_COL, PacmanConstants::START_ROW, Direction::NONE)
 {
 }
 
@@ -57,19 +53,19 @@ void Pacman::move()
 {
     if (direction == Direction::LEFT)
     {
-        x -= 4;
+        x -= Constants::MAXIMUM_PIXEL_SPEED;
     }
     else if (direction == Direction::RIGHT)
     {
-        x += 4;
+        x += Constants::MAXIMUM_PIXEL_SPEED;
     }
     else if (direction == Direction::DOWN)
     {
-        y += 4;
+        y += Constants::MAXIMUM_PIXEL_SPEED;
     }
     else if (direction == Direction::UP)
     {
-        y -= 4;
+        y -= Constants::MAXIMUM_PIXEL_SPEED;
     }
     isOddMove = !isOddMove;
 }

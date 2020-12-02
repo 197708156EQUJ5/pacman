@@ -1,4 +1,4 @@
-#include "pacman/LevelDesign.hpp"
+#include "pacman/Level.hpp"
 
 #include "pacman/Constants.hpp"
 
@@ -8,14 +8,14 @@
 namespace pacman
 {
 
-const std::vector<Cell> LevelDesign::LEGAL_TILES(
+const std::vector<Cell> Level::LEGAL_TILES(
 {
     Cell{17, 0}, Cell{21, 0}, Cell{30, 5}
 });
 
-const Cell LevelDesign::GHOST_HOUSE_DOOR = Cell{15, 1};
+const Cell Level::GHOST_HOUSE_DOOR = Cell{15, 1};
 
-std::vector<Cell> LevelDesign::LEVEL_1(
+std::vector<Cell> Level::LEVEL_1(
 {
     // Row 1
     Cell{17, 4}, Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, 
@@ -174,50 +174,29 @@ std::vector<Cell> LevelDesign::LEVEL_1(
     Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{20, 4}
 });
 
-std::vector<Cell>& LevelDesign::getLevel()
+std::vector<Cell>& Level::getLevel()
 {
     std::vector<Cell>& vec = LEVEL_1;
     return vec;
 }
 
-Cell& LevelDesign::getCellType(int col, int row)
+Cell& Level::getCellType(int col, int row)
 {
-    return LevelDesign::LEVEL_1.at(row * Constants::COLUMN_COUNT + col);
+    return Level::LEVEL_1.at(row * Constants::COLUMN_COUNT + col);
 }
 
-bool LevelDesign::canMove(Cell cell)
+bool Level::isLegalMove(Cell cell)
 {
-
-    /*
-    if (typeid(*character) == typeid(Pac))
-    {
-        printf("cell_src col/row: (%2d, %2d) next_src col/row: (%2d, %2d) curr_index (%2d, %2d) next_index COL/ROW (%2d, %2d)\n", 
-                cell.col, cell.row, nextCell.col, nextCell.row, col, row, nextCol, nextRow);
-    }
-    */
-    //printf("Cell (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d) (%3d, %3d)\n", 
-    //        cell.col, cell.row, nextCell.col, nextCell.row, nextCol, nextRow, col, row, centerX, centerY);
-    std::vector<Cell> legalTiles = LevelDesign::LEGAL_TILES;
-    if (find (legalTiles.begin(), legalTiles.end(), LevelDesign::getCellType(cell.col, cell.row)) == legalTiles.end())
-    {
-        return false;
-    }
-
-    return true;
+    std::vector<Cell> legalTiles = Level::LEGAL_TILES;
+    return find (legalTiles.begin(), legalTiles.end(), Level::getCellType(cell.col, cell.row)) != legalTiles.end();
 }
 
-bool LevelDesign::isLegalMove(Cell cell)
+bool Level::isGhostHouseDoor(const Cell cell)
 {
-    std::vector<Cell> legalTiles = LevelDesign::LEGAL_TILES;
-    return find (legalTiles.begin(), legalTiles.end(), LevelDesign::getCellType(cell.col, cell.row)) != legalTiles.end();
+    return getCellType(cell.col, cell.row) == Level::GHOST_HOUSE_DOOR;
 }
 
-bool LevelDesign::isGhostHouseDoor(const Cell cell)
-{
-    return getCellType(cell.col, cell.row) == LevelDesign::GHOST_HOUSE_DOOR;
-}
-
-int LevelDesign::getCellValue(Cell cell)
+int Level::getCellValue(Cell cell)
 {
     Cell& cellType = getCellType(cell.col, cell.row);
 
@@ -234,6 +213,10 @@ int LevelDesign::getCellValue(Cell cell)
     }
 
     return 0;
+}
+
+AdjacentTile Level::getAdjacentTiles(int x, int y)
+{
 }
 
 }
