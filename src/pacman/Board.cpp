@@ -82,9 +82,9 @@ void Board::draw()
         count++;
     }
 
-    SDL_Delay(33.333333);
+    //SDL_Delay(33.333333);
     //SDL_Delay(300);
-    //SDL_Delay(16.6666667);
+    SDL_Delay(16.6666667);
     SDL_UpdateWindowSurface(window);
 }
 
@@ -182,10 +182,12 @@ bool Board::canMovePacman()
     int x = pacman->getX();
     int y = pacman->getY();
     Direction direction = pacman->getDirection();
-    printCells(Level::getAdjacentTiles(x, y, direction), pacman);
     
-    Cell next = Level::getAdjacentTiles(x, y, direction).nextTile;
-    return Level::isLegalMove(Cell{next.col / Constants::TILE_SIZE, (next.row + Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE});
+    //printCells(Level::getAdjacentTiles(x, y, direction), pacman);
+    
+    Cell next = Level::getAdjacentTiles(x, y, direction).next;
+    return Level::isLegalMove(Cell{next.col / Constants::TILE_SIZE, 
+            (next.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE});
 }
 
 void Board::drawGhosts()
@@ -245,7 +247,7 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
     }
     std::vector<Cell>::iterator it = adjacentTile.tiles.begin();
     int directionIndex = 1;
-    Cell prevCell = adjacentTile.prevTile;
+    Cell prevCell = adjacentTile.prev;
     std::vector<Direction> legalDirections;
     for (it; it != adjacentTile.tiles.end(); ++it)
     {
@@ -303,12 +305,21 @@ void Board::printCells(AdjacentTile adjacentTile, std::shared_ptr<Character> cha
 {
     if (typeid(*character) == typeid(Pacman))
     {
-        std::cout << "next: (" << std::setw(3) << adjacentTile.nextTile.col << ", " << std::setw(3) << adjacentTile.nextTile.row << ") "
-            << "prev: (" << std::setw(3) << adjacentTile.prevTile.col << ", " << std::setw(3) << adjacentTile.prevTile.row << ") "
-            << "north: (" << std::setw(3) << adjacentTile.northTile.col << ", " << std::setw(3) << adjacentTile.northTile.row << ") "
-            << "east: (" << std::setw(3) << adjacentTile.eastTile.col << ", " << std::setw(3) << adjacentTile.eastTile.row << ") "
-            << "south: (" << std::setw(3) << adjacentTile.southTile.col << ", " << std::setw(3) << adjacentTile.southTile.row << ") "
-            << "west: (" << std::setw(3) << adjacentTile.westTile.col << ", " << std::setw(3) << adjacentTile.westTile.row << ") " << std::endl;
+        Cell northCT = Level::getCellType(adjacentTile.north.col / Constants::TILE_SIZE, (adjacentTile.north.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE);
+        Cell eastCT = Level::getCellType(adjacentTile.east.col / Constants::TILE_SIZE, (adjacentTile.east.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE);
+        Cell southCT = Level::getCellType(adjacentTile.south.col / Constants::TILE_SIZE, (adjacentTile.south.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE);
+        Cell westCT = Level::getCellType(adjacentTile.west.col / Constants::TILE_SIZE, (adjacentTile.west.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE);
+        std::cout << "cr (" << std::setw(3) << (adjacentTile.north.col / Constants::TILE_SIZE) << ", " << std::setw(3) << (adjacentTile.west.row / Constants::TILE_SIZE) << ") "
+            << "nx (" << std::setw(3) << (adjacentTile.next.col / Constants::TILE_SIZE) << ", " << std::setw(3) << (adjacentTile.next.row / Constants::TILE_SIZE) << ") "
+            << "pv: (" << std::setw(3) << (adjacentTile.prev.col / Constants::TILE_SIZE) << ", " << std::setw(3) << (adjacentTile.prev.row / Constants::TILE_SIZE) << ":"
+            << "N (" << std::setw(3) << (adjacentTile.north.col / Constants::TILE_SIZE) << ", " << std::setw(3) << (adjacentTile.north.row / Constants::TILE_SIZE) << ":"
+            << std::setw(2) << northCT.col << ", " << std::setw(2) << northCT.row << ") "
+            << "E (" << std::setw(3) << (adjacentTile.east.col / Constants::TILE_SIZE) << ", " << std::setw(3) << (adjacentTile.east.row / Constants::TILE_SIZE) << ":"
+            << std::setw(2) << eastCT.col << ", " << std::setw(2) << eastCT.row << ") "
+            << "S (" << std::setw(3) << (adjacentTile.south.col / Constants::TILE_SIZE) << ", " << std::setw(3) << (adjacentTile.south.row / Constants::TILE_SIZE) << ":"
+            << std::setw(2) << southCT.col << ", " << std::setw(2) << southCT.row << ") "
+            << "W (" << std::setw(3) << (adjacentTile.west.col / Constants::TILE_SIZE) << ", " << std::setw(3) << (adjacentTile.west.row / Constants::TILE_SIZE) << ":"
+            << std::setw(2) << westCT.col << ", " << std::setw(2) << westCT.row << ") " << std::endl;
     }
 }
 

@@ -9,14 +9,14 @@ namespace pacman
 
 struct AdjacentTile
 {
-    Cell nextTile;
-    Cell prevTile;
-    Cell northTile;
-    Cell eastTile;
-    Cell southTile;
-    Cell westTile;
+    Cell next;
+    Cell prev;
+    Cell north;
+    Cell east;
+    Cell south;
+    Cell west;
 
-    std::vector<Cell> tiles{northTile, eastTile, southTile, westTile};
+    std::vector<Cell> tiles{north, east, south, west};
 };
 
 }

@@ -187,8 +187,8 @@ Cell& Level::getCellType(int col, int row)
 
 bool Level::isLegalMove(Cell cell)
 {
-    std::vector<Cell> legalTiles = Level::LEGAL_TILES;
-    return find (legalTiles.begin(), legalTiles.end(), Level::getCellType(cell.col, cell.row)) != legalTiles.end();
+    //std::vector<Cell> legalTiles = Level::LEGAL_TILES;
+    return find (LEGAL_TILES.begin(), LEGAL_TILES.end(), Level::getCellType(cell.col, cell.row)) != LEGAL_TILES.end();
 }
 
 bool Level::isGhostHouseDoor(const Cell cell)
@@ -217,13 +217,12 @@ int Level::getCellValue(Cell cell)
 
 AdjacentTile Level::getAdjacentTiles(int centerX, int centerY, Direction direction)
 {
-    const Cell west{centerX - Constants::TILE_SIZE, centerY};
-    const Cell east{centerX + Constants::TILE_SIZE, centerY};
-    const Cell north{centerX, centerY - Constants::TILE_SIZE};
-    const Cell south{centerX, centerY + Constants::TILE_SIZE};
+    const Cell west{centerX - (Constants::TILE_SIZE / 2) - 1, centerY};
+    const Cell east{centerX + (Constants::TILE_SIZE / 2), centerY};
+    const Cell north{centerX, centerY - (Constants::TILE_SIZE / 2) - 1};
+    const Cell south{centerX, centerY + (Constants::TILE_SIZE / 2)};
     Cell nextCell{0, 0};
     Cell prevCell{0, 0};
-
     
     if (direction == Direction::LEFT)
     {
@@ -244,6 +243,11 @@ AdjacentTile Level::getAdjacentTiles(int centerX, int centerY, Direction directi
     {
         nextCell = south;
         prevCell = north;
+    }
+    else
+    {
+        nextCell = west;
+        prevCell = east;
     }
 
     return {nextCell, prevCell, north, east, south, west};
