@@ -78,7 +78,7 @@ void Board::draw()
     if (duration.count() > 1000)
     {
         updatePacman();
-        //updateGhosts();
+        updateGhosts();
         count++;
     }
 
@@ -239,6 +239,7 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
     Direction direction = ghost->getDirection();
     AdjacentTile adjacentTile = Level::getAdjacentTiles(x, y, direction);
     
+
     Direction ghostDirection = ghost->getDirection();
     if (ghost->isHome())
     {
@@ -249,25 +250,17 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
     int directionIndex = 1;
     Cell prevCell = adjacentTile.prev;
     std::vector<Direction> legalDirections;
+    //printCells(adjacentTile, ghost);
+
     for (it; it != adjacentTile.tiles.end(); ++it)
     {
         Cell cell = *it;
-        Cell cellType = Level::getCellType(cell.col, cell.row);
-        //printf("cell (%2d, %2d) cellType: (%2d, %2d) legal move? %d prev cell? %d\n", cell.col, cell.row, cellType.col, cellType.row,
-        //        Level::isLegalMove(cell), (cell == prevCell));
-        /*
-        if (typeid(*ghost) == typeid(Pinky))
-        {
-            printf("cell (%2d, %2d) cellType (%2d, %2d) door? %d direction? %d\n", cell.col, cell.row, 
-                    cellType.col, cellType.row, Level::isGhostHouseDoor(cell), ghostDirection);
-        }
-        */
-        if (Level::isGhostHouseDoor(cell) && ghostDirection == Direction::UP)
+        if (Level::isGhostHouseDoor(convertToGridSpace(cell)) && ghostDirection == Direction::UP)
         {
             legalDirections.push_back((Direction)directionIndex);
             break;
         }
-        if (Level::isLegalMove(cell) && cell != prevCell)
+        if (Level::isLegalMove(convertToGridSpace(cell)) && cell != prevCell)
         {
             //printf("Adding direction: %d\n", directionIndex);
             legalDirections.push_back((Direction)directionIndex);
@@ -301,9 +294,16 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
     return true;
 }
 
+Cell Board::convertToGridSpace(const Cell& cell)
+{
+    return Cell{cell.col / Constants::TILE_SIZE, (cell.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE};
+
+}
+
 void Board::printCells(AdjacentTile adjacentTile, std::shared_ptr<Character> character)
 {
-    if (typeid(*character) == typeid(Pacman))
+    //if (typeid(*character) == typeid(Pacman))
+    if (typeid(*character) == typeid(Blinky))
     {
         Cell northCT = Level::getCellType(adjacentTile.north.col / Constants::TILE_SIZE, (adjacentTile.north.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE);
         Cell eastCT = Level::getCellType(adjacentTile.east.col / Constants::TILE_SIZE, (adjacentTile.east.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE);

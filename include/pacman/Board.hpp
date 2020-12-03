@@ -61,7 +61,8 @@ private:
     void drawScore();
     void drawLives();
     void drawFruits();
-    
+
+    Cell convertToGridSpace(const Cell& cell);
     void printCells(AdjacentTile adjacentTile, std::shared_ptr<Character> character);
 
 };
