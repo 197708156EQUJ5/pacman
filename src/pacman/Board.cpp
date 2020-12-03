@@ -78,7 +78,7 @@ void Board::draw()
     if (duration.count() > 1000)
     {
         updatePacman();
-        updateGhosts();
+        //updateGhosts();
         count++;
     }
 
@@ -183,7 +183,7 @@ bool Board::canMovePacman()
     int y = pacman->getY();
     Direction direction = pacman->getDirection();
     
-    //printCells(Level::getAdjacentTiles(x, y, direction), pacman);
+    printCells(Level::getAdjacentTiles(x, y, direction), pacman);
     
     Cell next = Level::getAdjacentTiles(x, y, direction).next;
     return Level::isLegalMove(Cell{next.col / Constants::TILE_SIZE, 
@@ -302,13 +302,14 @@ Cell Board::convertToGridSpace(const Cell& cell)
 
 void Board::printCells(AdjacentTile adjacentTile, std::shared_ptr<Character> character)
 {
-    //if (typeid(*character) == typeid(Pacman))
-    if (typeid(*character) == typeid(Blinky))
+    if (typeid(*character) == typeid(Pacman))
+    //if (typeid(*character) == typeid(Blinky))
     {
         Cell northCT = Level::getCellType(adjacentTile.north.col / Constants::TILE_SIZE, (adjacentTile.north.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE);
         Cell eastCT = Level::getCellType(adjacentTile.east.col / Constants::TILE_SIZE, (adjacentTile.east.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE);
         Cell southCT = Level::getCellType(adjacentTile.south.col / Constants::TILE_SIZE, (adjacentTile.south.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE);
         Cell westCT = Level::getCellType(adjacentTile.west.col / Constants::TILE_SIZE, (adjacentTile.west.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE);
+        /*
         std::cout << "cr (" << std::setw(3) << (adjacentTile.north.col / Constants::TILE_SIZE) << ", " << std::setw(3) << (adjacentTile.west.row / Constants::TILE_SIZE) << ") "
             << "nx (" << std::setw(3) << (adjacentTile.next.col / Constants::TILE_SIZE) << ", " << std::setw(3) << (adjacentTile.next.row / Constants::TILE_SIZE) << ") "
             << "pv: (" << std::setw(3) << (adjacentTile.prev.col / Constants::TILE_SIZE) << ", " << std::setw(3) << (adjacentTile.prev.row / Constants::TILE_SIZE) << ":"
@@ -320,6 +321,15 @@ void Board::printCells(AdjacentTile adjacentTile, std::shared_ptr<Character> cha
             << std::setw(2) << southCT.col << ", " << std::setw(2) << southCT.row << ") "
             << "W (" << std::setw(3) << (adjacentTile.west.col / Constants::TILE_SIZE) << ", " << std::setw(3) << (adjacentTile.west.row / Constants::TILE_SIZE) << ":"
             << std::setw(2) << westCT.col << ", " << std::setw(2) << westCT.row << ") " << std::endl;
+        */
+        std::cout << "cr (" << std::setw(3) << adjacentTile.north.col << ", " << std::setw(3) << adjacentTile.west.row << ") "
+            << "nx (" << std::setw(3) << adjacentTile.next.col << ", " << std::setw(3) << adjacentTile.next.row << ") "
+            << "pv: (" << std::setw(3) << adjacentTile.prev.col << ", " << std::setw(3) << adjacentTile.prev.row << ") "
+            << "N (" << std::setw(3) << adjacentTile.north.col << ", " << std::setw(3) << adjacentTile.north.row << ") "
+            << "E (" << std::setw(3) << adjacentTile.east.col << ", " << std::setw(3) << adjacentTile.east.row << ") "
+            << "S (" << std::setw(3) << adjacentTile.south.col << ", " << std::setw(3) << adjacentTile.south.row << ") "
+            << "W (" << std::setw(3) << adjacentTile.west.col << ", " << std::setw(3) << adjacentTile.west.row << ") "
+            << std::endl;
     }
 }
 
