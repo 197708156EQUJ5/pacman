@@ -237,11 +237,10 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
 {
     int x = ghost->getX();
     int y = ghost->getY();
-    Direction direction = ghost->getDirection();
-
-    AdjacentTile adjacentTile = Level::getAdjacentTiles(x, y, direction);
 
     Direction ghostDirection = ghost->getDirection();
+    AdjacentTile adjacentTile = Level::getAdjacentTiles(x, y, ghostDirection);
+
     if (ghost->isHome())
     {
         ghost->changeDirection(pacman::getOpposite(ghostDirection));
@@ -260,7 +259,7 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
         Cell cell = *it;
         if (Level::isGhostHouseDoor(convertToGridSpace(cell)) && ghostDirection == Direction::UP)
         {
-            printf("isGhostHouseDoor && UP\n");
+            //printf("isGhostHouseDoor && UP\n");
             legalDirections.push_back((Direction)directionIndex);
             break;
         }
@@ -282,21 +281,24 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
     {
         newDirection = (Direction)(legalDirections.at(std::rand() % legalDirections.size()));
     }
-    if (typeid(*ghost) == typeid(Blinky))
-    {
-        ss << "} size: " << legalDirections.size();
-        std::cout << ss.str() << std::endl;
-        printf("new direction: %d\n", newDirection);
-    }
     
-    bool onTrackX = newDirection == Direction::UP || newDirection == Direction::DOWN && (x + 4 % 8 == 0);
-    bool onTrackY = newDirection == Direction::LEFT || newDirection == Direction::RIGHT && (y + 4 % 8 == 0);
+    bool onTrackX = (ghostDirection == Direction::UP || ghostDirection == Direction::DOWN) && ((y + 4) % 8 == 0);
+    bool onTrackY = (ghostDirection == Direction::LEFT || ghostDirection == Direction::RIGHT) && ((x + 4) % 8 == 0);
 
-    if (onTrackX && onTrackY)
+    if (onTrackX || onTrackY)
     {
         ghost->changeDirection(newDirection);
     }
-    //printf("ghost direction: %d\n", ghost->getDirection());
+    if (typeid(*ghost) == typeid(Pinky))
+    {
+        ss << "} COUNT: " << legalDirections.size();
+        ss << " x: " << x << " U/D? " << (ghostDirection == Direction::UP || ghostDirection == Direction::DOWN) << " % 8 == 0? " << (((y + 4) % 8) == 0);
+        ss << " y: " << y << " L/R? " << (ghostDirection == Direction::LEFT || ghostDirection == Direction::RIGHT) << " % 8 == 0? " << (((x + 4) % 8) == 0);
+        ss << " direction: [" << (int)ghostDirection << ":" << (int)newDirection << "]";
+        ss << " onTrack X? " << std::boolalpha << onTrackX << " Y? " << std::boolalpha << onTrackY;
+        std::cout << ss.str() << std::endl;
+    }
+
     return true;
 }
 
