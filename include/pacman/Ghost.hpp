@@ -18,6 +18,7 @@ public:
     void move();
     void changeDirection(Direction direction);
     bool isHome();
+    bool setHome(bool isHome = false);
     void resetPelletCounter();
     void increasePelletCounter();
     void setPelletCounterActive();

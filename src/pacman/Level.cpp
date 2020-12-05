@@ -8,9 +8,11 @@
 namespace pacman
 {
 
+const Cell GH_DOWN_EMPTY_TILE = Cell{31, 5};
+const Cell GH_UP_EMPTY_TILE = Cell{29, 5};
 const std::vector<Cell> Level::LEGAL_TILES(
 {
-    Cell{17, 0}, Cell{21, 0}, Cell{30, 5}
+    Cell{17, 0}, Cell{21, 0}, Cell{30, 5}, {31, 5}, {29, 5}
 });
 
 const Cell Level::GHOST_HOUSE_DOOR = Cell{15, 1};
@@ -84,8 +86,8 @@ std::vector<Cell> Level::LEVEL_1(
     Cell{17, 0}, Cell{18, 4}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, 
     // Row 14
     Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, Cell{30, 3}, Cell{17, 0},
-    Cell{25, 5}, Cell{24, 5}, Cell{30, 5}, Cell{18, 4}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5},
-    Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{19, 4}, Cell{30, 5}, Cell{25, 5}, Cell{24, 5},
+    Cell{25, 5}, Cell{24, 5}, Cell{30, 5}, Cell{18, 4}, Cell{31, 5}, Cell{31, 5}, Cell{31, 5},
+    Cell{31, 5}, Cell{31, 5}, Cell{31, 5}, Cell{19, 4}, Cell{30, 5}, Cell{25, 5}, Cell{24, 5},
     Cell{17, 0}, Cell{31, 3}, Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, Cell{26, 4}, 
     // Row 15 Inky, Pinky, and Clyde's start row
     Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{17, 0},
@@ -94,8 +96,8 @@ std::vector<Cell> Level::LEVEL_1(
     Cell{17, 0}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5},
     // Row 16
     Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 3}, Cell{17, 0},
-    Cell{23, 5}, Cell{22, 5}, Cell{30, 5}, Cell{18, 4}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5},
-    Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{19, 4}, Cell{30, 5}, Cell{23, 5}, Cell{22, 5},
+    Cell{23, 5}, Cell{22, 5}, Cell{30, 5}, Cell{18, 4}, Cell{29, 5}, Cell{29, 5}, Cell{29, 5},
+    Cell{29, 5}, Cell{29, 5}, Cell{29, 5}, Cell{19, 4}, Cell{30, 5}, Cell{23, 5}, Cell{22, 5},
     Cell{17, 0}, Cell{29, 3}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, Cell{28, 4}, 
     // Row 17 Ghost House Bottom
     Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{19, 4}, Cell{17, 0}, 

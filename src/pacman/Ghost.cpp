@@ -60,4 +60,9 @@ bool Ghost::isHome()
     return this->isGhostHome;
 }
 
+bool Ghost::setHome(bool isHome)
+{
+    this->isGhostHome = isHome;
+}
+
 }

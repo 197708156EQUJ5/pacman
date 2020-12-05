@@ -2,6 +2,7 @@
 
 #include "pacman/Constants.hpp"
 
+#include <algorithm>
 #include <typeinfo>
 #include <cstdlib>
 #include <iomanip>
@@ -241,40 +242,54 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
     Direction ghostDirection = ghost->getDirection();
     AdjacentTile adjacentTile = Level::getAdjacentTiles(x, y, ghostDirection);
 
-    if (ghost->isHome())
-    {
-        ghost->changeDirection(pacman::getOpposite(ghostDirection));
-        return true;
-    }
+    std::stringstream ss;
+    ss << "Legal direction: {";
     std::vector<Cell>::iterator it = adjacentTile.tiles.begin();
     int directionIndex = 1;
     Cell prevCell = adjacentTile.prev;
-    std::vector<Direction> legalDirections;
+    std::vector<int> legalDirections;
     printCells(adjacentTile, ghost);
     
-    std::stringstream ss;
-    ss << "Legal direction: {";
     for (it; it != adjacentTile.tiles.end(); ++it)
     {
         Cell cell = *it;
         if (Level::isGhostHouseDoor(convertToGridSpace(cell)) && ghostDirection == Direction::UP)
         {
-            //printf("isGhostHouseDoor && UP\n");
-            legalDirections.push_back((Direction)directionIndex);
+            ss << " isGhostHouseDoor && UP ";
+            legalDirections.push_back(directionIndex);
+            ghost->setHome();
             break;
         }
         if (Level::isLegalMove(convertToGridSpace(cell)) && cell != prevCell)
         {
             ss << directionIndex << " ";
-            legalDirections.push_back((Direction)directionIndex);
+            legalDirections.push_back(directionIndex);
         }
         directionIndex++;
+    }
+    std::vector<int>::iterator itDirection;
+    if (ghost->isHome())
+    {
+        itDirection = find(legalDirections.begin(), legalDirections.end(), (int)ghostDirection);
+        if (typeid(*ghost) == typeid(Pinky))
+        {
+            ss << "} COUNT: " << legalDirections.size();
+            ss << " direction: [" << (int)ghostDirection << "]";
+            std::cout << ss.str() << std::endl;
+        }
+        if (itDirection != legalDirections.end())
+        {
+            ghost->changeDirection(ghostDirection);
+            return true;
+        }
+        ghost->changeDirection(pacman::getOpposite(ghostDirection));
+        return true;
     }
 
     Direction newDirection = Direction::NONE;
     if (legalDirections.size() == 1)
     {
-        newDirection = legalDirections.at(0);
+        newDirection = (Direction)legalDirections.at(0);
     }
 
     if (legalDirections.size() > 1)
@@ -292,8 +307,8 @@ bool Board::canMoveGhost(std::shared_ptr<Ghost> ghost)
     if (typeid(*ghost) == typeid(Pinky))
     {
         ss << "} COUNT: " << legalDirections.size();
-        ss << " x: " << x << " U/D? " << (ghostDirection == Direction::UP || ghostDirection == Direction::DOWN) << " % 8 == 0? " << (((y + 4) % 8) == 0);
-        ss << " y: " << y << " L/R? " << (ghostDirection == Direction::LEFT || ghostDirection == Direction::RIGHT) << " % 8 == 0? " << (((x + 4) % 8) == 0);
+        //ss << " x: " << x << " U/D? " << (ghostDirection == Direction::UP || ghostDirection == Direction::DOWN) << " % 8 == 0? " << (((y + 4) % 8) == 0);
+        //ss << " y: " << y << " L/R? " << (ghostDirection == Direction::LEFT || ghostDirection == Direction::RIGHT) << " % 8 == 0? " << (((x + 4) % 8) == 0);
         ss << " direction: [" << (int)ghostDirection << ":" << (int)newDirection << "]";
         ss << " onTrack X? " << std::boolalpha << onTrackX << " Y? " << std::boolalpha << onTrackY;
         std::cout << ss.str() << std::endl;
@@ -311,7 +326,7 @@ Cell Board::convertToGridSpace(const Cell& cell)
 void Board::printCells(AdjacentTile adjacentTile, std::shared_ptr<Character> character)
 {
     //if (typeid(*character) == typeid(Pacman))
-    if (typeid(*character) == typeid(Blinky))
+    if (typeid(*character) == typeid(Pinky))
     {
         Cell northCT = Level::getCellType(adjacentTile.north.col / Constants::TILE_SIZE, (adjacentTile.north.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE);
         Cell eastCT = Level::getCellType(adjacentTile.east.col / Constants::TILE_SIZE, (adjacentTile.east.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE);
