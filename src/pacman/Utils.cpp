@@ -1,5 +1,7 @@
 #include "pacman/Utils.hpp"
 
+#include "pacman/Constants.hpp"
+
 namespace pacman
 {
     
@@ -36,6 +38,11 @@ Direction getOpposite(Direction direction)
     {
         return Direction::UP;
     }
+}
+    
+Cell convertToGridSpace(const Cell& cell)
+{
+    return Cell{cell.col / Constants::TILE_SIZE, (cell.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE};
 }
 
 }

@@ -2,6 +2,7 @@
 
 #include "pacman/Constants.hpp"
 #include "pacman/Direction.hpp"
+#include "pacman/Level.hpp"
 
 #include <cstdlib>
 #include <sstream>
@@ -201,7 +202,7 @@ void Board::updatePacman()
     if (this->characterManager->canMovePacman())
     {
         pacman->move();
-        //score += Level::getCellValue(getCharacterCenter(pacman));
+        score += Level::getCellValue(pacman::convertToGridSpace(Cell{pacman->getX(), pacman->getY()}));
     }
     pacman->changeDirection(userDirection);
 }

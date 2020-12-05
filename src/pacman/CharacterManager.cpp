@@ -126,12 +126,6 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
     return true;
 }
 
-Cell CharacterManager::convertToGridSpace(const Cell& cell)
-{
-    return Cell{cell.col / Constants::TILE_SIZE, (cell.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE};
-
-}
-
 void CharacterManager::printCells(AdjacentTile adjacentTile, std::shared_ptr<Character> character)
 {
     //if (typeid(*character) == typeid(Pacman))

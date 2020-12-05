@@ -35,7 +35,6 @@ private:
     std::shared_ptr<Ghost> inky;
     std::shared_ptr<Ghost> clyde;
 
-    Cell convertToGridSpace(const Cell& cell);
     void printCells(AdjacentTile adjacentTile, std::shared_ptr<Character> character);
 
 };
