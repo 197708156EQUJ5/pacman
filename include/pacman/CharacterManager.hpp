@@ -36,7 +36,6 @@ private:
     std::shared_ptr<Ghost> clyde;
 
     std::vector<int> findLegalDirections(AdjacentTile adjacentTile, std::shared_ptr<Ghost> ghost);
-    void printCells(AdjacentTile adjacentTile, std::shared_ptr<Character> character);
 
 };
 

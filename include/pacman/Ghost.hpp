@@ -40,6 +40,7 @@ public:
     bool hasTileChanged();
     
     Direction peekNextDirection();
+    std::queue<Direction> getQueue();
 
 protected:
     

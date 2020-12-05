@@ -47,10 +47,13 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
     int x = ghost->getX();
     int y = ghost->getY();
     Direction ghostDirection = ghost->getDirection();
+    /*
     if (typeid(*ghost) == typeid(Blinky))
     {
         printf("Blinky x, y: (%3d, %3d) direction: %d next: %d\n", x, y, (int)ghostDirection, (int)ghost->peekNextDirection());
     }
+    */
+    Util::displayGhost<Blinky>(ghost);
     Direction peekDirection = ghost->peekNextDirection();
     AdjacentTile adjacentTile;
     if (peekDirection == Direction::NONE)
@@ -62,15 +65,7 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
     {
         adjacentTile = Util::getAdjacentTiles(x, y, peekDirection);
     }
-    if (typeid(*ghost) == typeid(Blinky))
-    {
-        printf("Blinky adj: ");
-        for(Cell adj : adjacentTile.tiles)
-        {
-            printf("(%3d, %3d)", adj.col, adj.row);
-        }
-        printf("\n");
-    }
+    Util::displayTiles<Blinky>(adjacentTile, ghost);
     ghost->setCurrentTile(Util::getCurrentCell(x, y));
 
     std::vector<int> legalDirections = findLegalDirections(adjacentTile, ghost);
@@ -158,27 +153,6 @@ std::vector<int> CharacterManager::findLegalDirections(AdjacentTile adjacentTile
     
     for (Cell cell : adjacentTile.tiles)
     {
-        if (typeid(*ghost) == typeid(Blinky))
-        {
-            Cell cell1 = Util::getCenter(cell.col, cell.row);
-            Cell current = ghost->getCurrentTile();
-            /*
-            Cell cell1Grid = Util::convertToGrid(cell1);
-            Cell cell2 = ghost->getCurrentTile();
-            Cell cellType = Level::getCellType(Util::convertToGrid(cell));
-            Cell cellDoor = Level::GHOST_HOUSE_DOOR;
-            */
-            //printf("cell1 (%3d, %3d:%3d, %3d {%2d, %2d}) cell2 (%3d, %3d) curr (%3d, %3d) DOOR: {%2d, %2d}\n", 
-            printf("cell (%3d, %3d) curr (%3d, %3d)\n", 
-                    cell1.col, cell1.row, 
-                    current.col, current.row);
-            /*
-                    cell1Grid.col, cell1Grid.row, 
-                    cellType.col, cellType.row, 
-                    cell2.col, cell2.row,
-                    cellDoor.col, cellDoor.row);
-            */
-        }
         if ((Level::isLegalMove(Util::convertToGrid(cell)) ||
                 (ghost->isExiting() && Level::getCellType(Util::convertToGrid(cell)) == Level::GHOST_HOUSE_DOOR)) &&
                 (Util::getCenter(cell) != ghost->getCurrentTile()))
@@ -189,39 +163,6 @@ std::vector<int> CharacterManager::findLegalDirections(AdjacentTile adjacentTile
     }
 
     return legalDirections;
-}
-
-void CharacterManager::printCells(AdjacentTile adjacentTile, std::shared_ptr<Character> character)
-{
-    //if (typeid(*character) == typeid(Pacman))
-    if (typeid(*character) == typeid(Pinky))
-    {
-        Cell northCT = Level::getCellType(adjacentTile.north.col / Constants::TILE_SIZE, (adjacentTile.north.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE);
-        Cell eastCT = Level::getCellType(adjacentTile.east.col / Constants::TILE_SIZE, (adjacentTile.east.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE);
-        Cell southCT = Level::getCellType(adjacentTile.south.col / Constants::TILE_SIZE, (adjacentTile.south.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE);
-        Cell westCT = Level::getCellType(adjacentTile.west.col / Constants::TILE_SIZE, (adjacentTile.west.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE);
-        /*
-        std::cout << "cr (" << std::setw(3) << (adjacentTile.north.col / Constants::TILE_SIZE) << ", " << std::setw(3) << (adjacentTile.west.row / Constants::TILE_SIZE) << ") "
-            << "nx (" << std::setw(3) << (adjacentTile.next.col / Constants::TILE_SIZE) << ", " << std::setw(3) << (adjacentTile.next.row / Constants::TILE_SIZE) << ") "
-            << "pv (" << std::setw(3) << (adjacentTile.prev.col / Constants::TILE_SIZE) << ", " << std::setw(3) << (adjacentTile.prev.row / Constants::TILE_SIZE) << ") "
-            << "N (" << std::setw(3) << (adjacentTile.north.col / Constants::TILE_SIZE) << ", " << std::setw(3) << (adjacentTile.north.row / Constants::TILE_SIZE) << ":"
-            << std::setw(2) << northCT.col << ", " << std::setw(2) << northCT.row << ") "
-            << "E (" << std::setw(3) << (adjacentTile.east.col / Constants::TILE_SIZE) << ", " << std::setw(3) << (adjacentTile.east.row / Constants::TILE_SIZE) << ":"
-            << std::setw(2) << eastCT.col << ", " << std::setw(2) << eastCT.row << ") "
-            << "S (" << std::setw(3) << (adjacentTile.south.col / Constants::TILE_SIZE) << ", " << std::setw(3) << (adjacentTile.south.row / Constants::TILE_SIZE) << ":"
-            << std::setw(2) << southCT.col << ", " << std::setw(2) << southCT.row << ") "
-            << "W (" << std::setw(3) << (adjacentTile.west.col / Constants::TILE_SIZE) << ", " << std::setw(3) << (adjacentTile.west.row / Constants::TILE_SIZE) << ":"
-            << std::setw(2) << westCT.col << ", " << std::setw(2) << westCT.row << ") " << std::endl;
-        */
-        std::cout << "cr (" << std::setw(3) << adjacentTile.north.col << ", " << std::setw(3) << adjacentTile.west.row << ") "
-            //<< "nx (" << std::setw(3) << adjacentTile.next.col << ", " << std::setw(3) << adjacentTile.next.row << ") "
-            //<< "pv: (" << std::setw(3) << adjacentTile.prev.col << ", " << std::setw(3) << adjacentTile.prev.row << ") "
-            << "N (" << std::setw(3) << adjacentTile.north.col << ", " << std::setw(3) << adjacentTile.north.row << ") "
-            << "E (" << std::setw(3) << adjacentTile.east.col << ", " << std::setw(3) << adjacentTile.east.row << ") "
-            << "S (" << std::setw(3) << adjacentTile.south.col << ", " << std::setw(3) << adjacentTile.south.row << ") "
-            << "W (" << std::setw(3) << adjacentTile.west.col << ", " << std::setw(3) << adjacentTile.west.row << ") "
-            << std::endl;
-    }
 }
 
 }

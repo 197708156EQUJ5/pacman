@@ -106,4 +106,9 @@ Cell Ghost::getCurrentTile()
     return this->currentTile;
 }
 
+std::queue<Direction> Ghost::getQueue()
+{
+    return this->directionQueue;
+}
+
 }
