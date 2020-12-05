@@ -1,7 +1,6 @@
 #pragma once
 
 #include "pacman/AdjacentTile.hpp"
-#include "pacman/Direction.hpp"
 #include "pacman/CharacterManager.hpp"
 #include "pacman/Level.hpp"
 #include "pacman/SpriteSheet.hpp"
@@ -34,8 +33,8 @@ private:
     std::vector<Cell> maze;
     std::shared_ptr<Pacman> pacman;
     std::vector<std::shared_ptr<Ghost>> ghosts;
-
     Direction userDirection;
+
     int score;
     int lives;
     int level;
@@ -50,20 +49,16 @@ private:
     void drawText();
     void drawMaze();
 
-    void drawPacman();
-    void updatePacman();
-    bool canMovePacman();
-    void drawGhosts();
-    void updateGhosts();
-    bool canMoveGhost(std::shared_ptr<Ghost> ghost);
     void drawCharacter(std::shared_ptr<Character> character);
+    void drawPacman();
+    void drawGhosts();
 
     void drawScore();
     void drawLives();
     void drawFruits();
-
-    Cell convertToGridSpace(const Cell& cell);
-    void printCells(AdjacentTile adjacentTile, std::shared_ptr<Character> character);
+    
+    void updatePacman();
+    void updateGhosts();
 
 };
 

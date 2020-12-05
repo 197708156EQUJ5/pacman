@@ -1,10 +1,12 @@
 #pragma once
 
-#include "pacman/Pinky.hpp"
-#include "pacman/Inky.hpp"
+#include "pacman/AdjacentTile.hpp"
 #include "pacman/Blinky.hpp"
+#include "pacman/Cell.hpp"
 #include "pacman/Clyde.hpp"
+#include "pacman/Inky.hpp"
 #include "pacman/Pacman.hpp"
+#include "pacman/Pinky.hpp"
 
 #include <memory>
 #include <vector>
@@ -22,6 +24,8 @@ public:
     void initCharacters();
     std::shared_ptr<Pacman> getPacman();
     std::vector<std::shared_ptr<Ghost>> getGhosts();
+    bool canMovePacman();
+    bool canMoveGhost(std::shared_ptr<Ghost> ghost);
 
 private:
 
@@ -30,6 +34,9 @@ private:
     std::shared_ptr<Ghost> pinky;
     std::shared_ptr<Ghost> inky;
     std::shared_ptr<Ghost> clyde;
+
+    Cell convertToGridSpace(const Cell& cell);
+    void printCells(AdjacentTile adjacentTile, std::shared_ptr<Character> character);
 
 };
 
