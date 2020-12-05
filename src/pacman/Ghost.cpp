@@ -10,6 +10,7 @@ Ghost::Ghost(int x, int y, Direction direction, bool isHome, bool isExiting, boo
     pelletCounter(0),
     isCounterActive(isCounterActive)
 {
+    this->directionQueue.push(Direction::NONE);
 }
 
 void Ghost::move()

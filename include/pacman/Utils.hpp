@@ -18,9 +18,9 @@ Direction getOpposite(Direction direction);
 
 Cell convertToGrid(const Cell& cell);
 
-Cell getCenter(const Cell cell);
+Cell getCenter(Cell cell);
 
-Cell getCenter(const int x, const int y);
+Cell getCenter(int x, const int y);
 
 AdjacentTile getAdjacentTiles(int x, int y, Direction direction);
 

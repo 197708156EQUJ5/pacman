@@ -48,12 +48,12 @@ Cell convertToGrid(const Cell& cell)
     return Cell{cell.col / Constants::TILE_SIZE, (cell.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE};
 }
 
-Cell getCenter(const Cell cell)
+Cell getCenter(Cell cell)
 {
     return getCenter(cell.col, cell.row);
 }
 
-Cell getCenter(const int x, const int y)
+Cell getCenter(int x, const int y)
 {
     return Cell{((x / Constants::TILE_SIZE) * Constants::TILE_SIZE) + 4, ((y / Constants::TILE_SIZE) * Constants::TILE_SIZE) + 4};
 }
