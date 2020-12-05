@@ -5,7 +5,7 @@ namespace pacman
 
 SpriteSheet::SpriteSheet(char const *path, int col, int row)
 {
-    spriteSheetSurface = load_bmp(path);
+    spriteSheetSurface = Util::load_bmp(path);
 
     clip.w = spriteSheetSurface->w / col;
     clip.h = spriteSheetSurface->h / row;

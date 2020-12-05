@@ -5,6 +5,9 @@
 namespace pacman
 {
     
+namespace Util
+{
+
 SDL_Surface *load_bmp(char const *path)
 {
     SDL_Surface *optimized_version = nullptr;
@@ -45,4 +48,10 @@ Cell convertToGridSpace(const Cell& cell)
     return Cell{cell.col / Constants::TILE_SIZE, (cell.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE};
 }
 
+Cell getCenter(const int x, const int y)
+{
+    return Cell{((x / Constants::TILE_SIZE) * Constants::TILE_SIZE) + 4, ((y / Constants::TILE_SIZE) * Constants::TILE_SIZE) + 4};
+}
+
+}
 }

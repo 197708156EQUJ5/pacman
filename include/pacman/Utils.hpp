@@ -8,10 +8,16 @@
 namespace pacman
 {
 
+namespace Util
+{
+
 SDL_Surface *load_bmp(char const *path);
 
 Direction getOpposite(Direction direction);
 
 Cell convertToGridSpace(const Cell& cell);
 
+Cell getCenter(const int x, const int y);
+
+}
 }

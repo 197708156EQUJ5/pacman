@@ -35,12 +35,11 @@ bool CharacterManager::canMovePacman()
     int x = pacman->getX();
     int y = pacman->getY();
     Direction direction = pacman->getDirection();
+    AdjacentTile adjacentTile = Level::getAdjacentTiles(x, y, direction);
     
-    printCells(Level::getAdjacentTiles(x, y, direction), pacman);
-    
-    Cell next = Level::getAdjacentTiles(x, y, direction).next;
-    return Level::isLegalMove(Cell{next.col / Constants::TILE_SIZE, 
-            (next.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE});
+    //return Level::isLegalMove(Cell{next.col / Constants::TILE_SIZE, 
+    //        (next.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE});
+    return false;
 }
 
 bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
@@ -66,7 +65,7 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
             ghost->changeDirection(ghostDirection);
             return true;
         }
-        ghost->changeDirection(pacman::getOpposite(ghostDirection));
+        ghost->changeDirection(Util::getOpposite(ghostDirection));
         return true;
     }
     Direction newDirection = Direction::NONE;
@@ -107,27 +106,15 @@ std::vector<int> CharacterManager::findLegalDirections(std::shared_ptr<Ghost> gh
     Direction ghostDirection = ghost->getDirection();
     AdjacentTile adjacentTile = Level::getAdjacentTiles(x, y, ghostDirection);
 
-    //std::stringstream ss;
-    //ss << "Legal direction: {";
     std::vector<Cell>::iterator it = adjacentTile.tiles.begin();
     int directionIndex = 1;
-    Cell prevCell = adjacentTile.prev;
     std::vector<int> legalDirections;
-    //printCells(adjacentTile, ghost);
     
     for (it; it != adjacentTile.tiles.end(); ++it)
     {
         Cell cell = *it;
-        if (Level::isGhostHouseDoor(convertToGridSpace(cell)) && ghostDirection == Direction::UP)
+        if (Level::isLegalMove(Util::convertToGridSpace(cell)))
         {
-            //ss << " isGhostHouseDoor && UP ";
-            legalDirections.push_back(directionIndex);
-            ghost->setHome();
-            break;
-        }
-        if (Level::isLegalMove(convertToGridSpace(cell)) && cell != prevCell)
-        {
-            //ss << directionIndex << " ";
             legalDirections.push_back(directionIndex);
         }
         directionIndex++;
@@ -159,8 +146,8 @@ void CharacterManager::printCells(AdjacentTile adjacentTile, std::shared_ptr<Cha
             << std::setw(2) << westCT.col << ", " << std::setw(2) << westCT.row << ") " << std::endl;
         */
         std::cout << "cr (" << std::setw(3) << adjacentTile.north.col << ", " << std::setw(3) << adjacentTile.west.row << ") "
-            << "nx (" << std::setw(3) << adjacentTile.next.col << ", " << std::setw(3) << adjacentTile.next.row << ") "
-            << "pv: (" << std::setw(3) << adjacentTile.prev.col << ", " << std::setw(3) << adjacentTile.prev.row << ") "
+            //<< "nx (" << std::setw(3) << adjacentTile.next.col << ", " << std::setw(3) << adjacentTile.next.row << ") "
+            //<< "pv: (" << std::setw(3) << adjacentTile.prev.col << ", " << std::setw(3) << adjacentTile.prev.row << ") "
             << "N (" << std::setw(3) << adjacentTile.north.col << ", " << std::setw(3) << adjacentTile.north.row << ") "
             << "E (" << std::setw(3) << adjacentTile.east.col << ", " << std::setw(3) << adjacentTile.east.row << ") "
             << "S (" << std::setw(3) << adjacentTile.south.col << ", " << std::setw(3) << adjacentTile.south.row << ") "

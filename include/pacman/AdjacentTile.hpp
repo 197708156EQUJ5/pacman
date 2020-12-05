@@ -9,8 +9,6 @@ namespace pacman
 
 struct AdjacentTile
 {
-    Cell next;
-    Cell prev;
     Cell north;
     Cell east;
     Cell south;

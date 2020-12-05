@@ -1,6 +1,7 @@
 #include "pacman/Level.hpp"
 
 #include "pacman/Constants.hpp"
+#include "pacman/Utils.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -8,14 +9,15 @@
 namespace pacman
 {
 
-const Cell GH_DOWN_EMPTY_TILE = Cell{31, 5};
-const Cell GH_UP_EMPTY_TILE = Cell{29, 5};
+const Cell Level::GH_DOWN_EMPTY_TILE = Cell{31, 5};
+const Cell Level::GH_UP_EMPTY_TILE = Cell{29, 5};
+const Cell Level::GHOST_HOUSE_DOOR = Cell{15, 1};
+
 const std::vector<Cell> Level::LEGAL_TILES(
 {
-    Cell{17, 0}, Cell{21, 0}, Cell{30, 5}, {31, 5}, {29, 5}
+    Cell{17, 0}, Cell{21, 0}, Cell{30, 5}, GH_DOWN_EMPTY_TILE, GH_UP_EMPTY_TILE, GHOST_HOUSE_DOOR
 });
 
-const Cell Level::GHOST_HOUSE_DOOR = Cell{15, 1};
 
 std::vector<Cell> Level::LEVEL_1(
 {
@@ -189,7 +191,6 @@ Cell& Level::getCellType(int col, int row)
 
 bool Level::isLegalMove(Cell cell)
 {
-    //std::vector<Cell> legalTiles = Level::LEGAL_TILES;
     return find (LEGAL_TILES.begin(), LEGAL_TILES.end(), Level::getCellType(cell.col, cell.row)) != LEGAL_TILES.end();
 }
 
@@ -217,42 +218,34 @@ int Level::getCellValue(Cell cell)
     return 0;
 }
 
-AdjacentTile Level::getAdjacentTiles(int centerX, int centerY, Direction direction)
+AdjacentTile Level::getAdjacentTiles(int x, int y, Direction direction)
 {
-    const Cell west{centerX - (Constants::TILE_SIZE / 2) - 1, centerY};
-    const Cell east{centerX + (Constants::TILE_SIZE / 2), centerY};
-    const Cell north{centerX, centerY - (Constants::TILE_SIZE / 2) - 1};
-    const Cell south{centerX, centerY + (Constants::TILE_SIZE / 2)};
-    Cell nextCell{0, 0};
-    Cell prevCell{0, 0};
-    
     if (direction == Direction::LEFT)
     {
-        nextCell = west;
-        prevCell = east;
+        x -= Constants::TILE_SIZE;
     }
     else if (direction == Direction::RIGHT)
     {
-        nextCell = east;
-        prevCell = west;
+        x += Constants::TILE_SIZE;
     }
     else if (direction == Direction::UP)
     {
-        nextCell = north;
-        prevCell = south;
     }
     else if (direction == Direction::DOWN)
     {
-        nextCell = south;
-        prevCell = north;
+        y += Constants::TILE_SIZE;
     }
     else
     {
-        nextCell = west;
-        prevCell = east;
+        y += Constants::TILE_SIZE;
     }
 
-    return {nextCell, prevCell, north, east, south, west};
+    const Cell north{pacman::Util::getCenter(x, y - Constants::TILE_SIZE)};
+    const Cell south{pacman::Util::getCenter(x, y + Constants::TILE_SIZE)};
+    const Cell east{pacman::Util::getCenter(x + Constants::TILE_SIZE, y)};
+    const Cell west{pacman::Util::getCenter(x - Constants::TILE_SIZE, y)};
+   
+    return {north, east, south, west};
 }
 
 }
