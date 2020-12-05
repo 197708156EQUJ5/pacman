@@ -6,7 +6,7 @@ namespace pacman
 {
 
 Pinky::Pinky() :
-    Ghost(PinkyConstants::START_COL, PinkyConstants::START_ROW, Direction::UP, true, true)
+    Ghost(PinkyConstants::START_COL, PinkyConstants::START_ROW, Direction::UP, true, true, true)
 {
 }
 

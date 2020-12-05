@@ -202,7 +202,7 @@ void Board::updatePacman()
     if (this->characterManager->canMovePacman())
     {
         pacman->move();
-        score += Level::getCellValue(Util::convertToGridSpace(Cell{pacman->getX(), pacman->getY()}));
+        score += Level::getCellValue(Util::convertToGrid(Cell{pacman->getX(), pacman->getY()}));
     }
     pacman->changeDirection(userDirection);
 }

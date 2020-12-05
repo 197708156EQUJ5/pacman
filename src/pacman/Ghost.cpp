@@ -3,9 +3,10 @@
 namespace pacman
 {
 
-Ghost::Ghost(int x, int y, Direction direction, bool isHome, bool isCounterActive) : 
+Ghost::Ghost(int x, int y, Direction direction, bool isHome, bool isExiting, bool isCounterActive) : 
     Character(x, y, direction),
     isGhostHome(isHome),
+    isExitingHome(isExiting),
     pelletCounter(0),
     isCounterActive(isCounterActive)
 {
@@ -60,9 +61,48 @@ bool Ghost::isHome()
     return this->isGhostHome;
 }
 
-bool Ghost::setHome(bool isHome)
+void Ghost::setHome(bool isHome)
 {
     this->isGhostHome = isHome;
+}
+
+bool Ghost::isExiting()
+{
+    return this->isExitingHome;
+}
+
+void Ghost::addNextDirection(Direction direction)
+{
+    this->directionQueue.push(direction);
+}
+
+Direction Ghost::peekNextDirection()
+{
+    return this->directionQueue.front();
+}
+
+Direction Ghost::getNextDirection()
+{
+    Direction direction = peekNextDirection();
+    this->directionQueue.pop();
+
+    return direction;
+}
+
+void Ghost::setCurrentTile(Cell tile)
+{
+    this->previousTile = this->currentTile;
+    this->currentTile = tile;
+}
+
+bool Ghost::hasTileChanged()
+{
+    return this->previousTile != this->currentTile;
+}
+
+Cell Ghost::getCurrentTile()
+{
+    return this->currentTile;
 }
 
 }

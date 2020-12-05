@@ -15,7 +15,7 @@ const Cell Level::GHOST_HOUSE_DOOR = Cell{15, 1};
 
 const std::vector<Cell> Level::LEGAL_TILES(
 {
-    Cell{17, 0}, Cell{21, 0}, Cell{30, 5}, GH_DOWN_EMPTY_TILE, GH_UP_EMPTY_TILE, GHOST_HOUSE_DOOR
+    Cell{17, 0}, Cell{21, 0}, Cell{30, 5}, GH_DOWN_EMPTY_TILE, GH_UP_EMPTY_TILE
 });
 
 
@@ -184,19 +184,14 @@ std::vector<Cell>& Level::getLevel()
     return vec;
 }
 
+Cell& Level::getCellType(Cell cell)
+{
+    return Level::LEVEL_1.at(cell.row * Constants::COLUMN_COUNT + cell.col);
+}
+
 Cell& Level::getCellType(int col, int row)
 {
     return Level::LEVEL_1.at(row * Constants::COLUMN_COUNT + col);
-}
-
-bool Level::isLegalMove(Cell cell)
-{
-    return find (LEGAL_TILES.begin(), LEGAL_TILES.end(), Level::getCellType(cell.col, cell.row)) != LEGAL_TILES.end();
-}
-
-bool Level::isGhostHouseDoor(const Cell cell)
-{
-    return getCellType(cell.col, cell.row) == Level::GHOST_HOUSE_DOOR;
 }
 
 int Level::getCellValue(Cell cell)
@@ -206,7 +201,6 @@ int Level::getCellValue(Cell cell)
     if (cellType == Constants::PELLET && !cellType.hasVisited)
     {
         cellType.hasVisited = true;
-        //printf("CellType (%2d, %2d) visted? %d\n", cellType.col, cellType.row, cellType.hasVisited);
         return 10;
     }
     else if (cellType == Constants::ENERGIZER && !cellType.hasVisited)
@@ -218,34 +212,14 @@ int Level::getCellValue(Cell cell)
     return 0;
 }
 
-AdjacentTile Level::getAdjacentTiles(int x, int y, Direction direction)
+bool Level::isLegalMove(Cell cell)
 {
-    if (direction == Direction::LEFT)
-    {
-        x -= Constants::TILE_SIZE;
-    }
-    else if (direction == Direction::RIGHT)
-    {
-        x += Constants::TILE_SIZE;
-    }
-    else if (direction == Direction::UP)
-    {
-    }
-    else if (direction == Direction::DOWN)
-    {
-        y += Constants::TILE_SIZE;
-    }
-    else
-    {
-        y += Constants::TILE_SIZE;
-    }
+    return find (LEGAL_TILES.begin(), LEGAL_TILES.end(), Level::getCellType(cell.col, cell.row)) != LEGAL_TILES.end();
+}
 
-    const Cell north{pacman::Util::getCenter(x, y - Constants::TILE_SIZE)};
-    const Cell south{pacman::Util::getCenter(x, y + Constants::TILE_SIZE)};
-    const Cell east{pacman::Util::getCenter(x + Constants::TILE_SIZE, y)};
-    const Cell west{pacman::Util::getCenter(x - Constants::TILE_SIZE, y)};
-   
-    return {north, east, south, west};
+bool Level::isGhostHouseDoor(const Cell cell)
+{
+    return getCellType(cell.col, cell.row) == Level::GHOST_HOUSE_DOOR;
 }
 
 }

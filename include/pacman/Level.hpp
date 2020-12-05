@@ -21,12 +21,12 @@ public:
     static const Cell GH_DOWN_EMPTY_TILE;
     static const Cell GH_UP_EMPTY_TILE;
 
+    static Cell& getCellType(Cell cell);
     static Cell& getCellType(int col, int row);
+    static int getCellValue(Cell cell);
     static bool isLegalMove(Cell cell);
     static bool isGhostHouseDoor(Cell cell);
-    static int getCellValue(Cell cell);
     static std::vector<Cell>& getLevel();
-    static AdjacentTile getAdjacentTiles(int x, int y, Direction direction);
     
 };
 
