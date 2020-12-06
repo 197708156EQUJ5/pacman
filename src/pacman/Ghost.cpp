@@ -6,6 +6,8 @@ namespace pacman
 Ghost::Ghost(int x, int y, int xTarget, int yTarget, Direction direction, 
         bool isHome, bool isExiting, bool isCounterActive) : 
     Character(x, y, direction),
+    xTarget(xTarget),
+    yTarget(yTarget),
     ghostMode(GhostMode::SCATTER),
     isGhostHome(isHome),
     isExitingHome(isExiting),

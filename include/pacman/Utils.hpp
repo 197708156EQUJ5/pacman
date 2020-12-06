@@ -102,8 +102,8 @@ void displayGhost(std::shared_ptr<Ghost> ghost)
         {
             nextDirectionStr = "NONE";
         }
-        printf("========> %s (%3d, %3d) exiting? %s Direction: %s Next: %s\n", typeid(T).name(), ghost->getX(), ghost->getY(), 
-                ghost->isExiting() ? "YES" : "NO", directionStr.c_str(), nextDirectionStr.c_str());
+        printf("========> %s (%3d, %3d) exiting? %s Direction: %s Next: %s:%d \n", typeid(T).name(), ghost->getX(), ghost->getY(), 
+                ghost->isExiting() ? "YES" : "NO", directionStr.c_str(), nextDirectionStr.c_str(), peekDirection);
     }
 
 }

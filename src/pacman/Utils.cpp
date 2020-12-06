@@ -85,7 +85,7 @@ AdjacentTile getAdjacentTiles(int x, int y, Direction direction)
     const Cell east{Util::getCenter(adjacentX + Constants::TILE_SIZE, adjacentY)};
     const Cell west{Util::getCenter(adjacentX - Constants::TILE_SIZE, adjacentY)};
    
-    return {north, east, south, west};
+    return {north, west, south, east};
 }
 
 Cell getCurrentCell(int x, int y)

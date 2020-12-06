@@ -11,11 +11,12 @@ namespace pacman
 struct AdjacentTile
 {
     Cell north;
-    Cell east;
-    Cell south;
     Cell west;
+    Cell south;
+    Cell east;
 
-    std::vector<Cell> tiles{north, east, south, west};
+    //std::vector<Cell> tiles{north, east, south, west};
+    std::vector<Cell> tiles{north, west, south, east};
 
     Cell fromDirection(Direction direction)
     {
