@@ -29,8 +29,9 @@ Board::~Board()
 
 bool Board::init()
 {
-    window = SDL_CreateWindow("Pacman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
-            Constants::BOARD_WIDTH, Constants::BOARD_HEIGHT, 0);
+    //window = SDL_CreateWindow("Pacman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
+    window = SDL_CreateWindow("Pacman", 1240, 30,
+            Constants::BOARD_WIDTH, Constants::BOARD_HEIGHT, SDL_WINDOW_BORDERLESS);
 
     if (!window)
     {

@@ -72,6 +72,11 @@ bool Ghost::isExiting()
     return this->isExitingHome;
 }
 
+void Ghost::setExiting(bool isExiting)
+{
+    this->isExitingHome = isExiting;
+}
+
 void Ghost::addNextDirection(Direction direction)
 {
     this->directionQueue.push(direction);

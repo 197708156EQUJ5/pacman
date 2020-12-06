@@ -47,13 +47,20 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
     int x = ghost->getX();
     int y = ghost->getY();
     Direction ghostDirection = ghost->getDirection();
-    /*
-    if (typeid(*ghost) == typeid(Blinky))
+
+    Util::displayGhost<Pinky>(ghost);
+    if (ghost->isExiting())
     {
-        printf("Blinky x, y: (%3d, %3d) direction: %d next: %d\n", x, y, (int)ghostDirection, (int)ghost->peekNextDirection());
+        ghost->changeDirection(Direction::UP);
+        if (x == BlinkyConstants::START_COL && y == BlinkyConstants::START_ROW)
+        {
+            ghost->addNextDirection(Direction::LEFT);
+            ghost->changeDirection(Direction::LEFT);
+            ghost->setExiting();
+        }
+        return true;
     }
-    */
-    Util::displayGhost<Blinky>(ghost);
+
     Direction peekDirection = ghost->peekNextDirection();
     AdjacentTile adjacentTile;
     if (peekDirection == Direction::NONE)
@@ -65,12 +72,14 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
     {
         adjacentTile = Util::getAdjacentTiles(x, y, peekDirection);
     }
-    Util::displayTiles<Blinky>(adjacentTile, ghost);
+
+    Util::displayTiles<Pinky>(adjacentTile, ghost);
+
     ghost->setCurrentTile(Util::getCurrentCell(x, y));
 
     std::vector<int> legalDirections = findLegalDirections(adjacentTile, ghost);
 
-    if (typeid(*ghost) == typeid(Blinky))
+    if (typeid(*ghost) == typeid(Pinky))
     {
         printf("(%3d, %3d) {", x, y);
         for (int dir : legalDirections)
@@ -105,7 +114,7 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
     {
         newDirection = (Direction)legalDirections.at(0);
         ghost->addNextDirection(newDirection);
-        if (typeid(*ghost) == typeid(Blinky))
+        if (typeid(*ghost) == typeid(Pinky))
         {
             printf("legal size: %d, tileChanged adding next direction; %d\n", legalDirections.size(), newDirection);
         }
@@ -115,7 +124,7 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
     {
         newDirection = (Direction)(legalDirections.at(std::rand() % legalDirections.size()));
         ghost->addNextDirection(newDirection);
-        if (typeid(*ghost) == typeid(Blinky))
+        if (typeid(*ghost) == typeid(Pinky))
         {
             printf("legal size: %d, tileChanged adding next direction; %d\n", legalDirections.size(), newDirection);
         }
@@ -127,20 +136,11 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
     if (onTrackX || onTrackY)
     {
         Direction changedDirection = ghost->getNextDirection();
-        if (typeid(*ghost) == typeid(Blinky))
+        if (typeid(*ghost) == typeid(Pinky))
         {
             printf("changing direction; %d\n", changedDirection);
         }
         ghost->changeDirection(changedDirection);
-    }
-    if (typeid(*ghost) == typeid(Pinky))
-    {
-        //ss << "} COUNT: " << legalDirections.size();
-        //ss << " x: " << x << " U/D? " << (ghostDirection == Direction::UP || ghostDirection == Direction::DOWN) << " % 8 == 0? " << (((y + 4) % 8) == 0);
-        //ss << " y: " << y << " L/R? " << (ghostDirection == Direction::LEFT || ghostDirection == Direction::RIGHT) << " % 8 == 0? " << (((x + 4) % 8) == 0);
-        //ss << " direction: [" << (int)ghostDirection << ":" << (int)newDirection << "]";
-        //ss << " onTrack X? " << std::boolalpha << onTrackX << " Y? " << std::boolalpha << onTrackY;
-        //std::cout << ss.str() << std::endl;
     }
 
     return true;
@@ -151,15 +151,20 @@ std::vector<int> CharacterManager::findLegalDirections(AdjacentTile adjacentTile
     int directionIndex = 1;
     std::vector<int> legalDirections;
     
-    for (Cell cell : adjacentTile.tiles)
+    if (ghost->isExiting())
     {
-        if ((Level::isLegalMove(Util::convertToGrid(cell)) ||
-                (ghost->isExiting() && Level::getCellType(Util::convertToGrid(cell)) == Level::GHOST_HOUSE_DOOR)) &&
-                (Util::getCenter(cell) != ghost->getCurrentTile()))
+        legalDirections.push_back((int)Direction::UP);
+    }
+    else
+    {
+        for (Cell cell : adjacentTile.tiles)
         {
-            legalDirections.push_back(directionIndex);
+            if (Level::isLegalMove(Util::convertToGrid(cell)) && Util::getCenter(cell) != ghost->getCurrentTile())
+            {
+                legalDirections.push_back(directionIndex);
+            }
+            directionIndex++;
         }
-        directionIndex++;
     }
 
     return legalDirections;

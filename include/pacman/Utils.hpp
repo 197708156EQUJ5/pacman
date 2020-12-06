@@ -57,9 +57,10 @@ void displayGhost(std::shared_ptr<Ghost> ghost)
 {
     if (typeid(*ghost) == typeid(T))
     {
-        printf("%s **** Ghost Details ****\n", typeid(T).name());
         std::string directionStr;
+        std::string nextDirectionStr;
         Direction direction = ghost->getDirection();
+        Direction peekDirection = ghost->peekNextDirection();
         if (direction == Direction::UP)
         {
             directionStr = "UP";
@@ -76,7 +77,33 @@ void displayGhost(std::shared_ptr<Ghost> ghost)
         {
             directionStr = "RIGHT";
         }
-        printf("(%3d, %3d) Direction: %s\n", ghost->getX(), ghost->getY(), directionStr.c_str());
+        else if (direction == Direction::NONE)
+        {
+            directionStr = "NONE";
+        }
+
+        if (peekDirection == Direction::UP)
+        {
+            nextDirectionStr = "UP";
+        }
+        else if (peekDirection == Direction::DOWN)
+        {
+            nextDirectionStr = "DOWN";
+        }
+        else if (peekDirection == Direction::LEFT)
+        {
+            nextDirectionStr = "LEFT";
+        }
+        else if (peekDirection == Direction::RIGHT)
+        {
+            nextDirectionStr = "RIGHT";
+        }
+        else if (peekDirection == Direction::NONE)
+        {
+            nextDirectionStr = "NONE";
+        }
+        printf("========> %s (%3d, %3d) exiting? %s Direction: %s Next: %s\n", typeid(T).name(), ghost->getX(), ghost->getY(), 
+                ghost->isExiting() ? "YES" : "NO", directionStr.c_str(), nextDirectionStr.c_str());
     }
 
 }

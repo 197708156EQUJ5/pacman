@@ -22,6 +22,7 @@ public:
     bool isHome();
     void setHome(bool isHome = false);
     bool isExiting();
+    void setExiting(bool isExiting = false);
     void resetPelletCounter();
     void increasePelletCounter();
     void setPelletCounterActive();
