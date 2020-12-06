@@ -1,12 +1,10 @@
 #include "pacman/Pinky.hpp"
 
-#include <iostream>
-
 namespace pacman
 {
 
 Pinky::Pinky() :
-    Ghost(PinkyConstants::START_COL, PinkyConstants::START_ROW, Direction::UP, true, true, true)
+    Ghost(PinkyConstants::START_COL, PinkyConstants::START_ROW, PinkyConstants::SCATTER_COL, PinkyConstants::SCATTER_ROW, Direction::UP, true, true, true)
 {
 }
 

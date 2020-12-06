@@ -1,8 +1,10 @@
 #include "pacman/CharacterManager.hpp"
 
 #include "pacman/Level.hpp"
+#include "pacman/GhostMode.hpp"
 #include "pacman/Utils.hpp"
 
+#include <bits/stdc++.h>
 #include <algorithm>
 #include <typeinfo>
 #include <iomanip>
@@ -89,47 +91,8 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
         printf("}\n");
     }
 
-    std::vector<int>::iterator itDirection;
-    /*
-    if (ghost->isHome())
-    {
-        itDirection = find(legalDirections.begin(), legalDirections.end(), (int)ghostDirection);
-        if (typeid(*ghost) == typeid(Pinky))
-        {
-            //ss << "} COUNT: " << legalDirections.size();
-            //ss << " direction: [" << (int)ghostDirection << "]";
-            //std::cout << ss.str() << std::endl;
-        }
-        if (itDirection != legalDirections.end())
-        {
-            ghost->changeDirection(ghostDirection);
-            return true;
-        }
-        ghost->changeDirection(Util::getOpposite(ghostDirection));
-        return true;
-    }
-    */
-    Direction newDirection = Direction::NONE;
-    if (legalDirections.size() == 1 && ghost->hasTileChanged())
-    {
-        newDirection = (Direction)legalDirections.at(0);
-        ghost->addNextDirection(newDirection);
-        if (typeid(*ghost) == typeid(Pinky))
-        {
-            printf("legal size: %d, tileChanged adding next direction; %d\n", legalDirections.size(), newDirection);
-        }
-    }
+    selectNewDirection(adjacentTile, legalDirections, ghost);
 
-    if (legalDirections.size() > 1 && ghost->hasTileChanged())
-    {
-        newDirection = (Direction)(legalDirections.at(std::rand() % legalDirections.size()));
-        ghost->addNextDirection(newDirection);
-        if (typeid(*ghost) == typeid(Pinky))
-        {
-            printf("legal size: %d, tileChanged adding next direction; %d\n", legalDirections.size(), newDirection);
-        }
-    }
-    
     bool onTrackX = (ghostDirection == Direction::UP || ghostDirection == Direction::DOWN) && ((y + 4) % 8 == 0);
     bool onTrackY = (ghostDirection == Direction::LEFT || ghostDirection == Direction::RIGHT) && ((x + 4) % 8 == 0);
 
@@ -168,6 +131,66 @@ std::vector<int> CharacterManager::findLegalDirections(AdjacentTile adjacentTile
     }
 
     return legalDirections;
+}
+
+void CharacterManager::selectNewDirection(AdjacentTile adjacentTile, std::vector<int> legalDirections, std::shared_ptr<Ghost> ghost)
+{
+    Direction newDirection = Direction::NONE;
+    if (legalDirections.size() == 1 && ghost->hasTileChanged())
+    {
+        newDirection = (Direction)legalDirections.at(0);
+        ghost->addNextDirection(newDirection);
+        if (typeid(*ghost) == typeid(Pinky))
+        {
+            printf("legal size: %d, tileChanged adding next direction; %d\n", legalDirections.size(), newDirection);
+        }
+    }
+
+    if (legalDirections.size() > 1 && ghost->hasTileChanged())
+    {
+        switch (ghost->getMode())
+        {
+            case GhostMode::SCATTER:
+            {
+                if (typeid(*ghost) == typeid(Pinky))
+                {
+                    printf("SCATTER %s", typeid(*ghost).name());
+                }
+                int shorterDistance = INT_MAX;
+                for (int d : legalDirections)
+                {
+                    Cell current = adjacentTile.fromDirection((Direction)d);
+                    Cell target = ghost->getTarget();
+                    int distance = Util::distance(current.col, current.row, target.col, target.row);
+                    printf("curr (%3d, %3d) target (%3d, %3d) distance: %d ",current.col, current.row, target.col, target.row, distance);
+                    if (distance < shorterDistance)
+                    {
+                        shorterDistance = distance;
+                        newDirection = (Direction) d;
+                    }
+                }
+                if (typeid(*ghost) == typeid(Pinky))
+                {
+                    printf("next direction; %d\n", newDirection);
+                }
+            }
+            break;
+            case GhostMode::CHASE:
+            {
+            }
+            break;
+            case GhostMode::FRIGHTENED:
+            {
+                newDirection = (Direction)(legalDirections.at(std::rand() % legalDirections.size()));
+            }
+            break;
+        }
+        ghost->addNextDirection(newDirection);
+        if (typeid(*ghost) == typeid(Pinky))
+        {
+            printf("legal size: %d, tileChanged adding next direction; %d\n", legalDirections.size(), newDirection);
+        }
+    }
 }
 
 }

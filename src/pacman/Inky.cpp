@@ -1,12 +1,10 @@
 #include "pacman/Inky.hpp"
 
-#include <iostream>
-
 namespace pacman
 {
 
 Inky::Inky() :
-    Ghost(InkyConstants::START_COL, InkyConstants::START_ROW, Direction::UP, true, false, false)
+    Ghost(InkyConstants::START_COL, InkyConstants::START_ROW, InkyConstants::SCATTER_COL, InkyConstants::SCATTER_ROW, Direction::UP, true, false, false)
 {
 }
 

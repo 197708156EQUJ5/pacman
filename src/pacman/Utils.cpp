@@ -93,5 +93,10 @@ Cell getCurrentCell(int x, int y)
     return Cell{Util::getCenter(x, y)};
 }
 
+int distance(int x1, int x2, int y1, int y2) 
+{ 
+    return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2) * 1.0); 
+}
+
 }
 }

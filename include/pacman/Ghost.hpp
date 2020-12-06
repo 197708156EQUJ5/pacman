@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pacman/Character.hpp"
+#include "pacman/GhostMode.hpp"
 
 #include <queue>
 
@@ -11,7 +12,7 @@ class Ghost : public Character
 {
 public:
 
-    Ghost(int x = 0, int y = 0, Direction direction = Direction::LEFT, bool isHome = false, 
+    Ghost(int x = 0, int y = 0, int xTarget = 0, int yTarget = 0, Direction direction = Direction::LEFT, bool isHome = false, 
             bool isExiting = false, bool isCounterActive = false);
     ~Ghost() = default;
     
@@ -28,6 +29,9 @@ public:
     void setPelletCounterActive();
     void setCurrentTile(Cell tile);
     Cell getCurrentTile();
+    void setMode(GhostMode mode);
+    GhostMode getMode();
+    Cell getTarget();
 
     /// Adds direction to the queue.
     /// @param direction the direction to add to the queue.
@@ -52,6 +56,12 @@ protected:
     std::queue<Direction> directionQueue;
     Cell currentTile;
     Cell previousTile;
+    int xTarget;
+    int yTarget;
+
+private:
+    GhostMode ghostMode;
+
 };
 
 } // namespace pacman

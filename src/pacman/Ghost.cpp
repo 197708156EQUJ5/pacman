@@ -3,8 +3,10 @@
 namespace pacman
 {
 
-Ghost::Ghost(int x, int y, Direction direction, bool isHome, bool isExiting, bool isCounterActive) : 
+Ghost::Ghost(int x, int y, int xTarget, int yTarget, Direction direction, 
+        bool isHome, bool isExiting, bool isCounterActive) : 
     Character(x, y, direction),
+    ghostMode(GhostMode::SCATTER),
     isGhostHome(isHome),
     isExitingHome(isExiting),
     pelletCounter(0),
@@ -109,6 +111,21 @@ bool Ghost::hasTileChanged()
 Cell Ghost::getCurrentTile()
 {
     return this->currentTile;
+}
+
+void Ghost::setMode(GhostMode mode)
+{
+    this->ghostMode = mode;
+}
+
+GhostMode Ghost::getMode()
+{ 
+    return this->ghostMode;
+}
+
+Cell Ghost::getTarget()
+{
+    return Cell{xTarget, yTarget};
 }
 
 std::queue<Direction> Ghost::getQueue()

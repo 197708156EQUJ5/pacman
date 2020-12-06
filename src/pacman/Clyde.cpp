@@ -4,7 +4,7 @@ namespace pacman
 {
 
 Clyde::Clyde() :
-    Ghost(ClydeConstants::START_COL, ClydeConstants::START_ROW, Direction::UP, true, false, false)
+    Ghost(ClydeConstants::START_COL, ClydeConstants::START_ROW, ClydeConstants::SCATTER_COL, ClydeConstants::SCATTER_ROW, Direction::UP, true, false, false)
 {
 }
 
