@@ -108,7 +108,7 @@ void displayGhost(std::shared_ptr<Ghost> ghost)
 
 }
 
-int distance(int x1, int x2, int y1, int y2);
+float distance(int x1, int x2, int y1, int y2);
 
 }
 }

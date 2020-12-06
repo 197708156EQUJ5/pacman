@@ -157,19 +157,21 @@ void CharacterManager::selectNewDirection(AdjacentTile adjacentTile, std::vector
                 {
                     printf("SCATTER %s", typeid(*ghost).name());
                 }
-                int shorterDistance = INT_MAX;
+                float shorterDistance = 10000000.0;
+                int shorterDirection = INT_MAX;
                 for (int d : legalDirections)
                 {
                     Cell current = adjacentTile.fromDirection((Direction)d);
                     Cell target = ghost->getTarget();
-                    int distance = Util::distance(current.col, current.row, target.col, target.row);
+                    float distance = Util::distance(current.col, current.row, target.col, target.row);
                     if (typeid(*ghost) == typeid(Blinky))
                     {
-                        printf("curr (%3d, %3d) target (%3d, %3d) distance: %d ",current.col, current.row, target.col, target.row, distance);
+                        printf("\ndir: %d curr (%3d, %3d) target (%3d, %3d) distance: %.3f ", d, current.col, current.row, target.col, target.row, distance);
                     }
-                    if (distance < shorterDistance)
+                    if (distance < shorterDistance || (distance == shorterDistance && d < shorterDirection))
                     {
                         shorterDistance = distance;
+                        shorterDirection = d;
                         newDirection = (Direction) d;
                     }
                 }
