@@ -126,10 +126,8 @@ static const int SRC_UP_2 = 14;
 static const int SRC_DOWN_1 = 4;
 static const int SRC_DOWN_2 = 6;
 
-//static const int SCATTER_COL = 20; // 2nd column (0 index), centered
-//static const int SCATTER_ROW = 4; // 0th row, centered
-static const int SCATTER_COL = 4; // 0th column (0 index), centered
-static const int SCATTER_ROW = 284; // 35th row, centered
+static const int SCATTER_COL = 20; // 2nd column (0 index), centered
+static const int SCATTER_ROW = 4; // 0th row, centered
 
 }
 
