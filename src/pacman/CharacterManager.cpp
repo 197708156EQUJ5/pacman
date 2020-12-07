@@ -51,6 +51,21 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
     Direction ghostDirection = ghost->getDirection();
 
     Util::displayGhost<Blinky>(ghost);
+    if (ghost->isHome()&& !ghost->isExiting())
+    {
+        AdjacentTile homeAdjacentTile = Util::getAdjacentTiles(x, y, ghostDirection);
+        std::vector<int> homeLegalDirections = findLegalDirections(homeAdjacentTile, ghost);
+
+        if (ghostDirection == Direction::DOWN || ghostDirection == Direction::UP)
+        {
+            if (find(homeLegalDirections.begin(), homeLegalDirections.end(), (int)ghostDirection) != homeLegalDirections.end())
+            {
+                ghost->changeDirection(Util::getOpposite(ghostDirection));
+            }
+        }
+        return true;
+    }
+
     if (ghost->isExiting())
     {
         ghost->changeDirection(Direction::UP);
