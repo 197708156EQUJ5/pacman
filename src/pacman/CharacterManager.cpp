@@ -50,7 +50,7 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
     int y = ghost->getY();
     Direction ghostDirection = ghost->getDirection();
 
-    Util::displayGhost<Blinky>(ghost);
+    //Util::displayGhost<Pinky>(ghost);
     if (ghost->isHome()&& !ghost->isExiting())
     {
         AdjacentTile homeAdjacentTile = Util::getAdjacentTiles(x, y, ghostDirection);
@@ -68,12 +68,22 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
 
     if (ghost->isExiting())
     {
-        ghost->changeDirection(Direction::UP);
-        if (x == BlinkyConstants::START_COL && y == BlinkyConstants::START_ROW)
+        std::pair<Cell, Direction> nextStep = ghost->peekNextExitStep();
+        Cell nextStepCell = nextStep.first;
+        Direction nextStepDirection = nextStep.second;
+
+        if (nextStepDirection == Direction::NONE)
         {
             ghost->addNextDirection(Direction::LEFT);
-            ghost->changeDirection(Direction::LEFT);
             ghost->setExiting();
+            ghost->setHome();
+            return true;
+        }
+
+        if (Cell{x, y} == nextStepCell)
+        {
+            ghost->changeDirection(nextStepDirection);
+            ghost->advanceNextExitStep();
         }
         return true;
     }
@@ -90,13 +100,14 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
         adjacentTile = Util::getAdjacentTiles(x, y, peekDirection);
     }
 
-    Util::displayTiles<Blinky>(adjacentTile, ghost);
+    //Util::displayTiles<Pinky>(adjacentTile, ghost);
 
     ghost->setCurrentTile(Util::getCurrentCell(x, y));
 
     std::vector<int> legalDirections = findLegalDirections(adjacentTile, ghost);
 
-    if (typeid(*ghost) == typeid(Blinky))
+    /*
+    if (typeid(*ghost) == typeid(Pinky))
     {
         printf("(%3d, %3d) {", x, y);
         for (int dir : legalDirections)
@@ -105,6 +116,7 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
         }
         printf("}\n");
     }
+    */
 
     selectNewDirection(adjacentTile, legalDirections, ghost);
 
@@ -114,10 +126,12 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
     if (onTrackX || onTrackY)
     {
         Direction changedDirection = ghost->getNextDirection();
+        /*
         if (typeid(*ghost) == typeid(Blinky))
         {
             printf("changing direction; %d\n", changedDirection);
         }
+        */
         ghost->changeDirection(changedDirection);
     }
 
@@ -155,10 +169,12 @@ void CharacterManager::selectNewDirection(AdjacentTile adjacentTile, std::vector
     {
         newDirection = (Direction)legalDirections.at(0);
         ghost->addNextDirection(newDirection);
-        if (typeid(*ghost) == typeid(Blinky))
+        /*
+        if (typeid(*ghost) == typeid(Pinky))
         {
             printf("legal size: %d, tileChanged adding next direction; %d\n", legalDirections.size(), newDirection);
         }
+        */
     }
 
     if (legalDirections.size() > 1 && ghost->hasTileChanged())
@@ -168,7 +184,7 @@ void CharacterManager::selectNewDirection(AdjacentTile adjacentTile, std::vector
         {
             case GhostMode::SCATTER:
             {
-                if (typeid(*ghost) == typeid(Blinky))
+                if (typeid(*ghost) == typeid(Pinky))
                 {
                     printf("SCATTER %s", typeid(*ghost).name());
                 }
@@ -179,7 +195,7 @@ void CharacterManager::selectNewDirection(AdjacentTile adjacentTile, std::vector
                     Cell current = adjacentTile.fromDirection((Direction)d);
                     Cell target = ghost->getTarget();
                     float distance = Util::distance(current.col, current.row, target.col, target.row);
-                    if (typeid(*ghost) == typeid(Blinky))
+                    if (typeid(*ghost) == typeid(Pinky))
                     {
                         printf("\ndir: %d curr (%3d, %3d) target (%3d, %3d) distance: %.3f ", d, current.col, current.row, target.col, target.row, distance);
                     }
@@ -190,7 +206,7 @@ void CharacterManager::selectNewDirection(AdjacentTile adjacentTile, std::vector
                         newDirection = (Direction) d;
                     }
                 }
-                if (typeid(*ghost) == typeid(Blinky))
+                if (typeid(*ghost) == typeid(Pinky))
                 {
                     printf("next direction; %d\n", newDirection);
                 }
@@ -207,10 +223,12 @@ void CharacterManager::selectNewDirection(AdjacentTile adjacentTile, std::vector
             break;
         }
         ghost->addNextDirection(newDirection);
-        if (typeid(*ghost) == typeid(Blinky))
+        /*
+        if (typeid(*ghost) == typeid(Pinky))
         {
             printf("legal size: %d, tileChanged adding next direction; %d\n", legalDirections.size(), newDirection);
         }
+        */
     }
 }
 

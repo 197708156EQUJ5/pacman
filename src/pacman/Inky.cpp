@@ -6,6 +6,12 @@ namespace pacman
 Inky::Inky() :
     Ghost(InkyConstants::START_COL, InkyConstants::START_ROW, InkyConstants::SCATTER_COL, InkyConstants::SCATTER_ROW, Direction::UP, true, false, false)
 {
+    exitStrategy = 
+    {
+        {Cell{InkyConstants::START_COL, InkyConstants::START_ROW}, Direction::RIGHT},
+        {Cell{PinkyConstants::START_COL, PinkyConstants::START_ROW}, Direction::UP},
+        {Cell{BlinkyConstants::START_COL, BlinkyConstants::START_ROW}, Direction::LEFT}
+    };
 }
 
 int Inky::getSrcCol()

@@ -4,6 +4,7 @@
 #include "pacman/GhostMode.hpp"
 
 #include <queue>
+#include <utility>
 
 namespace pacman
 {
@@ -47,6 +48,9 @@ public:
     Direction peekNextDirection();
     std::queue<Direction> getQueue();
 
+    std::pair<Cell, Direction> peekNextExitStep();
+    void advanceNextExitStep();
+
 protected:
     
     bool isGhostHome;
@@ -54,6 +58,8 @@ protected:
     int pelletCounter;
     bool isCounterActive;
     std::queue<Direction> directionQueue;
+    std::vector<std::pair<Cell, Direction>> exitStrategy;
+    int exitStrategyIndex;
     Cell currentTile;
     Cell previousTile;
     int xTarget;

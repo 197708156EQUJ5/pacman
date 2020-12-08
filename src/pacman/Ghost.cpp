@@ -1,10 +1,12 @@
 #include "pacman/Ghost.hpp"
 
+#include <iostream>
+
 namespace pacman
 {
 
 Ghost::Ghost(int x, int y, int xTarget, int yTarget, Direction direction, 
-        bool isHome, bool isExiting, bool isCounterActive) : 
+        bool isHome, bool isExiting, bool isCounterActive) :
     Character(x, y, direction),
     xTarget(xTarget),
     yTarget(yTarget),
@@ -12,7 +14,9 @@ Ghost::Ghost(int x, int y, int xTarget, int yTarget, Direction direction,
     isGhostHome(isHome),
     isExitingHome(isExiting),
     pelletCounter(0),
-    isCounterActive(isCounterActive)
+    isCounterActive(isCounterActive),
+    exitStrategyIndex(0),
+    exitStrategy{}
 {
     this->directionQueue.push(Direction::NONE);
 }
@@ -133,6 +137,22 @@ Cell Ghost::getTarget()
 std::queue<Direction> Ghost::getQueue()
 {
     return this->directionQueue;
+}
+
+std::pair<Cell, Direction> Ghost::peekNextExitStep()
+{
+    if (exitStrategyIndex == exitStrategy.size())
+    {
+        return std::pair<Cell, Direction>{Cell{0,0}, Direction::NONE};
+    }
+    std::pair<Cell, Direction> nextStep = exitStrategy.at(exitStrategyIndex);
+
+    return nextStep;
+}
+
+void Ghost::advanceNextExitStep()
+{
+    exitStrategyIndex++;
 }
 
 }

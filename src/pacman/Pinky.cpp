@@ -6,6 +6,10 @@ namespace pacman
 Pinky::Pinky() :
     Ghost(PinkyConstants::START_COL, PinkyConstants::START_ROW, PinkyConstants::SCATTER_COL, PinkyConstants::SCATTER_ROW, Direction::UP, true, true, true)
 {
+    exitStrategy = {
+       std::make_pair(Cell{PinkyConstants::START_COL, PinkyConstants::START_ROW}, Direction::UP),
+       std::make_pair(Cell{BlinkyConstants::START_COL, BlinkyConstants::START_ROW}, Direction::LEFT)
+       };
 }
 
 int Pinky::getSrcCol()

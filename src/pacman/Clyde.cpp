@@ -6,6 +6,12 @@ namespace pacman
 Clyde::Clyde() :
     Ghost(ClydeConstants::START_COL, ClydeConstants::START_ROW, ClydeConstants::SCATTER_COL, ClydeConstants::SCATTER_ROW, Direction::UP, true, false, false)
 {
+    exitStrategy =
+    {
+        {Cell{ClydeConstants::START_COL, ClydeConstants::START_ROW}, Direction::LEFT},
+        {Cell{PinkyConstants::START_COL, PinkyConstants::START_ROW}, Direction::UP},
+        {Cell{BlinkyConstants::START_COL, BlinkyConstants::START_ROW}, Direction::LEFT}
+    };
 }
 
 int Clyde::getSrcCol()
