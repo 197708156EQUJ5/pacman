@@ -186,7 +186,7 @@ std::vector<Cell>& Level::getLevel()
 
 Cell& Level::getCellType(Cell cell)
 {
-    return Level::LEVEL_1.at(cell.row * Constants::COLUMN_COUNT + cell.col);
+    return getCellType(cell.col, cell.row);
 }
 
 Cell& Level::getCellType(int col, int row)

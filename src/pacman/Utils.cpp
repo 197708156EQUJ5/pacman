@@ -60,36 +60,6 @@ Cell getCenter(int x, const int y)
     return Cell{((x / Constants::TILE_SIZE) * Constants::TILE_SIZE) + 4, ((y / Constants::TILE_SIZE) * Constants::TILE_SIZE) + 4};
 }
 
-AdjacentTile getAdjacentTiles(int x, int y, Direction direction)
-{
-    int adjacentX = x;
-    int adjacentY = y;
-
-    if (direction == Direction::LEFT)
-    {
-        adjacentX -= Constants::TILE_SIZE;
-    }
-    else if (direction == Direction::RIGHT)
-    {
-        adjacentX += Constants::TILE_SIZE;
-    }
-    else if (direction == Direction::UP)
-    {
-        adjacentY -= Constants::TILE_SIZE;
-    }
-    else if (direction == Direction::DOWN)
-    {
-        adjacentY += Constants::TILE_SIZE;
-    }
-
-    const Cell north{Util::getCenter(adjacentX, adjacentY - Constants::TILE_SIZE)};
-    const Cell south{Util::getCenter(adjacentX, adjacentY + Constants::TILE_SIZE)};
-    const Cell east{Util::getCenter(adjacentX + Constants::TILE_SIZE, adjacentY)};
-    const Cell west{Util::getCenter(adjacentX - Constants::TILE_SIZE, adjacentY)};
-   
-    return {north, west, south, east};
-}
-
 Cell getCurrentCell(int x, int y)
 {
     return Cell{Util::getCenter(x, y)};

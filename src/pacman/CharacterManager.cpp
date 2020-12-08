@@ -43,7 +43,7 @@ bool CharacterManager::canMovePacman()
 
     int x = pacman->getX();
     int y = pacman->getY();
-    AdjacentTile adjacentTile = Util::getAdjacentTiles(x, y, direction);
+    AdjacentTile adjacentTile = Util::getAdjacentTiles<Pacman>(x, y, direction);
 
     return Level::isLegalMove(Util::convertToGrid(adjacentTile.fromDirection(direction)));
 }
@@ -57,7 +57,7 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
     //Util::displayGhost<Pinky>(ghost);
     if (ghost->isHome()&& !ghost->isExiting())
     {
-        AdjacentTile homeAdjacentTile = Util::getAdjacentTiles(x, y, ghostDirection);
+        AdjacentTile homeAdjacentTile = Util::getAdjacentTiles<Ghost>(x, y, ghostDirection);
         std::vector<int> homeLegalDirections = findLegalDirections(homeAdjacentTile, ghost);
 
         if (ghostDirection == Direction::DOWN || ghostDirection == Direction::UP)
@@ -97,11 +97,11 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
     if (peekDirection == Direction::NONE)
     {
         ghost->getNextDirection();
-        adjacentTile = Util::getAdjacentTiles(x, y, ghostDirection);
+        adjacentTile = Util::getAdjacentTiles<Ghost>(x, y, ghostDirection);
     }
     else
     {
-        adjacentTile = Util::getAdjacentTiles(x, y, peekDirection);
+        adjacentTile = Util::getAdjacentTiles<Ghost>(x, y, peekDirection);
     }
 
     //Util::displayTiles<Pinky>(adjacentTile, ghost);

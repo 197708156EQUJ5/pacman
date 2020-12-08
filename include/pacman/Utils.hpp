@@ -4,6 +4,7 @@
 #include "Cell.hpp"
 #include "Direction.hpp"
 #include "Ghost.hpp"
+#include "Pacman.hpp"
 
 #include <iostream>
 #include <memory>
@@ -106,6 +107,56 @@ void displayGhost(std::shared_ptr<Ghost> ghost)
                 ghost->isExiting() ? "YES" : "NO", directionStr.c_str(), nextDirectionStr.c_str(), peekDirection);
     }
 
+}
+
+template<typename T>
+AdjacentTile getAdjacentTiles(int x, int y, Direction direction)
+{
+    if (typeid(T) == typeid(Ghost))
+    {
+        if (direction == Direction::LEFT)
+        {
+            x -= Constants::TILE_SIZE;
+        }
+        else if (direction == Direction::RIGHT)
+        {
+            x += Constants::TILE_SIZE;
+        }
+        else if (direction == Direction::UP)
+        {
+            y -= Constants::TILE_SIZE;
+        }
+        else if (direction == Direction::DOWN)
+        {
+            y += Constants::TILE_SIZE;
+        }
+    }
+    else if (typeid(T) == typeid(Pacman))
+    {
+        if (direction == Direction::LEFT)
+        {
+            x += (Constants::TILE_SIZE / 2 - 1);
+        }
+        else if (direction == Direction::RIGHT)
+        {
+            x -= (Constants::TILE_SIZE / 2 - 1);
+        }
+        else if (direction == Direction::UP)
+        {
+            y += (Constants::TILE_SIZE / 2 - 1);
+        }
+        else if (direction == Direction::DOWN)
+        {
+            y -= (Constants::TILE_SIZE / 2 - 1);
+        }
+    }
+
+    const Cell north{Util::getCenter(x, y - Constants::TILE_SIZE)};
+    const Cell south{Util::getCenter(x, y + Constants::TILE_SIZE)};
+    const Cell east{Util::getCenter(x + Constants::TILE_SIZE, y)};
+    const Cell west{Util::getCenter(x - Constants::TILE_SIZE, y)};
+   
+    return {north, west, south, east};
 }
 
 float distance(int x1, int x2, int y1, int y2);
