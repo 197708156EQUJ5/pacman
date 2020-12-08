@@ -43,4 +43,9 @@ int Inky::getSrcRow()
     return InkyConstants::SRC_ROW;
 }
 
+int Inky::getReleaseCounter()
+{
+    return 10;
+}
+
 }

@@ -26,6 +26,7 @@ public:
     std::vector<std::shared_ptr<Ghost>> getGhosts();
     bool canMovePacman();
     bool canMoveGhost(std::shared_ptr<Ghost> ghost);
+    void incrementDotCounter();
 
 private:
 
@@ -34,10 +35,14 @@ private:
     std::shared_ptr<Ghost> pinky;
     std::shared_ptr<Ghost> inky;
     std::shared_ptr<Ghost> clyde;
+    std::vector<std::shared_ptr<Ghost>> releaseOrder;
+    int releaseOrderIndex;
 
     std::vector<int> findLegalDirections(AdjacentTile adjacentTile, std::shared_ptr<Ghost> ghost);
     void selectNewDirection(AdjacentTile adjacentTile, std::vector<int> legalDirections, std::shared_ptr<Ghost> ghost);
 
+    void determineRelease(std::shared_ptr<Ghost> ghost);
+    
 };
 
 }

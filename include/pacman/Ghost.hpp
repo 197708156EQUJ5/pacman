@@ -25,9 +25,14 @@ public:
     void setHome(bool isHome = false);
     bool isExiting();
     void setExiting(bool isExiting = false);
-    void resetPelletCounter();
-    void increasePelletCounter();
-    void setPelletCounterActive();
+    
+    void resetDotCounter();
+    void increaseDotCounter();
+    void setDotCounterActive(bool isActive = false);
+    bool isDotCounterActive();
+    int getDotCounter();
+    virtual int getReleaseCounter() = 0;
+
     void setCurrentTile(Cell tile);
     Cell getCurrentTile();
     void setMode(GhostMode mode);
@@ -55,7 +60,7 @@ protected:
     
     bool isGhostHome;
     bool isExitingHome;
-    int pelletCounter;
+    int dotCounter;
     bool isCounterActive;
     std::queue<Direction> directionQueue;
     std::vector<std::pair<Cell, Direction>> exitStrategy;

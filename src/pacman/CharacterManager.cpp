@@ -12,13 +12,16 @@
 namespace pacman
 {
     
-CharacterManager::CharacterManager()
+CharacterManager::CharacterManager() :
+    releaseOrderIndex(0)
 {
     pacman = std::make_shared<Pacman>();
     blinky = std::make_shared<Blinky>();
     pinky = std::make_shared<Pinky>();
     inky = std::make_shared<Inky>();
     clyde = std::make_shared<Clyde>();
+    
+    releaseOrder = {pinky, inky, clyde};
 }
 
 std::shared_ptr<Pacman> CharacterManager::getPacman()
@@ -233,6 +236,29 @@ void CharacterManager::selectNewDirection(AdjacentTile adjacentTile, std::vector
             printf("legal size: %d, tileChanged adding next direction; %d\n", legalDirections.size(), newDirection);
         }
         */
+    }
+}
+
+void CharacterManager::incrementDotCounter()
+{
+    for (std::shared_ptr<Ghost> ghost : getGhosts())
+    {
+        if (ghost->isDotCounterActive())
+        {
+            determineRelease(ghost);
+            ghost->increaseDotCounter();
+        }
+    }
+}
+
+void CharacterManager::determineRelease(std::shared_ptr<Ghost> ghost)
+{
+    if (ghost->getDotCounter() == ghost->getReleaseCounter())
+    {
+        ghost->setExiting(true);
+        ghost->setDotCounterActive();
+        releaseOrderIndex++;
+        releaseOrder.at(releaseOrderIndex)->setDotCounterActive(true);
     }
 }
 

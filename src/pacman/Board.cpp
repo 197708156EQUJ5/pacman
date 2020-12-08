@@ -203,7 +203,12 @@ void Board::updatePacman()
     if (this->characterManager->canMovePacman())
     {
         pacman->move();
-        score += Level::getCellValue(Util::convertToGrid(Cell{pacman->getX(), pacman->getY()}));
+        int tileValue = Level::getCellValue(Util::convertToGrid(Cell{pacman->getX(), pacman->getY()}));
+        if (tileValue > 0)
+        {
+            characterManager->incrementDotCounter();
+        }
+        score += tileValue;
     }
     pacman->changeDirection(userDirection);
 }

@@ -43,4 +43,9 @@ int Clyde::getSrcRow()
     return ClydeConstants::SRC_ROW;
 }
 
+int Clyde::getReleaseCounter()
+{
+    return 60;
+}
+
 }

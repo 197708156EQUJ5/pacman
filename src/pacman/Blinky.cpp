@@ -39,4 +39,9 @@ int Blinky::getSrcRow()
     return BlinkyConstants::SRC_ROW;
 }
 
+int Blinky::getReleaseCounter()
+{
+    return 0;
+}
+
 }

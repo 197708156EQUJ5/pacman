@@ -4,7 +4,7 @@ namespace pacman
 {
 
 Pinky::Pinky() :
-    Ghost(PinkyConstants::START_COL, PinkyConstants::START_ROW, PinkyConstants::SCATTER_COL, PinkyConstants::SCATTER_ROW, Direction::UP, true, true, true)
+    Ghost(PinkyConstants::START_COL, PinkyConstants::START_ROW, PinkyConstants::SCATTER_COL, PinkyConstants::SCATTER_ROW, Direction::UP, true, false, true)
 {
     exitStrategy = {
        std::make_pair(Cell{PinkyConstants::START_COL, PinkyConstants::START_ROW}, Direction::UP),
@@ -39,6 +39,11 @@ int Pinky::getSrcCol()
 int Pinky::getSrcRow()
 {
     return PinkyConstants::SRC_ROW;
+}
+
+int Pinky::getReleaseCounter()
+{
+    return 0;
 }
 
 }

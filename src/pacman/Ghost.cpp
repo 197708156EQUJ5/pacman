@@ -13,7 +13,7 @@ Ghost::Ghost(int x, int y, int xTarget, int yTarget, Direction direction,
     ghostMode(GhostMode::SCATTER),
     isGhostHome(isHome),
     isExitingHome(isExiting),
-    pelletCounter(0),
+    dotCounter(0),
     isCounterActive(isCounterActive),
     exitStrategyIndex(0),
     exitStrategy{}
@@ -153,6 +153,31 @@ std::pair<Cell, Direction> Ghost::peekNextExitStep()
 void Ghost::advanceNextExitStep()
 {
     exitStrategyIndex++;
+}
+
+void Ghost::resetDotCounter()
+{
+    this->dotCounter = 0;
+}
+
+void Ghost::increaseDotCounter()
+{
+    this->dotCounter++;
+}
+
+void Ghost::setDotCounterActive(bool isActive)
+{
+    this->isCounterActive = isActive;
+}
+
+int Ghost::getDotCounter()
+{
+    return this->dotCounter;
+}
+
+bool Ghost::isDotCounterActive()
+{
+    return this->isCounterActive;    
 }
 
 }
