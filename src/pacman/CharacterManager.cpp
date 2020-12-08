@@ -82,8 +82,8 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
         if (nextStepDirection == Direction::NONE)
         {
             ghost->addNextDirection(Direction::LEFT);
-            ghost->setExiting();
-            ghost->setHome();
+            ghost->setExiting(false);
+            ghost->setHome(false);
             return true;
         }
 
@@ -186,14 +186,14 @@ void CharacterManager::selectNewDirection(AdjacentTile adjacentTile, std::vector
 
     if (legalDirections.size() > 1 && ghost->hasTileChanged())
     {
-        printf("GhostMode[%s]: %d\n", typeid(*ghost).name(), ghost->getMode());
+        //printf("GhostMode[%s]: %d\n", typeid(*ghost).name(), ghost->getMode());
         switch (ghost->getMode())
         {
             case GhostMode::SCATTER:
             {
                 if (typeid(*ghost) == typeid(Pinky))
                 {
-                    printf("SCATTER %s", typeid(*ghost).name());
+                    //printf("SCATTER %s", typeid(*ghost).name());
                 }
                 float shorterDistance = 10000000.0;
                 int shorterDirection = INT_MAX;
@@ -204,7 +204,7 @@ void CharacterManager::selectNewDirection(AdjacentTile adjacentTile, std::vector
                     float distance = Util::distance(current.col, current.row, target.col, target.row);
                     if (typeid(*ghost) == typeid(Pinky))
                     {
-                        printf("\ndir: %d curr (%3d, %3d) target (%3d, %3d) distance: %.3f ", d, current.col, current.row, target.col, target.row, distance);
+                        //printf("\ndir: %d curr (%3d, %3d) target (%3d, %3d) distance: %.3f ", d, current.col, current.row, target.col, target.row, distance);
                     }
                     if (distance < shorterDistance || (distance == shorterDistance && d < shorterDirection))
                     {
@@ -215,7 +215,7 @@ void CharacterManager::selectNewDirection(AdjacentTile adjacentTile, std::vector
                 }
                 if (typeid(*ghost) == typeid(Pinky))
                 {
-                    printf("next direction; %d\n", newDirection);
+                    //printf("next direction; %d\n", newDirection);
                 }
             }
             break;
@@ -253,12 +253,20 @@ void CharacterManager::incrementDotCounter()
 
 void CharacterManager::determineRelease(std::shared_ptr<Ghost> ghost)
 {
+    /*
+    */
+    //printf("%s Dot Ctr: %d Release Ctr: %d\n", typeid(*ghost).name(), ghost->getDotCounter(), ghost->getReleaseCounter());
     if (ghost->getDotCounter() == ghost->getReleaseCounter())
     {
-        ghost->setExiting(true);
-        ghost->setDotCounterActive();
+        ghost->setExiting();
+        ghost->setDotCounterActive(false);
         releaseOrderIndex++;
-        releaseOrder.at(releaseOrderIndex)->setDotCounterActive(true);
+        if (releaseOrderIndex == releaseOrder.size())
+        {
+            return;
+        }
+        releaseOrder.at(releaseOrderIndex)->setDotCounterActive();
+        //printf("Exiting: %s next release: %s releaseOrderIndex: %d\n", typeid(*ghost).name(), typeid(*releaseOrder.at(releaseOrderIndex)).name(), releaseOrderIndex);
     }
 }
 

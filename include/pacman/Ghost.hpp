@@ -22,13 +22,13 @@ public:
     void move();
     void changeDirection(Direction direction);
     bool isHome();
-    void setHome(bool isHome = false);
+    void setHome(bool isHome = true);
     bool isExiting();
-    void setExiting(bool isExiting = false);
+    void setExiting(bool isExiting = true);
     
     void resetDotCounter();
     void increaseDotCounter();
-    void setDotCounterActive(bool isActive = false);
+    void setDotCounterActive(bool isActive = true);
     bool isDotCounterActive();
     int getDotCounter();
     virtual int getReleaseCounter() = 0;

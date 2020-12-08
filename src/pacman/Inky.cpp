@@ -45,7 +45,7 @@ int Inky::getSrcRow()
 
 int Inky::getReleaseCounter()
 {
-    return 10;
+    return 30;
 }
 
 }
