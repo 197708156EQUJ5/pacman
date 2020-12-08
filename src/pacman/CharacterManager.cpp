@@ -34,14 +34,18 @@ std::vector<std::shared_ptr<Ghost>> CharacterManager::getGhosts()
 
 bool CharacterManager::canMovePacman()
 {
+    Direction direction = pacman->getDirection();
+
+    if (direction == Direction::NONE)
+    {
+        return true;
+    }
+
     int x = pacman->getX();
     int y = pacman->getY();
-    Direction direction = pacman->getDirection();
     AdjacentTile adjacentTile = Util::getAdjacentTiles(x, y, direction);
-    
-    //return Level::isLegalMove(Cell{next.col / Constants::TILE_SIZE, 
-    //        (next.row - Constants::TOP_ROW_OFFSET) / Constants::TILE_SIZE});
-    return false;
+
+    return Level::isLegalMove(Util::convertToGrid(adjacentTile.fromDirection(direction)));
 }
 
 bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
