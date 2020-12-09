@@ -45,7 +45,21 @@ int Inky::getSrcRow()
 
 int Inky::getReleaseCounter()
 {
-    return 30;
+    return 10;
+    //return 30;
+}
+
+bool Inky::preExitingCheck()
+{
+    if ((y - InkyConstants::START_ROW < 0 && direction == Direction::UP || 
+            y - InkyConstants::START_ROW > 0 && direction == Direction::DOWN) && preCheck)
+    {
+        preCheck = false;
+        return true;
+    }
+
+    preCheck = false;
+    return false;
 }
 
 }

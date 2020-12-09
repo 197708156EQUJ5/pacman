@@ -21,6 +21,7 @@ public:
     virtual int getSrcRow() {};
     void move();
     void changeDirection(Direction direction);
+    virtual bool preExitingCheck() = 0;
     bool isHome();
     void setHome(bool isHome = true);
     bool isExiting();
@@ -69,6 +70,7 @@ protected:
     Cell previousTile;
     int xTarget;
     int yTarget;
+    bool preCheck;
 
 private:
     GhostMode ghostMode;

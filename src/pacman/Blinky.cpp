@@ -44,4 +44,10 @@ int Blinky::getReleaseCounter()
     return 0;
 }
 
+bool Blinky::preExitingCheck()
+{
+    preCheck = false;
+    return false;
+}
+
 }

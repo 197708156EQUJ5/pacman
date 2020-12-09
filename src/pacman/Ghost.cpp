@@ -16,7 +16,8 @@ Ghost::Ghost(int x, int y, int xTarget, int yTarget, Direction direction,
     dotCounter(0),
     isCounterActive(isCounterActive),
     exitStrategyIndex(0),
-    exitStrategy{}
+    exitStrategy{},
+    preCheck(true)
 {
     this->directionQueue.push(Direction::NONE);
 }

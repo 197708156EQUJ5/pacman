@@ -1,10 +1,12 @@
 #include "pacman/Pinky.hpp"
 
+#include <iostream>
+
 namespace pacman
 {
 
 Pinky::Pinky() :
-    Ghost(PinkyConstants::START_COL, PinkyConstants::START_ROW, PinkyConstants::SCATTER_COL, PinkyConstants::SCATTER_ROW, Direction::UP, true, false, true)
+    Ghost(PinkyConstants::START_COL, PinkyConstants::START_ROW, PinkyConstants::SCATTER_COL, PinkyConstants::SCATTER_ROW, Direction::UP, true, true, true)
 {
     exitStrategy = {
        std::make_pair(Cell{PinkyConstants::START_COL, PinkyConstants::START_ROW}, Direction::UP),
@@ -44,6 +46,12 @@ int Pinky::getSrcRow()
 int Pinky::getReleaseCounter()
 {
     return 0;
+}
+
+bool Pinky::preExitingCheck()
+{
+    preCheck = false;
+    return false;
 }
 
 }

@@ -15,6 +15,7 @@ public:
     int getSrcCol();
     int getSrcRow();
     int getReleaseCounter();
+    bool preExitingCheck();
 };
 
 } // namespace pacman

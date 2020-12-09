@@ -45,7 +45,21 @@ int Clyde::getSrcRow()
 
 int Clyde::getReleaseCounter()
 {
-    return 60;
+    return 10;
+    //return 60;
+}
+
+bool Clyde::preExitingCheck()
+{
+    if ((y - ClydeConstants::START_ROW < 0 && direction == Direction::UP || 
+            y - ClydeConstants::START_ROW > 0 && direction == Direction::DOWN) && preCheck)
+    {
+        preCheck = false;
+        return true;
+    }
+
+    preCheck = false;
+    return false;
 }
 
 }

@@ -57,8 +57,7 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
     int y = ghost->getY();
     Direction ghostDirection = ghost->getDirection();
 
-    //Util::displayGhost<Pinky>(ghost);
-    if (ghost->isHome()&& !ghost->isExiting())
+    if (ghost->isHome() && !ghost->isExiting())
     {
         AdjacentTile homeAdjacentTile = Util::getAdjacentTiles<Ghost>(x, y, ghostDirection);
         std::vector<int> homeLegalDirections = findLegalDirections(homeAdjacentTile, ghost);
@@ -75,9 +74,16 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
 
     if (ghost->isExiting())
     {
+        if (ghost->preExitingCheck())
+        {
+            ghost->changeDirection(Util::getOpposite(ghostDirection));
+            return true;
+        }
         std::pair<Cell, Direction> nextStep = ghost->peekNextExitStep();
         Cell nextStepCell = nextStep.first;
         Direction nextStepDirection = nextStep.second;
+        //printf("%s: (%3d, %3d) nextStep - Cell: (%3d, %3d) direction: %d\n", typeid(*ghost).name(), 
+        //        ghost->getX(), ghost->getY(), nextStepCell.col, nextStepCell.row, nextStepDirection);
 
         if (nextStepDirection == Direction::NONE)
         {
@@ -89,6 +95,7 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
 
         if (Cell{x, y} == nextStepCell)
         {
+            //printf("Next pivot point (%3d, %3d) acheived. Setting direction: %d\n", ghost->getX(), ghost->getY(), nextStepDirection);
             ghost->changeDirection(nextStepDirection);
             ghost->advanceNextExitStep();
         }
