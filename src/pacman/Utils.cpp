@@ -60,6 +60,29 @@ Cell getCenter(int x, const int y)
     return Cell{((x / Constants::TILE_SIZE) * Constants::TILE_SIZE) + 4, ((y / Constants::TILE_SIZE) * Constants::TILE_SIZE) + 4};
 }
 
+Cell getTileAhead(int x, int y, Direction direction, int tilesAhead)
+{
+    Cell center = getCenter(x, y);
+    if (direction == Direction::UP)
+    {
+        return Cell{center.col, center.row - (tilesAhead * Constants::TILE_SIZE)};
+    }
+    else if (direction == Direction::LEFT)
+    {
+        return Cell{center.col - (tilesAhead * Constants::TILE_SIZE), center.row};
+    }
+    else if (direction == Direction::DOWN)
+    {
+        return Cell{center.col, center.row + (tilesAhead * Constants::TILE_SIZE)};
+    }
+    else if (direction == Direction::RIGHT)
+    {
+        return Cell{center.col + (tilesAhead * Constants::TILE_SIZE), center.row};
+    }
+    
+    return Cell{center.col, center.row};    
+}
+
 Cell getCurrentCell(int x, int y)
 {
     return Cell{Util::getCenter(x, y)};

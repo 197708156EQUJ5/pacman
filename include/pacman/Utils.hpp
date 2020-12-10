@@ -33,6 +33,8 @@ AdjacentTile getAdjacentTiles(int x, int y, Direction direction);
 
 Cell getCurrentCell(int x, int y);
 
+Cell getTileAhead(int x, int y, Direction direction, int tilesAhead);
+
 template<typename T>
 void displayTiles(AdjacentTile adjacentTile, std::shared_ptr<Ghost> ghost)
 {

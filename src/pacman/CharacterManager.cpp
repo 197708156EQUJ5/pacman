@@ -299,7 +299,8 @@ void CharacterManager::findNextDirection(Cell targetCell, AdjacentTile adjacentT
     }
 }
 
-void CharacterManager::handleChaseMode(std::shared_ptr<Ghost> ghost, AdjacentTile adjacentTile, std::vector<int> legalDirections, Direction &newDirection)
+void CharacterManager::handleChaseMode(std::shared_ptr<Ghost> ghost, AdjacentTile adjacentTile, 
+        std::vector<int> legalDirections, Direction &newDirection)
 {
     int x = pacman->getX();
     int y = pacman->getY();
@@ -307,7 +308,11 @@ void CharacterManager::handleChaseMode(std::shared_ptr<Ghost> ghost, AdjacentTil
 
     if (typeid(*ghost) == typeid(Blinky))
     {
-        findNextDirection(Cell{x, y}, adjacentTile, legalDirections, newDirection);        
+        findNextDirection(Util::getCenter(Cell{x, y}), adjacentTile, legalDirections, newDirection);        
+    }
+    else if (typeid(*ghost) == typeid(Pinky))
+    {
+        findNextDirection(Util::getTileAhead(x, y, pacmanDirection, 4), adjacentTile, legalDirections, newDirection);        
     }
 }
 
