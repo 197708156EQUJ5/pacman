@@ -213,6 +213,7 @@ void CharacterManager::selectNewDirection(AdjacentTile adjacentTile, std::vector
             case GhostMode::CHASE:
             {
                 printf("Handle CHASE case.\n");
+                handleChaseMode(ghost, adjacentTile, legalDirections, newDirection);
             }
             break;
             case GhostMode::FRIGHTENED:
@@ -298,11 +299,16 @@ void CharacterManager::findNextDirection(Cell targetCell, AdjacentTile adjacentT
     }
 }
 
-void CharacterManager::handleChaseMode(AdjacentTile adjacentTile, std::vector<int> legalDirections, std::shared_ptr<Ghost> ghost)
+void CharacterManager::handleChaseMode(std::shared_ptr<Ghost> ghost, AdjacentTile adjacentTile, std::vector<int> legalDirections, Direction &newDirection)
 {
     int x = pacman->getX();
     int y = pacman->getY();
     Direction pacmanDirection = pacman->getDirection();
+
+    if (typeid(*ghost) == typeid(Blinky))
+    {
+        findNextDirection(Cell{x, y}, adjacentTile, legalDirections, newDirection);        
+    }
 }
 
 }
