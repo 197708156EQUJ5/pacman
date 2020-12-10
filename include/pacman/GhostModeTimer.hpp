@@ -16,8 +16,8 @@ class GhostModeTimer
 {
 public:
 
-    GhostModeTimer(std::vector<std::pair<std::chrono::seconds, GhostMode>> transitionDelays, std::function<void(GhostMode)> transitionGhostMode);
-    ~GhostModeTimer() = default;
+    GhostModeTimer(std::vector<std::pair<int, GhostMode>> transitionDelays, std::function<void(GhostMode)> transitionGhostMode);
+    ~GhostModeTimer();
 
     void run();
     void startTimer();
@@ -29,10 +29,10 @@ private:
 
     std::atomic<bool> isRunning;
     std::atomic<bool> isTimerRunning;
-    std::chrono::seconds startTime;
+    std::chrono::steady_clock::time_point startTime;
     std::chrono::seconds transitionDelay;
     std::function<void(GhostMode)> transitionGhostMode;
-    std::vector<std::pair<std::chrono::seconds, GhostMode>> transitionDelays;
+    std::vector<std::pair<int, GhostMode>> transitionDelays;
 
 };
 

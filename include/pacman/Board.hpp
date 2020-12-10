@@ -39,7 +39,7 @@ private:
     std::shared_ptr<Pacman> pacman;
     std::vector<std::shared_ptr<Ghost>> ghosts;
     Direction userDirection;
-    std::vector<std::pair<std::chrono::seconds, GhostMode>> transitionDelays;
+    std::vector<std::pair<int, GhostMode>> transitionDelays;
 
     int score;
     int lives;

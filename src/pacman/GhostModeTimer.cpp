@@ -3,16 +3,26 @@
 #include "pacman/Utils.hpp"
 
 #include <iostream>
+#include <ctime>
+#include <ratio>
+
+using namespace std::chrono;
 
 namespace pacman
 {
 
-GhostModeTimer::GhostModeTimer(std::vector<std::pair<std::chrono::seconds, GhostMode>> transitionDelays, 
+GhostModeTimer::GhostModeTimer(std::vector<std::pair<int, GhostMode>> transitionDelays, 
         std::function<void(GhostMode)> transitionGhostMode) :
     isRunning(false),
+    isTimerRunning(false),
     transitionDelays(transitionDelays),
     transitionGhostMode(transitionGhostMode)
 {
+}
+
+GhostModeTimer::~GhostModeTimer()
+{
+    this->isRunning = false;
 }
 
 void GhostModeTimer::run()
@@ -20,26 +30,26 @@ void GhostModeTimer::run()
     printf("run()\n");
     this->isRunning = true;
 
-    std::chrono::seconds currentTime;
     int transitionIndex = 0;
 
     while (this->isRunning)
     {
         if (this->isTimerRunning)
         {
-            currentTime = Util::chronoTime<std::chrono::seconds>();
+            steady_clock::time_point currentTime = steady_clock::now();
 
-            std::chrono::seconds delay = currentTime - this->startTime;
+            duration<int> timeDelta = duration_cast<duration<int>>(currentTime - this->startTime);
             
-            std::pair<std::chrono::seconds, GhostMode> transitionPair = this->transitionDelays.at(transitionIndex);
-            std::chrono::seconds transitionDelay = transitionPair.first;
-            printf("delay %d transition Delay%d\n", delay.count(), transitionDelay.count());
-            if (delay >= transitionDelay)
+            std::pair<int, GhostMode> transitionPair = this->transitionDelays.at(transitionIndex);
+            int transitionDelay = transitionPair.first;
+            //printf("delay %d transition Delay %d\n", timeDelta.count(), transitionDelay);
+            if (timeDelta.count() >= transitionDelay)
             {
                 GhostMode ghostMode = transitionPair.second;
                 this->transitionGhostMode(ghostMode);
                 transitionIndex++;
-                if (transitionIndex < transitionDelays.size())
+                this->startTime = steady_clock::now();
+                if (transitionIndex == transitionDelays.size())
                 {
                     this->isRunning = false;
                 }
@@ -60,7 +70,8 @@ void GhostModeTimer::startTimer()
 {
     if (!this->isTimerRunning)
     {
-        this->startTime = Util::chronoTime<std::chrono::seconds>();
+        this->startTime = steady_clock::now();
+        printf("startTime: %d\n", startTime);
         this->isTimerRunning = true;
     }
 }
