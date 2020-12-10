@@ -2,13 +2,16 @@
 
 #include "pacman/AdjacentTile.hpp"
 #include "pacman/CharacterManager.hpp"
+#include "pacman/GhostModeTimer.hpp"
 #include "pacman/Level.hpp"
 #include "pacman/SpriteSheet.hpp"
 
 #include <SDL2/SDL.h>
 #include <chrono>
+#include <functional>
 #include <iostream>
 #include <memory>
+#include <thread>
 #include <vector>
 
 namespace pacman
@@ -30,10 +33,13 @@ private:
     
     std::unique_ptr<SpriteSheet> spriteSheet;
     std::unique_ptr<CharacterManager> characterManager;
+    std::unique_ptr<GhostModeTimer> ghostModeTimer;
+    std::unique_ptr<std::thread> ghostModeThread;
     std::vector<Cell> maze;
     std::shared_ptr<Pacman> pacman;
     std::vector<std::shared_ptr<Ghost>> ghosts;
     Direction userDirection;
+    std::vector<std::pair<std::chrono::seconds, GhostMode>> transitionDelays;
 
     int score;
     int lives;
@@ -60,6 +66,7 @@ private:
     void updatePacman();
     void updateGhosts();
 
+    void transitionGhostModeHandler(GhostMode ghostMode);
 };
 
 } // namespace

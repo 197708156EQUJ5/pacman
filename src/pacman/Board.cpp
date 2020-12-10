@@ -6,6 +6,7 @@
 
 #include <cstdlib>
 #include <sstream>
+#include <iostream>
 
 namespace pacman
 {
@@ -56,6 +57,19 @@ bool Board::init()
     pacman = this->characterManager->getPacman();
     ghosts = this->characterManager->getGhosts();
     gameStartTime = std::chrono::system_clock::now();
+
+    std::function<void(GhostMode)> transitionGhostMode = [this](GhostMode ghostMode)
+    {
+        this->transitionGhostModeHandler(ghostMode);
+    };
+
+    this->transitionDelays = {std::make_pair(std::chrono::seconds(7), GhostMode::SCATTER), std::make_pair(std::chrono::seconds(20), GhostMode::CHASE), 
+        std::make_pair(std::chrono::seconds(7), GhostMode::SCATTER), std::make_pair(std::chrono::seconds(20), GhostMode::CHASE), 
+        std::make_pair(std::chrono::seconds(5), GhostMode::SCATTER), std::make_pair(std::chrono::seconds(20), GhostMode::CHASE), 
+        std::make_pair(std::chrono::seconds(5), GhostMode::SCATTER)};
+    this->ghostModeTimer = std::make_unique<GhostModeTimer>(this->transitionDelays, transitionGhostMode);
+    this->ghostModeThread = std::make_unique<std::thread>(&GhostModeTimer::run, this->ghostModeTimer.get());
+    this->ghostModeTimer->startTimer();
 
     return true;
 }
@@ -222,6 +236,11 @@ void Board::updateGhosts()
             ghost->move();
         }
     }
+}
+
+void Board::transitionGhostModeHandler(GhostMode ghostMode)
+{
+    printf("GhostMode: %d\n", ghostMode);
 }
 
 } // namespace

@@ -6,6 +6,7 @@
 #include "Ghost.hpp"
 #include "Pacman.hpp"
 
+#include <chrono>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -46,7 +47,8 @@ void displayTiles(AdjacentTile adjacentTile, std::shared_ptr<Ghost> ghost)
         printf("========================================\n");
         printf("|            |%s %3d, %3d  |            |\n", currNorth ? "X" : " ", adjacentTile.north.col, adjacentTile.north.row);
         printf("|------------|------------|------------|\n");
-        printf("|%s %3d, %3d  |            |%s %3d, %3d  |\n", currWest ? "X" : " ", adjacentTile.west.col, adjacentTile.west.row, currEast ? "X" : " ", adjacentTile.east.col, adjacentTile.east.row);
+        printf("|%s %3d, %3d  |            |%s %3d, %3d  |\n", currWest ? "X" : " ", 
+                adjacentTile.west.col, adjacentTile.west.row, currEast ? "X" : " ", adjacentTile.east.col, adjacentTile.east.row);
         printf("|------------|------------|------------|\n");
         printf("|            |%s %3d, %3d  |            |\n", currSouth ? "X" : " ", adjacentTile.south.col, adjacentTile.south.row);
         printf("========================================\n");
@@ -157,6 +159,12 @@ AdjacentTile getAdjacentTiles(int x, int y, Direction direction)
     const Cell west{Util::getCenter(x - Constants::TILE_SIZE, y)};
    
     return {north, west, south, east};
+}
+
+template<typename T>
+static T chronoTime(void)
+{
+    return std::chrono::duration_cast<T>(std::chrono::system_clock::now().time_since_epoch());
 }
 
 float distance(int x1, int x2, int y1, int y2);
