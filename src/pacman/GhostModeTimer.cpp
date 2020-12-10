@@ -45,8 +45,8 @@ void GhostModeTimer::run()
             //printf("delay %d transition Delay %d\n", timeDelta.count(), transitionDelay);
             if (timeDelta.count() >= transitionDelay)
             {
-                GhostMode ghostMode = transitionPair.second;
-                this->transitionGhostMode(ghostMode);
+                GhostMode nextGhostMode = transitionPair.second;
+                this->transitionGhostMode(nextGhostMode);
                 transitionIndex++;
                 this->startTime = steady_clock::now();
                 if (transitionIndex == transitionDelays.size())

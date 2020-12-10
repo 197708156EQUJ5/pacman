@@ -9,6 +9,7 @@
 #include "pacman/Pinky.hpp"
 
 #include <memory>
+#include <mutex>
 #include <vector>
 
 namespace pacman
@@ -27,6 +28,7 @@ public:
     bool canMovePacman();
     bool canMoveGhost(std::shared_ptr<Ghost> ghost);
     void incrementDotCounter();
+    void updateGhostMode(GhostMode ghostMode);
 
 private:
 
@@ -37,6 +39,7 @@ private:
     std::shared_ptr<Ghost> clyde;
     std::vector<std::shared_ptr<Ghost>> releaseOrder;
     int releaseOrderIndex;
+    std::shared_ptr<std::mutex> mtx;
 
     std::vector<int> findLegalDirections(AdjacentTile adjacentTile, std::shared_ptr<Ghost> ghost);
     void selectNewDirection(AdjacentTile adjacentTile, std::vector<int> legalDirections, std::shared_ptr<Ghost> ghost);

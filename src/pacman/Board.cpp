@@ -22,10 +22,18 @@ Board::Board() :
 
 Board::~Board()
 {
+
     SDL_FreeSurface(surface);
     SDL_DestroyWindow(window);
 
     SDL_Quit();
+    
+    if (this->ghostModeThread != nullptr)
+    {
+        this->ghostModeTimer->stop();
+        this->ghostModeThread->join();
+        this->ghostModeThread.reset();
+    }
 }
 
 bool Board::init()
@@ -63,10 +71,10 @@ bool Board::init()
         this->transitionGhostModeHandler(ghostMode);
     };
 
-    this->transitionDelays = {std::make_pair(7, GhostMode::SCATTER), std::make_pair(20, GhostMode::CHASE), 
-        std::make_pair(7, GhostMode::SCATTER), std::make_pair(20, GhostMode::CHASE), 
-        std::make_pair(5, GhostMode::SCATTER), std::make_pair(20, GhostMode::CHASE), 
-        std::make_pair(5, GhostMode::SCATTER)};
+    this->transitionDelays = {std::make_pair(0, GhostMode::SCATTER), std::make_pair(7, GhostMode::CHASE), 
+        std::make_pair(20, GhostMode::SCATTER), std::make_pair(7, GhostMode::CHASE), 
+        std::make_pair(20, GhostMode::SCATTER), std::make_pair(5, GhostMode::CHASE), 
+        std::make_pair(20, GhostMode::SCATTER), std::make_pair(5, GhostMode::CHASE)};
     this->ghostModeTimer = std::make_unique<GhostModeTimer>(this->transitionDelays, transitionGhostMode);
     this->ghostModeThread = std::make_unique<std::thread>(&GhostModeTimer::run, this->ghostModeTimer.get());
     this->ghostModeTimer->startTimer();
@@ -241,6 +249,7 @@ void Board::updateGhosts()
 void Board::transitionGhostModeHandler(GhostMode ghostMode)
 {
     printf("GhostMode: %d\n", ghostMode);
+    characterManager->updateGhostMode(ghostMode);
 }
 
 } // namespace

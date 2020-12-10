@@ -4,16 +4,17 @@
 #include "pacman/GhostMode.hpp"
 #include "pacman/Utils.hpp"
 
-#include <bits/stdc++.h>
 #include <algorithm>
-#include <typeinfo>
+#include <bits/stdc++.h>
 #include <iomanip>
+#include <typeinfo>
 
 namespace pacman
 {
     
 CharacterManager::CharacterManager() :
-    releaseOrderIndex(0)
+    releaseOrderIndex(0),
+    mtx(std::make_unique<std::mutex>())
 {
     pacman = std::make_shared<Pacman>();
     blinky = std::make_shared<Blinky>();
@@ -31,8 +32,7 @@ std::shared_ptr<Pacman> CharacterManager::getPacman()
 
 std::vector<std::shared_ptr<Ghost>> CharacterManager::getGhosts()
 {
-    std::vector<std::shared_ptr<Ghost>> ghost{pinky, inky, blinky, clyde};
-    return ghost;
+    return {pinky, inky, blinky, clyde};
 }
 
 bool CharacterManager::canMovePacman()
@@ -211,7 +211,8 @@ void CharacterManager::selectNewDirection(AdjacentTile adjacentTile, std::vector
                     float distance = Util::distance(current.col, current.row, target.col, target.row);
                     if (typeid(*ghost) == typeid(Pinky))
                     {
-                        //printf("\ndir: %d curr (%3d, %3d) target (%3d, %3d) distance: %.3f ", d, current.col, current.row, target.col, target.row, distance);
+                        //printf("\ndir: %d curr (%3d, %3d) target (%3d, %3d) distance: %.3f ", 
+                        //    d, current.col, current.row, target.col, target.row, distance);
                     }
                     if (distance < shorterDistance || (distance == shorterDistance && d < shorterDirection))
                     {
@@ -228,6 +229,7 @@ void CharacterManager::selectNewDirection(AdjacentTile adjacentTile, std::vector
             break;
             case GhostMode::CHASE:
             {
+                printf("Handle CHASE case.\n");
             }
             break;
             case GhostMode::FRIGHTENED:
@@ -275,6 +277,18 @@ void CharacterManager::determineRelease(std::shared_ptr<Ghost> ghost)
         releaseOrder.at(releaseOrderIndex)->setDotCounterActive();
         //printf("Exiting: %s next release: %s releaseOrderIndex: %d\n", typeid(*ghost).name(), typeid(*releaseOrder.at(releaseOrderIndex)).name(), releaseOrderIndex);
     }
+}
+
+void CharacterManager::updateGhostMode(GhostMode ghostMode)
+{
+    mtx->lock();
+
+    for (std::shared_ptr<Ghost> ghost : getGhosts())
+    {
+        ghost->setMode(ghostMode);
+    }
+    
+    mtx->unlock();
 }
 
 }
