@@ -249,7 +249,7 @@ void Board::updateGhosts()
 void Board::transitionGhostModeHandler(GhostMode ghostMode)
 {
     printf("GhostMode: %d\n", ghostMode);
-    characterManager->updateGhostMode(ghostMode);
+    //characterManager->updateGhostMode(ghostMode);
 }
 
 } // namespace

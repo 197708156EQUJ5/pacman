@@ -43,6 +43,8 @@ private:
 
     std::vector<int> findLegalDirections(AdjacentTile adjacentTile, std::shared_ptr<Ghost> ghost);
     void selectNewDirection(AdjacentTile adjacentTile, std::vector<int> legalDirections, std::shared_ptr<Ghost> ghost);
+    void findNextDirection(Cell targetCell, AdjacentTile adjacentTile, std::vector<int> legalDirections, Direction &newDirection);
+    void handleChaseMode(AdjacentTile adjacentTile, std::vector<int> legalDirections, std::shared_ptr<Ghost> ghost);
 
     void determineRelease(std::shared_ptr<Ghost> ghost);
     

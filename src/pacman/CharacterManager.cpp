@@ -202,25 +202,8 @@ void CharacterManager::selectNewDirection(AdjacentTile adjacentTile, std::vector
                 {
                     //printf("SCATTER %s", typeid(*ghost).name());
                 }
-                float shorterDistance = 10000000.0;
-                int shorterDirection = INT_MAX;
-                for (int d : legalDirections)
-                {
-                    Cell current = adjacentTile.fromDirection((Direction)d);
-                    Cell target = ghost->getTarget();
-                    float distance = Util::distance(current.col, current.row, target.col, target.row);
-                    if (typeid(*ghost) == typeid(Pinky))
-                    {
-                        //printf("\ndir: %d curr (%3d, %3d) target (%3d, %3d) distance: %.3f ", 
-                        //    d, current.col, current.row, target.col, target.row, distance);
-                    }
-                    if (distance < shorterDistance || (distance == shorterDistance && d < shorterDirection))
-                    {
-                        shorterDistance = distance;
-                        shorterDirection = d;
-                        newDirection = (Direction) d;
-                    }
-                }
+                Cell targetCell = ghost->getTarget();
+                findNextDirection(targetCell, adjacentTile, legalDirections, newDirection);
                 if (typeid(*ghost) == typeid(Pinky))
                 {
                     //printf("next direction; %d\n", newDirection);
@@ -289,6 +272,37 @@ void CharacterManager::updateGhostMode(GhostMode ghostMode)
     }
     
     mtx->unlock();
+}
+
+void CharacterManager::findNextDirection(Cell targetCell, AdjacentTile adjacentTile, std::vector<int> legalDirections, Direction &newDirection)
+{
+    float shorterDistance = 10000000.0;
+    int shorterDirection = INT_MAX;
+    for (int d : legalDirections)
+    {
+        Cell current = adjacentTile.fromDirection((Direction)d);
+        float distance = Util::distance(current.col, current.row, targetCell.col, targetCell.row);
+        /*
+        if (typeid(*ghost) == typeid(Pinky))
+        {
+            printf("\ndir: %d curr (%3d, %3d) target (%3d, %3d) distance: %.3f ", 
+                d, current.col, current.row, target.col, target.row, distance);
+        }
+        */
+        if (distance < shorterDistance || (distance == shorterDistance && d < shorterDirection))
+        {
+            shorterDistance = distance;
+            shorterDirection = d;
+            newDirection = (Direction) d;
+        }
+    }
+}
+
+void CharacterManager::handleChaseMode(AdjacentTile adjacentTile, std::vector<int> legalDirections, std::shared_ptr<Ghost> ghost)
+{
+    int x = pacman->getX();
+    int y = pacman->getY();
+    Direction pacmanDirection = pacman->getDirection();
 }
 
 }
