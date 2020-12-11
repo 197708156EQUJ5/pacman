@@ -23,7 +23,7 @@ int Bell::getSrcRow()
 
 int Bell::getValue()
 {
-    return FruitConstants:XXX_VALUE;
+    return FruitConstants:BELL_VALUE;
 }
 
 } // namespace pacman

@@ -23,7 +23,7 @@ int Key::getSrcRow()
 
 int Key::getValue()
 {
-    return FruitConstants:XXX_VALUE;
+    return FruitConstants:KEY_VALUE;
 }
 
 } // namespace pacman

@@ -23,7 +23,7 @@ int Galaxian::getSrcRow()
 
 int Galaxian::getValue()
 {
-    return FruitConstants:XXX_VALUE;
+    return FruitConstants:GALAXIAN_VALUE;
 }
 
 } // namespace pacman

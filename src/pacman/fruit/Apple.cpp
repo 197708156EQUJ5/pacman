@@ -23,7 +23,7 @@ int Apple::getSrcRow()
 
 int Apple::getValue()
 {
-    return FruitConstants:XXX_VALUE;
+    return FruitConstants:APPLE_VALUE;
 }
 
 } // namespace pacman

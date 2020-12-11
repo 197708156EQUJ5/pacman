@@ -23,7 +23,7 @@ int Peach::getSrcRow()
 
 int Peach::getValue()
 {
-    return FruitConstants:XXX_VALUE;
+    return FruitConstants:PEACH_VALUE;
 }
 
 } // namespace pacman

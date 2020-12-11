@@ -23,7 +23,7 @@ int Grape::getSrcRow()
 
 int Grape::getValue()
 {
-    return FruitConstants:XXX_VALUE;
+    return FruitConstants:GRAPE_VALUE;
 }
 
 } // namespace pacman
