@@ -21,9 +21,9 @@ int Cherry::getSrcRow()
     return FruitConstants::SRC_CHERRY.row;
 }
 
-int XXX::getValue()
+int Cherry::getValue()
 {
-    return FruitConstants::_VALUE;
+    return FruitConstants:XXX_VALUE;
 }
 
 } // namespace pacman
