@@ -35,6 +35,13 @@ Board::~Board()
         this->ghostModeThread->join();
         this->ghostModeThread.reset();
     }
+    
+    if (this->fruitThread != nullptr)
+    {
+        this->fruitTimer->stop();
+        this->fruitThread->join();
+        this->fruitThread.reset();
+    }
 }
 
 bool Board::init()
@@ -194,12 +201,19 @@ void Board::drawLives()
 
 void Board::drawFruits()
 {
-    if (pacman->getDotCounter() >= 3 && !showFruit)
+    if (!showFruit && (pacman->getDotCounter() == PacmanConstants::FIRST_FRUIT || 
+                pacman->getDotCounter() == PacmanConstants::SECOND_FRUIT))
+    {
+        showFruit = true;
+    }
+
+    if (showFruit)
     {
         int x = FruitConstants::COL;
         int y = FruitConstants::ROW;
 
         drawLargeTile(x, y, FruitConstants::SRC_CHERRY.col, FruitConstants::SRC_CHERRY.row);
+        this->fruitTimer->startTimer();
     }
 }
 

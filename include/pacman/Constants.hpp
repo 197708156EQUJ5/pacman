@@ -81,6 +81,9 @@ static const int SRC_UP_2 = 6;
 static const int SRC_DOWN_1 = 10;
 static const int SRC_DOWN_2 = 14;
 
+static const int FIRST_FRUIT = 3; // Actual is 70
+static const int SECOND_FRUIT = 23; // Actual is 170
+
 }
 
 namespace GhostConstants
