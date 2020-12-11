@@ -314,6 +314,24 @@ void CharacterManager::handleChaseMode(std::shared_ptr<Ghost> ghost, AdjacentTil
     {
         findNextDirection(Util::getTileAhead(x, y, pacmanDirection, 4), adjacentTile, legalDirections, newDirection);        
     }
+    else if (typeid(*ghost) == typeid(Inky))
+    {
+        // TODO implement Inky's CHASE algorithm
+    }
+    else if (typeid(*ghost) == typeid(Clyde))
+    {
+        float distanceToPacman = Util::distance(ghost->getX(), ghost->getY(), pacman->getX(), pacman->getY()) / Constants::TILE_SIZE;
+
+        if (distanceToPacman < ClydeConstants::CHASE_TILE_THRESHOLD)
+        {
+            findNextDirection(Util::getCenter(Cell{x, y}), adjacentTile, legalDirections, newDirection);        
+        }
+        else
+        {
+            Cell targetCell = ghost->getTarget();
+            findNextDirection(targetCell, adjacentTile, legalDirections, newDirection);
+        }
+    }
 }
 
 }

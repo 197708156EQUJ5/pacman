@@ -170,5 +170,5 @@ static const int SRC_DOWN_2 = 6;
 
 static const int SCATTER_COL = 220; // 0th column (0 index), centered
 static const int SCATTER_ROW = 284; // 35th row, centered
-
+static const int CHASE_TILE_THRESHOLD = 8;
 }
