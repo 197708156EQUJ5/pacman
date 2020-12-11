@@ -80,7 +80,7 @@ Cell getTileAhead(int x, int y, Direction direction, int tilesAhead)
         return Cell{center.col + (tilesAhead * Constants::TILE_SIZE), center.row};
     }
     
-    return Cell{center.col, center.row};    
+    return getCenter(Cell{center.col, center.row});
 }
 
 Cell getCurrentCell(int x, int y)

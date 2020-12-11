@@ -317,6 +317,11 @@ void CharacterManager::handleChaseMode(std::shared_ptr<Ghost> ghost, AdjacentTil
     else if (typeid(*ghost) == typeid(Inky))
     {
         // TODO implement Inky's CHASE algorithm
+        Cell pacmanOffset = Util::getTileAhead(x, y, pacmanDirection, 2);
+        Cell blinkyCenter = Util::getCenter(blinky->getX(), blinky->getY());
+        float distanceBlinkyToPacmanOffset = Util::distance(blinkyCenter.col, blinkyCenter.row, pacmanOffset.col, pacmanOffset.row) / Constants::TILE_SIZE;
+        
+
     }
     else if (typeid(*ghost) == typeid(Clyde))
     {
