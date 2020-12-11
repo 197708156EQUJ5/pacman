@@ -3,6 +3,7 @@
 #include "pacman/AdjacentTile.hpp"
 #include "pacman/CharacterManager.hpp"
 #include "pacman/GhostModeTimer.hpp"
+#include "pacman/FruitManager.hpp"
 #include "pacman/FruitTimer.hpp"
 #include "pacman/Level.hpp"
 #include "pacman/SpriteSheet.hpp"
@@ -34,6 +35,7 @@ private:
     
     std::unique_ptr<SpriteSheet> spriteSheet;
     std::unique_ptr<CharacterManager> characterManager;
+    std::unique_ptr<FruitManager> fruitManager;
 
     std::unique_ptr<GhostModeTimer> ghostModeTimer;
     std::unique_ptr<std::thread> ghostModeThread;

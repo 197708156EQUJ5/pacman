@@ -15,7 +15,7 @@ Board::Board() :
     userDirection(Direction::LEFT),    
     score(0),
     lives(2),
-    level(1),
+    level(0),
     count(0),
     showFruit(false)
 {
@@ -68,6 +68,8 @@ bool Board::init()
 
     spriteSheet = std::make_unique<SpriteSheet>();
     characterManager = std::make_unique<CharacterManager>();
+    fruitManager = std::make_unique<FruitManager>();
+
     maze = Level::LEVEL_1;
     //maze = Level::getLevel();
     pacman = this->characterManager->getPacman();
@@ -212,7 +214,8 @@ void Board::drawFruits()
         int x = FruitConstants::COL;
         int y = FruitConstants::ROW;
 
-        drawLargeTile(x, y, FruitConstants::SRC_CHERRY.col, FruitConstants::SRC_CHERRY.row);
+        Cell fruitCell = fruitManager->getFruit(level);
+        drawLargeTile(x, y, fruitCell.col, fruitCell.row);
         this->fruitTimer->startTimer();
     }
 }

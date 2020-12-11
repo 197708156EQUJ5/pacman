@@ -212,7 +212,6 @@ void CharacterManager::selectNewDirection(AdjacentTile adjacentTile, std::vector
             break;
             case GhostMode::CHASE:
             {
-                printf("Handle CHASE case.\n");
                 handleChaseMode(ghost, adjacentTile, legalDirections, newDirection);
             }
             break;

@@ -10,6 +10,7 @@ INCLUDE  := -Iinclude/
 SRC      :=                       \
    $(wildcard src/*.cpp)          \
    $(wildcard src/pacman/*.cpp) \
+   $(wildcard src/pacman/fruit/*.cpp) \
 
 OBJECTS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
