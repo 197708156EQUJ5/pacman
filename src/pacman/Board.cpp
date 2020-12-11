@@ -93,6 +93,8 @@ void Board::draw()
 
     drawBoard();
     drawScore();
+    drawFruits();
+    drawLives();
     drawPacman();
     drawGhosts();
 
@@ -122,7 +124,8 @@ void Board::drawText()
         Constants::S, Constants::C, Constants::O, Constants::R, Constants::E};
     for (int i = 0; i < highScoreText.size(); i++)
     {
-        SDL_Rect position = {(i + 9) * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO), 0 * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO), 
+        SDL_Rect position = {(i + 9) * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO), 
+            0 * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO), 
             (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO), (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO)};
         Cell text = highScoreText.at(i);
         spriteSheet->selectSprite(text.col, text.row);
@@ -139,7 +142,8 @@ void Board::drawMaze()
     maze = Level::getLevel();
     for (Cell cell : maze)
     {
-        SDL_Rect position = {colCount * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO), rowCount * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO), 
+        SDL_Rect position = {colCount * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO), 
+            rowCount * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO), 
             (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO), (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO)};
         if (cell.hasVisited)
         {
@@ -182,6 +186,19 @@ void Board::drawLives()
 
 void Board::drawFruits()
 {
+    if (pacman->getDotCounter() >= 10)
+    {
+        int x = FruitConstants::COL * Constants::TILE_DISPLAY_RATIO;
+        int y = FruitConstants::ROW * Constants::TILE_DISPLAY_RATIO;
+        int width = Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO;
+        int height = Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO;
+
+        printf("(%3d, %3d) (%3d x %3d)\n", x, y, width, height);
+        
+        SDL_Rect position = {x, y, width, height};
+        spriteSheet->selectSprite(FruitConstants::SRC_CHERRY.col, FruitConstants::SRC_CHERRY.row);
+        spriteSheet->drawSelectedSprite(surface, &position);
+    }
 }
 
 void Board::drawPacman()
@@ -199,19 +216,25 @@ void Board::drawGhosts()
 
 void Board::drawCharacter(std::shared_ptr<Character> character)
 {
+    drawLargeTile(character->getX(), character->getY(), character->getSrcCol(), character->getSrcRow());
+}
+
+
+void Board::drawLargeTile(int tileX, int tileY, int tileSrcCol, int tileSrcRow)
+{
     int i = 1;
     int j = 1;
     for (int srcRow = 0; srcRow < 2; srcRow++)
     {
         for (int srcCol = 0; srcCol < 2; srcCol++)
         {
-            int x = (character->getX() * Constants::TILE_DISPLAY_RATIO) - (i * Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO);
-            int y = (character->getY() * Constants::TILE_DISPLAY_RATIO) - (j * Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO);
+            int x = (tileX * Constants::TILE_DISPLAY_RATIO) - (i * Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO);
+            int y = (tileY * Constants::TILE_DISPLAY_RATIO) - (j * Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO);
             int width = Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO;
             int height = Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO;
 
             SDL_Rect position = {x, y, width, height};
-            spriteSheet->selectSprite(character->getSrcCol() + srcCol, character->getSrcRow() + srcRow);
+            spriteSheet->selectSprite(tileSrcCol + srcCol, tileSrcRow + srcRow);
             spriteSheet->drawSelectedSprite(surface, &position);
             i--;
         }
@@ -228,6 +251,7 @@ void Board::updatePacman()
         int tileValue = Level::getCellValue(Util::convertToGrid(Cell{pacman->getX(), pacman->getY()}));
         if (tileValue > 0)
         {
+            pacman->incrementDotCounter();
             characterManager->incrementDotCounter();
         }
         score += tileValue;

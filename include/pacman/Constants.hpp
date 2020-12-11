@@ -171,4 +171,23 @@ static const int SRC_DOWN_2 = 6;
 static const int SCATTER_COL = 220; // 0th column (0 index), centered
 static const int SCATTER_ROW = 284; // 35th row, centered
 static const int CHASE_TILE_THRESHOLD = 8;
+
+}
+
+namespace FruitConstants
+{
+
+static const int COL = 112; // 13th column
+static const int ROW = 164; // 20th row including score header, centered
+
+static const int SRC_ROW = 10;
+static const pacman::Cell SRC_CHERRY {0, SRC_ROW};
+static const pacman::Cell SRC_STRAWBERRY {2, SRC_ROW};
+static const pacman::Cell SRC_PEACH {4, SRC_ROW};
+static const pacman::Cell SRC_APPLE {8, SRC_ROW};
+static const pacman::Cell SRC_GRAPES {10, SRC_ROW};
+static const pacman::Cell SRC_GALAXIAN {12, SRC_ROW};
+static const pacman::Cell SRC_BELL {6, SRC_ROW};
+static const pacman::Cell SRC_KEY {14, SRC_ROW};
+
 }

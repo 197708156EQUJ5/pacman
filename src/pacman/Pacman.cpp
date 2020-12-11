@@ -7,7 +7,8 @@ namespace pacman
 {
 
 Pacman::Pacman() :
-    Character(PacmanConstants::START_COL, PacmanConstants::START_ROW, Direction::NONE)
+    Character(PacmanConstants::START_COL, PacmanConstants::START_ROW, Direction::NONE),
+    dotCounter(0)
 {
 }
 
@@ -91,6 +92,21 @@ void Pacman::move()
 void Pacman::changeDirection(Direction direction)
 {
     this->direction = direction;
+}
+
+void Pacman::incrementDotCounter()
+{
+    this->dotCounter++;
+}
+
+void Pacman::resetDotCounter()
+{
+    this->dotCounter = 0;
+}
+
+int Pacman::getDotCounter()
+{
+    return this->dotCounter;
 }
 
 }

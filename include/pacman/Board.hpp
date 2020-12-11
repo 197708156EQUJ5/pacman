@@ -56,6 +56,7 @@ private:
     void drawMaze();
 
     void drawCharacter(std::shared_ptr<Character> character);
+    void drawLargeTile(int tileX, int tileY, int tileSrcCol, int tileSrcRow);
     void drawPacman();
     void drawGhosts();
 

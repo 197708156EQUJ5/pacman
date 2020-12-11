@@ -16,8 +16,14 @@ public:
     int getSrcRow();
     void move();
     void changeDirection(Direction direction);
+
+    void incrementDotCounter();
+    void resetDotCounter();
+    int getDotCounter();
     
 private:
+
+    int dotCounter;
 
 };
 
