@@ -171,5 +171,7 @@ static T chronoTime(void)
 
 float distance(int x1, int x2, int y1, int y2);
 
+float generateRandom();
+
 }
 }

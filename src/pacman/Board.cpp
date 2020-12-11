@@ -16,7 +16,8 @@ Board::Board() :
     score(0),
     lives(2),
     level(1),
-    count(0)
+    count(0),
+    showFruit(false)
 {
 }
 
@@ -78,6 +79,13 @@ bool Board::init()
     this->ghostModeTimer = std::make_unique<GhostModeTimer>(this->transitionDelays, transitionGhostMode);
     this->ghostModeThread = std::make_unique<std::thread>(&GhostModeTimer::run, this->ghostModeTimer.get());
     this->ghostModeTimer->startTimer();
+
+    std::function<void()> removeFruit = [this]()
+    {
+        this->removeFruitHandler();
+    };
+    this->fruitTimer = std::make_unique<FruitTimer>(removeFruit);
+    this->fruitThread = std::make_unique<std::thread>(&FruitTimer::run, this->fruitTimer.get());
 
     return true;
 }
@@ -186,7 +194,7 @@ void Board::drawLives()
 
 void Board::drawFruits()
 {
-    if (pacman->getDotCounter() >= 3)
+    if (pacman->getDotCounter() >= 3 && !showFruit)
     {
         int x = FruitConstants::COL;
         int y = FruitConstants::ROW;
@@ -268,6 +276,11 @@ void Board::transitionGhostModeHandler(GhostMode ghostMode)
 {
     printf("GhostMode: %d\n", ghostMode);
     characterManager->updateGhostMode(ghostMode);
+}
+
+void Board::removeFruitHandler()
+{
+    this->showFruit = false;
 }
 
 } // namespace

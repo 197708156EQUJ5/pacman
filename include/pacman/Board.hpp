@@ -3,6 +3,7 @@
 #include "pacman/AdjacentTile.hpp"
 #include "pacman/CharacterManager.hpp"
 #include "pacman/GhostModeTimer.hpp"
+#include "pacman/FruitTimer.hpp"
 #include "pacman/Level.hpp"
 #include "pacman/SpriteSheet.hpp"
 
@@ -33,13 +34,19 @@ private:
     
     std::unique_ptr<SpriteSheet> spriteSheet;
     std::unique_ptr<CharacterManager> characterManager;
+
     std::unique_ptr<GhostModeTimer> ghostModeTimer;
     std::unique_ptr<std::thread> ghostModeThread;
+    std::vector<std::pair<int, GhostMode>> transitionDelays;
+
+    std::unique_ptr<FruitTimer> fruitTimer;
+    std::unique_ptr<std::thread> fruitThread;
+    bool showFruit;
+
     std::vector<Cell> maze;
     std::shared_ptr<Pacman> pacman;
     std::vector<std::shared_ptr<Ghost>> ghosts;
     Direction userDirection;
-    std::vector<std::pair<int, GhostMode>> transitionDelays;
 
     int score;
     int lives;
@@ -68,6 +75,7 @@ private:
     void updateGhosts();
 
     void transitionGhostModeHandler(GhostMode ghostMode);
+    void removeFruitHandler();
 };
 
 } // namespace
