@@ -183,6 +183,9 @@ namespace FruitConstants
 static const int COL = 112; // 13th column
 static const int ROW = 164; // 20th row including score header, centered
 
+static const int LEVEL_START_COL = 200; // 25th column
+static const int LEVEL_START_ROW = 280; // 35th row including score header
+
 static const int SRC_ROW = 10;
 static const pacman::Cell SRC_CHERRY {0, SRC_ROW};
 static const pacman::Cell SRC_STRAWBERRY {2, SRC_ROW};
@@ -192,5 +195,14 @@ static const pacman::Cell SRC_GRAPES {10, SRC_ROW};
 static const pacman::Cell SRC_GALAXIAN {12, SRC_ROW};
 static const pacman::Cell SRC_BELL {6, SRC_ROW};
 static const pacman::Cell SRC_KEY {14, SRC_ROW};
+
+static const int CHERRY_VALUE = 100;
+static const int STRAWBERRY_VALUE = 300;
+static const int PEACH_VALUE = 500;
+static const int APPLE_VALUE = 700;
+static const int GRAPE_VALUE = 1000;
+static const int GALAXIAN_VALUE = 2000;
+static const int BELL_VALUE = 3000;
+static const int KEY_VALUE = 5000;
 
 }

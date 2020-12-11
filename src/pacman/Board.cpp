@@ -4,6 +4,7 @@
 #include "pacman/Direction.hpp"
 #include "pacman/Level.hpp"
 
+#include <algorithm> 
 #include <cstdlib>
 #include <sstream>
 #include <iostream>
@@ -217,6 +218,13 @@ void Board::drawFruits()
         Cell fruitCell = fruitManager->getFruit(level);
         drawLargeTile(x, y, fruitCell.col, fruitCell.row);
         this->fruitTimer->startTimer();
+    }
+
+    for (int i = std::max(level - 7, 0); i <= level; i++)
+    {
+        Cell fruitCell = fruitManager->getFruit(i);
+        drawLargeTile(FruitConstants::LEVEL_START_COL - (i * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO)),
+                FruitConstants::LEVEL_START_ROW, fruitCell.col, fruitCell.row);
     }
 }
 
