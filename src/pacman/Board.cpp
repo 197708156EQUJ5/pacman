@@ -186,18 +186,12 @@ void Board::drawLives()
 
 void Board::drawFruits()
 {
-    if (pacman->getDotCounter() >= 10)
+    if (pacman->getDotCounter() >= 3)
     {
-        int x = FruitConstants::COL * Constants::TILE_DISPLAY_RATIO;
-        int y = FruitConstants::ROW * Constants::TILE_DISPLAY_RATIO;
-        int width = Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO;
-        int height = Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO;
+        int x = FruitConstants::COL;
+        int y = FruitConstants::ROW;
 
-        printf("(%3d, %3d) (%3d x %3d)\n", x, y, width, height);
-        
-        SDL_Rect position = {x, y, width, height};
-        spriteSheet->selectSprite(FruitConstants::SRC_CHERRY.col, FruitConstants::SRC_CHERRY.row);
-        spriteSheet->drawSelectedSprite(surface, &position);
+        drawLargeTile(x, y, FruitConstants::SRC_CHERRY.col, FruitConstants::SRC_CHERRY.row);
     }
 }
 
