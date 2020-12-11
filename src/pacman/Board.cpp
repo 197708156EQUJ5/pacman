@@ -117,7 +117,7 @@ void Board::draw()
     drawGhosts();
 
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - gameStartTime);
-    if (duration.count() > 1000)
+    if (duration.count() > Constants::LEVEL_START_DELAY)
     {
         updatePacman();
         updateGhosts();
