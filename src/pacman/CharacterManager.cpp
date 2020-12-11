@@ -305,23 +305,22 @@ void CharacterManager::handleChaseMode(std::shared_ptr<Ghost> ghost, AdjacentTil
     int x = pacman->getX();
     int y = pacman->getY();
     Direction pacmanDirection = pacman->getDirection();
+    Cell targetCell = {0, 0};
 
     if (typeid(*ghost) == typeid(Blinky))
     {
-        findNextDirection(Util::getCenter(Cell{x, y}), adjacentTile, legalDirections, newDirection);        
+        targetCell = Util::getCenter(Cell{x, y});
     }
     else if (typeid(*ghost) == typeid(Pinky))
     {
-        findNextDirection(Util::getTileAhead(x, y, pacmanDirection, 4), adjacentTile, legalDirections, newDirection);        
+        targetCell = Util::getTileAhead(x, y, pacmanDirection, 4);
     }
     else if (typeid(*ghost) == typeid(Inky))
     {
-        // TODO implement Inky's CHASE algorithm
         Cell pacmanOffset = Util::getTileAhead(x, y, pacmanDirection, 2);
         Cell blinkyCenter = Util::getCenter(blinky->getX(), blinky->getY());
-        float distanceBlinkyToPacmanOffset = Util::distance(blinkyCenter.col, blinkyCenter.row, pacmanOffset.col, pacmanOffset.row) / Constants::TILE_SIZE;
-        
 
+        targetCell = {pacmanOffset.col * 2 - blinkyCenter.col, pacmanOffset.row * 2 - blinkyCenter.row};
     }
     else if (typeid(*ghost) == typeid(Clyde))
     {
@@ -329,14 +328,14 @@ void CharacterManager::handleChaseMode(std::shared_ptr<Ghost> ghost, AdjacentTil
 
         if (distanceToPacman < ClydeConstants::CHASE_TILE_THRESHOLD)
         {
-            findNextDirection(Util::getCenter(Cell{x, y}), adjacentTile, legalDirections, newDirection);        
+            targetCell = Util::getCenter(Cell{x, y});
         }
         else
         {
-            Cell targetCell = ghost->getTarget();
-            findNextDirection(targetCell, adjacentTile, legalDirections, newDirection);
+            targetCell = ghost->getTarget();
         }
     }
+    findNextDirection(targetCell, adjacentTile, legalDirections, newDirection);
 }
 
 }
