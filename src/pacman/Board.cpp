@@ -200,6 +200,11 @@ void Board::drawScore()
 
 void Board::drawLives()
 {
+    for (int i = 0; i < lives; i++)
+    {
+        drawLargeTile(PacmanConstants::LIVES_START_COL + (i * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO)),
+                PacmanConstants::LIVES_START_ROW, PacmanConstants::SRC_LEFT_1, PacmanConstants::SRC_ROW);
+    }
 }
 
 void Board::drawFruits()

@@ -68,6 +68,8 @@ namespace PacmanConstants
 
 static const int START_COL = 112; // 14th column
 static const int START_ROW = 212; // 26th row including score header, centered
+static const int LIVES_START_COL = 24; // 2nd column
+static const int LIVES_START_ROW = 280; // 35th row including score header
 
 static const int SRC_ROW = 6;
 static const int SRC_START_COL = 0;
