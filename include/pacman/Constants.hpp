@@ -191,7 +191,7 @@ static const pacman::Cell SRC_CHERRY {0, SRC_ROW};
 static const pacman::Cell SRC_STRAWBERRY {2, SRC_ROW};
 static const pacman::Cell SRC_PEACH {4, SRC_ROW};
 static const pacman::Cell SRC_APPLE {8, SRC_ROW};
-static const pacman::Cell SRC_GRAPES {10, SRC_ROW};
+static const pacman::Cell SRC_GRAPE {10, SRC_ROW};
 static const pacman::Cell SRC_GALAXIAN {12, SRC_ROW};
 static const pacman::Cell SRC_BELL {6, SRC_ROW};
 static const pacman::Cell SRC_KEY {14, SRC_ROW};

@@ -23,7 +23,7 @@ int Strawberry::getSrcRow()
 
 int Strawberry::getValue()
 {
-    return FruitConstants:STRAWBERRY_VALUE;
+    return FruitConstants::STRAWBERRY_VALUE;
 }
 
 } // namespace pacman
