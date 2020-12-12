@@ -93,10 +93,10 @@ float distance(int x1, int y1, int x2, int y2)
     return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2) * 1.0); 
 }
 
-float generateRandom()
+float generateRandom(int low, int high)
 {
     srand(time(0));
-    return (rand() / RAND_MAX) + 9;
+    return low + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(high - low)));
 }
 
 }

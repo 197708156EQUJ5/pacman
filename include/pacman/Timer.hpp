@@ -1,7 +1,5 @@
 #pragma once
 
-#include "pacman/GhostMode.hpp"
-
 #include <atomic>
 #include <chrono>
 #include <cstdint>
@@ -12,12 +10,12 @@
 namespace pacman
 {
 
-class FruitTimer
+class Timer
 {
 public:
 
-    FruitTimer(std::function<void()> removeFruit);
-    ~FruitTimer();
+    Timer(int low, int high, std::function<void()> timerDone);
+    ~Timer();
 
     void run();
     void startTimer();
@@ -30,7 +28,9 @@ private:
     std::atomic<bool> isRunning;
     std::atomic<bool> isTimerRunning;
     std::chrono::steady_clock::time_point startTime;
-    std::function<void()> removeFruit;
+    std::function<void()> timerDone;
+    int low;
+    int high;
     double delay;
 
 };

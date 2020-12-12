@@ -94,8 +94,8 @@ bool Board::init()
     {
         this->removeFruitHandler();
     };
-    this->fruitTimer = std::make_unique<FruitTimer>(removeFruit);
-    this->fruitThread = std::make_unique<std::thread>(&FruitTimer::run, this->fruitTimer.get());
+    this->fruitTimer = std::make_unique<Timer>(9, 10, removeFruit);
+    this->fruitThread = std::make_unique<std::thread>(&Timer::run, this->fruitTimer.get());
 
     return true;
 }

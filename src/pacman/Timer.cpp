@@ -1,4 +1,4 @@
-#include "pacman/FruitTimer.hpp"
+#include "pacman/Timer.hpp"
 
 #include "pacman/Utils.hpp"
 
@@ -11,20 +11,22 @@ using namespace std::chrono;
 namespace pacman
 {
 
-FruitTimer::FruitTimer(std::function<void()> removeFruit) :
+Timer::Timer(int low, int high, std::function<void()> timerDone) :
     isRunning(false),
     isTimerRunning(false),
+    low(low),
+    high(high),
     delay(0.0),
-    removeFruit(removeFruit)
+    timerDone(timerDone)
 {
 }
 
-FruitTimer::~FruitTimer()
+Timer::~Timer()
 {
     this->isRunning = false;
 }
 
-void FruitTimer::run()
+void Timer::run()
 {
     printf("run()\n");
     this->isRunning = true;
@@ -41,14 +43,14 @@ void FruitTimer::run()
             
             if (timeDelta.count() >= delay)
             {
-                this->removeFruit();
+                this->timerDone();
                 this->isTimerRunning = false;
             }
         }
     }
 }
 
-void FruitTimer::pause()
+void Timer::pause()
 {
     if (this->isTimerRunning)
     {
@@ -56,24 +58,24 @@ void FruitTimer::pause()
     }
 }
 
-void FruitTimer::startTimer()
+void Timer::startTimer()
 {
     if (!this->isTimerRunning)
     {
-        delay = Util::generateRandom();
+        this->delay = Util::generateRandom(low, high);
         this->startTime = steady_clock::now();
-        printf("startTime: %d delay %.2f\n", startTime, delay);
+        printf("delay %.6f\n", delay);
         this->isTimerRunning = true;
     }
 }
 
-void FruitTimer::reset()
+void Timer::reset()
 {
     this->isTimerRunning = false;
     this->startTimer();
 }
 
-void FruitTimer::stop()
+void Timer::stop()
 {
     this->isRunning = false;
 }

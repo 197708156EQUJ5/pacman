@@ -2,11 +2,11 @@
 
 #include "pacman/AdjacentTile.hpp"
 #include "pacman/CharacterManager.hpp"
-#include "pacman/GhostModeTimer.hpp"
 #include "pacman/FruitManager.hpp"
-#include "pacman/FruitTimer.hpp"
+#include "pacman/GhostModeTimer.hpp"
 #include "pacman/Level.hpp"
 #include "pacman/SpriteSheet.hpp"
+#include "pacman/Timer.hpp"
 
 #include <SDL2/SDL.h>
 #include <chrono>
@@ -41,7 +41,7 @@ private:
     std::unique_ptr<std::thread> ghostModeThread;
     std::vector<std::pair<int, GhostMode>> transitionDelays;
 
-    std::unique_ptr<FruitTimer> fruitTimer;
+    std::unique_ptr<Timer> fruitTimer;
     std::unique_ptr<std::thread> fruitThread;
     bool showFruit;
 
