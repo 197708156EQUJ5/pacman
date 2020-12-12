@@ -14,6 +14,7 @@ namespace pacman
     
 CharacterManager::CharacterManager() :
     releaseOrderIndex(0),
+    ghostMode(GhostMode::SCATTER),
     mtx(std::make_unique<std::mutex>())
 {
     pacman = std::make_shared<Pacman>();
@@ -37,6 +38,7 @@ std::vector<std::shared_ptr<Ghost>> CharacterManager::getGhosts()
 
 bool CharacterManager::canMovePacman()
 {
+    checkCollision();
     Direction direction = pacman->getDirection();
 
     if (direction == Direction::NONE)
@@ -193,21 +195,12 @@ void CharacterManager::selectNewDirection(AdjacentTile adjacentTile, std::vector
 
     if (legalDirections.size() > 1 && ghost->hasTileChanged())
     {
-        //printf("GhostMode[%s]: %d\n", typeid(*ghost).name(), ghost->getMode());
-        switch (ghost->getMode())
+        switch (ghostMode)
         {
             case GhostMode::SCATTER:
             {
-                if (typeid(*ghost) == typeid(Pinky))
-                {
-                    //printf("SCATTER %s", typeid(*ghost).name());
-                }
                 Cell targetCell = ghost->getTarget();
                 findNextDirection(targetCell, adjacentTile, legalDirections, newDirection);
-                if (typeid(*ghost) == typeid(Pinky))
-                {
-                    //printf("next direction; %d\n", newDirection);
-                }
             }
             break;
             case GhostMode::CHASE:
@@ -266,10 +259,7 @@ void CharacterManager::updateGhostMode(GhostMode ghostMode)
 {
     mtx->lock();
 
-    for (std::shared_ptr<Ghost> ghost : getGhosts())
-    {
-        ghost->setMode(ghostMode);
-    }
+    this->ghostMode = ghostMode;
     
     mtx->unlock();
 }
@@ -335,6 +325,28 @@ void CharacterManager::handleChaseMode(std::shared_ptr<Ghost> ghost, AdjacentTil
         }
     }
     findNextDirection(targetCell, adjacentTile, legalDirections, newDirection);
+}
+
+void CharacterManager::checkCollision()
+{
+    for (std::shared_ptr<Ghost> ghost : getGhosts())
+    {
+        Cell ghostTile = Util::getCenter(ghost->getX(), ghost->getY());
+        Cell pacmanTile = Util::getCenter(pacman->getX(), pacman->getY());
+
+        if (ghostTile == pacmanTile)
+        {
+            printf("Collision between Pacman and %s!\n", typeid(*ghost).name());
+            if (ghostMode == GhostMode::FRIGHTENED)
+            {
+                printf("Pacman ate %s\n", typeid(*ghost).name());
+            }
+            else
+            {
+                printf("Pacman died by the hand of %s\n", typeid(*ghost).name());
+            }
+        }
+    }
 }
 
 }

@@ -10,7 +10,6 @@ Ghost::Ghost(int x, int y, int xTarget, int yTarget, Direction direction,
     Character(x, y, direction),
     xTarget(xTarget),
     yTarget(yTarget),
-    ghostMode(GhostMode::SCATTER),
     isGhostHome(isHome),
     isExitingHome(isExiting),
     dotCounter(0),
@@ -24,40 +23,43 @@ Ghost::Ghost(int x, int y, int xTarget, int yTarget, Direction direction,
 
 void Ghost::move()
 {
-    if (direction == Direction::LEFT)
+    if (!collided)
     {
-        x -= Constants::MAXIMUM_PIXEL_SPEED;
+        if (direction == Direction::LEFT)
+        {
+            x -= Constants::MAXIMUM_PIXEL_SPEED;
+        }
+        else if (direction == Direction::RIGHT)
+        {
+            x += Constants::MAXIMUM_PIXEL_SPEED;
+        }
+        else if (direction == Direction::DOWN)
+        {
+            y += Constants::MAXIMUM_PIXEL_SPEED;
+        }
+        else if (direction == Direction::UP)
+        {
+            y -= Constants::MAXIMUM_PIXEL_SPEED;
+        }
+        /*
+        if (direction == Direction::LEFT)
+        {
+            x -= Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
+        }
+        else if (direction == Direction::RIGHT)
+        {
+            x += Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
+        }
+        else if (direction == Direction::DOWN)
+        {
+            y += Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
+        }
+        else if (direction == Direction::UP)
+        {
+            y -= Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
+        }
+        */
     }
-    else if (direction == Direction::RIGHT)
-    {
-        x += Constants::MAXIMUM_PIXEL_SPEED;
-    }
-    else if (direction == Direction::DOWN)
-    {
-        y += Constants::MAXIMUM_PIXEL_SPEED;
-    }
-    else if (direction == Direction::UP)
-    {
-        y -= Constants::MAXIMUM_PIXEL_SPEED;
-    }
-    /*
-    if (direction == Direction::LEFT)
-    {
-        x -= Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
-    }
-    else if (direction == Direction::RIGHT)
-    {
-        x += Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
-    }
-    else if (direction == Direction::DOWN)
-    {
-        y += Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
-    }
-    else if (direction == Direction::UP)
-    {
-        y -= Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
-    }
-    */
     isOddMove = !isOddMove;    
 }
 
@@ -118,16 +120,6 @@ bool Ghost::hasTileChanged()
 Cell Ghost::getCurrentTile()
 {
     return this->currentTile;
-}
-
-void Ghost::setMode(GhostMode mode)
-{
-    this->ghostMode = mode;
-}
-
-GhostMode Ghost::getMode()
-{ 
-    return this->ghostMode;
 }
 
 Cell Ghost::getTarget()

@@ -21,6 +21,8 @@ public:
     virtual void move() = 0;
     virtual void changeDirection(Direction direction) = 0;
     Direction getDirection();
+    bool hasCollided();
+    void setCollided(bool hasCollided);
     //virtual void respawn();
 
 protected:
@@ -29,6 +31,7 @@ protected:
     int x;
     int y;
     bool isOddMove;
+    bool collided;
 
 };
 

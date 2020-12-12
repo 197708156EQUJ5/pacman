@@ -52,40 +52,43 @@ int Pacman::getSrcRow()
 
 void Pacman::move()
 {
-    if (direction == Direction::LEFT)
+    if (!collided)
     {
-        x -= Constants::MAXIMUM_PIXEL_SPEED;
+        if (direction == Direction::LEFT)
+        {
+            x -= Constants::MAXIMUM_PIXEL_SPEED;
+        }
+        else if (direction == Direction::RIGHT)
+        {
+            x += Constants::MAXIMUM_PIXEL_SPEED;
+        }
+        else if (direction == Direction::DOWN)
+        {
+            y += Constants::MAXIMUM_PIXEL_SPEED;
+        }
+        else if (direction == Direction::UP)
+        {
+            y -= Constants::MAXIMUM_PIXEL_SPEED;
+        }
+        /*
+        if (direction == Direction::LEFT)
+        {
+            x -= Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
+        }
+        else if (direction == Direction::RIGHT)
+        {
+            x += Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
+        }
+        else if (direction == Direction::DOWN)
+        {
+            y += Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
+        }
+        else if (direction == Direction::UP)
+        {
+            y -= Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
+        }
+        */
     }
-    else if (direction == Direction::RIGHT)
-    {
-        x += Constants::MAXIMUM_PIXEL_SPEED;
-    }
-    else if (direction == Direction::DOWN)
-    {
-        y += Constants::MAXIMUM_PIXEL_SPEED;
-    }
-    else if (direction == Direction::UP)
-    {
-        y -= Constants::MAXIMUM_PIXEL_SPEED;
-    }
-    /*
-    if (direction == Direction::LEFT)
-    {
-        x -= Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
-    }
-    else if (direction == Direction::RIGHT)
-    {
-        x += Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
-    }
-    else if (direction == Direction::DOWN)
-    {
-        y += Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
-    }
-    else if (direction == Direction::UP)
-    {
-        y -= Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
-    }
-    */
     isOddMove = !isOddMove;
 }
 

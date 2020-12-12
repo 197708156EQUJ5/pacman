@@ -124,9 +124,9 @@ void Board::draw()
         count++;
     }
 
-    SDL_Delay(33.333333);
+    //SDL_Delay(33.333333);
     //SDL_Delay(300);
-    //SDL_Delay(16.6666667);
+    SDL_Delay(16.6666667);
     SDL_UpdateWindowSurface(window);
 }
 
@@ -248,6 +248,7 @@ void Board::drawGhosts()
 
 void Board::drawCharacter(std::shared_ptr<Character> character)
 {
+    //printf("{drawCharacter} %s (%3d, %3d)\n", typeid(*character).name(), character->getX(), character->getY());
     drawLargeTile(character->getX(), character->getY(), character->getSrcCol(), character->getSrcRow());
 }
 

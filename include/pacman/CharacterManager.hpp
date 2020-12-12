@@ -29,6 +29,7 @@ public:
     bool canMoveGhost(std::shared_ptr<Ghost> ghost);
     void incrementDotCounter();
     void updateGhostMode(GhostMode ghostMode);
+    void checkCollision();
 
 private:
 
@@ -40,6 +41,7 @@ private:
     std::vector<std::shared_ptr<Ghost>> releaseOrder;
     int releaseOrderIndex;
     std::shared_ptr<std::mutex> mtx;
+    GhostMode ghostMode;
 
     std::vector<int> findLegalDirections(AdjacentTile adjacentTile, std::shared_ptr<Ghost> ghost);
     void selectNewDirection(AdjacentTile adjacentTile, std::vector<int> legalDirections, std::shared_ptr<Ghost> ghost);

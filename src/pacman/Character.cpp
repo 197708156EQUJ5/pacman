@@ -7,7 +7,8 @@ Character::Character(int x, int y, Direction direction) :
     x(x),
     y(y),
     direction(direction),
-    isOddMove(false)
+    isOddMove(false),
+    collided(false)
 {
 }
 
@@ -24,6 +25,16 @@ int Character::getX() const
 Direction Character::getDirection()
 {
     return direction;
+}
+
+bool Character::hasCollided()
+{
+    return collided;
+}
+
+void Character::setCollided(bool hasCollided)
+{
+    collided = hasCollided;
 }
 
 }
