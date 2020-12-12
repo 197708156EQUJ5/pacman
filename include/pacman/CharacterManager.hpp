@@ -48,6 +48,7 @@ private:
     void handleChaseMode(std::shared_ptr<Ghost> ghost, AdjacentTile adjacentTile, std::vector<int> legalDirections, Direction &newDirection);
 
     void determineRelease(std::shared_ptr<Ghost> ghost);
+    void allCharactersStop();
     
 };
 

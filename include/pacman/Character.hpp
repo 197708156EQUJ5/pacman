@@ -22,7 +22,7 @@ public:
     virtual void changeDirection(Direction direction) = 0;
     Direction getDirection();
     bool hasCollided();
-    void setCollided(bool hasCollided);
+    void setCollided(bool hasCollided = true);
     //virtual void respawn();
 
 protected:

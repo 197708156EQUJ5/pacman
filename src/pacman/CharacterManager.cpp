@@ -346,9 +346,24 @@ void CharacterManager::checkCollision()
             else
             {
                 printf("Pacman died by the hand of %s\n", typeid(*ghost).name());
+                allCharactersStop();
+
             }
         }
     }
+}
+
+void CharacterManager::allCharactersStop()
+{
+    mtx->lock();
+
+    pacman->setCollided();
+    blinky->setCollided();
+    pinky->setCollided();
+    inky->setCollided();
+    clyde->setCollided();
+
+    mtx->unlock();
 }
 
 }
