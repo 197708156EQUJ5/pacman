@@ -14,7 +14,6 @@ namespace pacman
     
 CharacterManager::CharacterManager() :
     releaseOrderIndex(0),
-    ghostMode(GhostMode::SCATTER),
     mtx(std::make_unique<std::mutex>())
 {
     pacman = std::make_shared<Pacman>();
@@ -195,7 +194,7 @@ void CharacterManager::selectNewDirection(AdjacentTile adjacentTile, std::vector
 
     if (legalDirections.size() > 1 && ghost->hasTileChanged())
     {
-        switch (ghostMode)
+        switch (ghost->getMode())
         {
             case GhostMode::SCATTER:
             {
@@ -259,8 +258,11 @@ void CharacterManager::updateGhostMode(GhostMode ghostMode)
 {
     mtx->lock();
 
-    this->ghostMode = ghostMode;
-    
+    for (std::shared_ptr<Ghost> ghost : getGhosts())
+    {
+        ghost->setMode(ghostMode);
+    }
+
     mtx->unlock();
 }
 
@@ -337,7 +339,7 @@ void CharacterManager::checkCollision()
         if (ghostTile == pacmanTile)
         {
             printf("Collision between Pacman and %s!\n", typeid(*ghost).name());
-            if (ghostMode == GhostMode::FRIGHTENED)
+            if (ghost->getMode() == GhostMode::FRIGHTENED)
             {
                 printf("Pacman ate %s\n", typeid(*ghost).name());
             }

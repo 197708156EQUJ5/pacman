@@ -70,24 +70,6 @@ void Pacman::move()
         {
             y -= Constants::MAXIMUM_PIXEL_SPEED;
         }
-        /*
-        if (direction == Direction::LEFT)
-        {
-            x -= Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
-        }
-        else if (direction == Direction::RIGHT)
-        {
-            x += Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
-        }
-        else if (direction == Direction::DOWN)
-        {
-            y += Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
-        }
-        else if (direction == Direction::UP)
-        {
-            y -= Constants::MAXIMUM_PIXEL_SPEED * Constants::TILE_DISPLAY_RATIO;
-        }
-        */
     }
     isOddMove = !isOddMove;
 }

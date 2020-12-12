@@ -36,6 +36,8 @@ public:
 
     void setCurrentTile(Cell tile);
     Cell getCurrentTile();
+    void setMode(GhostMode mode);
+    GhostMode getMode();    
     Cell getTarget();
 
     /// Adds direction to the queue.
@@ -71,6 +73,7 @@ protected:
     bool preCheck;
 
 private:
+    
     GhostMode ghostMode;
 
 };
