@@ -11,12 +11,12 @@ using namespace std::chrono;
 namespace pacman
 {
 
-Timer::Timer(int low, int high, std::function<void()> timerDone) :
+Timer::Timer(int low, int high, std::function<void()> timerDone, float delay) :
     isRunning(false),
     isTimerRunning(false),
     low(low),
     high(high),
-    delay(0.0),
+    delay(delay),
     timerDone(timerDone)
 {
 }
@@ -62,7 +62,10 @@ void Timer::startTimer()
 {
     if (!this->isTimerRunning)
     {
-        this->delay = Util::generateRandom(low, high);
+        if (!(this->delay > 0.0))
+        {
+            this->delay = Util::generateRandom(low, high);
+        }
         this->startTime = steady_clock::now();
         printf("delay %.6f\n", delay);
         this->isTimerRunning = true;

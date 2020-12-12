@@ -8,7 +8,8 @@ Character::Character(int x, int y, Direction direction) :
     y(y),
     direction(direction),
     isOddMove(false),
-    collided(false)
+    collided(false),
+    hidden(false)
 {
 }
 
@@ -35,6 +36,16 @@ bool Character::hasCollided()
 void Character::setCollided(bool hasCollided)
 {
     collided = hasCollided;
+}
+
+bool Character::isHidden()
+{
+    return this->hidden;
+}
+
+void Character::hide(bool hide)
+{
+    this->hidden = hide;
 }
 
 }

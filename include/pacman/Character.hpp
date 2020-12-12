@@ -24,6 +24,8 @@ public:
     bool hasCollided();
     void setCollided(bool hasCollided = true);
     //virtual void respawn();
+    bool isHidden();
+    void hide(bool hide = true);
 
 protected:
 
@@ -32,6 +34,7 @@ protected:
     int y;
     bool isOddMove;
     bool collided;
+    bool hidden;
 
 };
 

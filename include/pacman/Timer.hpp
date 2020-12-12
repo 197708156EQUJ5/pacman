@@ -14,7 +14,7 @@ class Timer
 {
 public:
 
-    Timer(int low, int high, std::function<void()> timerDone);
+    Timer(int low = 0, int high = 1, std::function<void()> timerDone = nullptr, float delay = 0.0);
     ~Timer();
 
     void run();

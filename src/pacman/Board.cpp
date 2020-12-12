@@ -249,7 +249,11 @@ void Board::drawGhosts()
 void Board::drawCharacter(std::shared_ptr<Character> character)
 {
     //printf("{drawCharacter} %s (%3d, %3d)\n", typeid(*character).name(), character->getX(), character->getY());
-    drawLargeTile(character->getX(), character->getY(), character->getSrcCol(), character->getSrcRow());
+
+    if (!character->isHidden())
+    {
+        drawLargeTile(character->getX(), character->getY(), character->getSrcCol(), character->getSrcRow());
+    }
 }
 
 
