@@ -24,14 +24,12 @@ CharacterManager::CharacterManager() :
     
     releaseOrder = {pinky, inky, clyde};
 
-    /*
-    std::function<void()> removeFruit = [this]()
+    std::function<void()> hideGhost = [this]()
     {
-        this->removeFruitHandler();
+        this->hideGhostHandler();
     };
-    this->fruitTimer = std::make_unique<Timer>(1, 1, removeFruit);
-    this->fruitThread = std::make_unique<std::thread>(&Timer::run, this->fruitTimer.get());
-    */
+    this->timer = std::make_unique<Timer>(0, 0, hideGhost, 1.0);
+    this->timerThread = std::make_unique<std::thread>(&Timer::run, this->timer.get());
 }
 
 std::shared_ptr<Pacman> CharacterManager::getPacman()
@@ -356,7 +354,7 @@ void CharacterManager::checkCollision()
             {
                 printf("Pacman died by the hand of %s\n", typeid(*ghost).name());
                 freezeCharacters();
-                hideCharacters();
+                this->timer->startTimer();
             }
         }
     }
@@ -379,13 +377,18 @@ void CharacterManager::hideCharacters()
 {
     mtx->lock();
 
-    pacman->hide();
+    //pacman->hide();
     blinky->hide();
     pinky->hide();
     inky->hide();
     clyde->hide();
 
     mtx->unlock();
+}
+
+void CharacterManager::hideGhostHandler()
+{
+    hideCharacters();
 }
 
 }

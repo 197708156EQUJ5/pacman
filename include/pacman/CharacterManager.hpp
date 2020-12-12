@@ -7,9 +7,11 @@
 #include "pacman/Inky.hpp"
 #include "pacman/Pacman.hpp"
 #include "pacman/Pinky.hpp"
+#include "pacman/Timer.hpp"
 
 #include <memory>
 #include <mutex>
+#include <thread>
 #include <vector>
 
 namespace pacman
@@ -41,6 +43,8 @@ private:
     std::vector<std::shared_ptr<Ghost>> releaseOrder;
     int releaseOrderIndex;
     std::shared_ptr<std::mutex> mtx;
+    std::unique_ptr<Timer> timer;
+    std::unique_ptr<std::thread> timerThread;
 
     std::vector<int> findLegalDirections(AdjacentTile adjacentTile, std::shared_ptr<Ghost> ghost);
     void selectNewDirection(AdjacentTile adjacentTile, std::vector<int> legalDirections, std::shared_ptr<Ghost> ghost);
@@ -50,6 +54,7 @@ private:
     void determineRelease(std::shared_ptr<Ghost> ghost);
     void freezeCharacters();
     void hideCharacters();
+    void hideGhostHandler();
     
 };
 
