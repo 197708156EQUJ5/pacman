@@ -4,5 +4,6 @@ enum class GhostMode
 {
     CHASE,
     SCATTER,
-    FRIGHTENED
+    FRIGHTENED,
+    EYES
 };

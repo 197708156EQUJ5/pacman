@@ -202,12 +202,12 @@ int Level::getCellValue(Cell cell)
     if (cellType == Constants::PELLET && !cellType.hasVisited)
     {
         cellType.hasVisited = true;
-        return 10;
+        return Constants::PELLET_VALUE;
     }
     else if (cellType == Constants::ENERGIZER && !cellType.hasVisited)
     {
         cellType.hasVisited = true;
-        return 50;
+        return Constants::ENERGIZER_VALUE;
     }
 
     return 0;

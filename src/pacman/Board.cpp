@@ -304,6 +304,10 @@ void Board::updatePacman()
         int tileValue = Level::getCellValue(Util::convertToGrid(Cell{pacman->getX(), pacman->getY()}));
         if (tileValue > 0)
         {
+            if (tileValue == Constants::ENERGIZER_VALUE)
+            {
+                characterManager->updateGhostMode(GhostMode::FRIGHTENED);
+            }
             pacman->incrementDotCounter();
             characterManager->incrementDotCounter();
         }

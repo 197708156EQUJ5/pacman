@@ -62,6 +62,9 @@ static const pacman::Cell PELLET{17, 0};
 static const pacman::Cell ENERGIZER{21, 0};
 static const pacman::Cell EMPTY{30, 5};
 
+static const int PELLET_VALUE = 10;
+static const int ENERGIZER_VALUE = 50;
+
 }
 
 namespace PacmanConstants
@@ -92,6 +95,19 @@ static const int SECOND_FRUIT = 23; // Actual is 170
 namespace GhostConstants
 {
 
+static const int SRC_FRIGHTENED_ROW = 8;
+static const int SRC_FRIGHTENED_COL_1 = 16;
+static const int SRC_FRIGHTENED_COL_2 = 18;
+
+static const int SRC_EYES_ROW = 18;
+static const int SRC_EYES_LEFT_1 = 24;
+static const int SRC_EYES_LEFT_2 = 26;
+static const int SRC_EYES_RIGHT_1 = 16;
+static const int SRC_EYES_RIGHT_2 = 17;
+static const int SRC_EYES_UP_1 = 28;
+static const int SRC_EYES_UP_2 = 29;
+static const int SRC_EYES_DOWN_1 = 20;
+static const int SRC_EYES_DOWN_2 = 21;
 
 }
 
