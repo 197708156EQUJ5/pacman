@@ -20,6 +20,7 @@ public:
     static const Cell GHOST_HOUSE_DOOR;
     static const Cell GH_DOWN_EMPTY_TILE;
     static const Cell GH_UP_EMPTY_TILE;
+    static const Cell ENERGIZER;
 
     static Cell& getCellType(Cell cell);
     static Cell& getCellType(int col, int row);

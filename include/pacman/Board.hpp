@@ -53,8 +53,8 @@ private:
     int score;
     int lives;
     int level;
-    int count;
-    std::chrono::time_point<std::chrono::system_clock> gameStartTime;
+    int frameCount;
+    std::chrono::time_point<std::chrono::steady_clock> gameStartTime;
     
     SDL_Window *window;
     SDL_Surface *surface;

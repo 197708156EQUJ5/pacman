@@ -22,7 +22,7 @@ class CharacterManager
 public:
 
     CharacterManager();
-    ~CharacterManager() = default;
+    ~CharacterManager();
 
     void initCharacters();
     std::shared_ptr<Pacman> getPacman();

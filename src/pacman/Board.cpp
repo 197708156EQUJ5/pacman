@@ -9,6 +9,9 @@
 #include <sstream>
 #include <iostream>
 
+using namespace std::chrono;
+using namespace std;
+
 namespace pacman
 {
 
@@ -17,7 +20,7 @@ Board::Board() :
     score(0),
     lives(2),
     level(0),
-    count(0),
+    frameCount(0),
     showFruit(false)
 {
 }
@@ -53,8 +56,8 @@ bool Board::init()
 
     if (!window)
     {
-        std::cout << "Failed to create window\n";
-        std::cout << "SDL2 Error: " << SDL_GetError() << "\n";
+        cout << "Failed to create window\n";
+        cout << "SDL2 Error: " << SDL_GetError() << "\n";
         return false;
     }
 
@@ -62,40 +65,40 @@ bool Board::init()
 
     if (!surface)
     {
-        std::cout << "Failed to get window's surface\n";
-        std::cout << "SDL2 Error: " << SDL_GetError() << "\n";
+        cout << "Failed to get window's surface\n";
+        cout << "SDL2 Error: " << SDL_GetError() << "\n";
         return false;
     }
 
-    spriteSheet = std::make_unique<SpriteSheet>();
-    characterManager = std::make_unique<CharacterManager>();
-    fruitManager = std::make_unique<FruitManager>();
+    spriteSheet = make_unique<SpriteSheet>();
+    characterManager = make_unique<CharacterManager>();
+    fruitManager = make_unique<FruitManager>();
 
     maze = Level::LEVEL_1;
     //maze = Level::getLevel();
     pacman = this->characterManager->getPacman();
     ghosts = this->characterManager->getGhosts();
-    gameStartTime = std::chrono::system_clock::now();
+    gameStartTime = steady_clock::now();
 
-    std::function<void(GhostMode)> transitionGhostMode = [this](GhostMode ghostMode)
+    function<void(GhostMode)> transitionGhostMode = [this](GhostMode ghostMode)
     {
         this->transitionGhostModeHandler(ghostMode);
     };
 
-    this->transitionDelays = {std::make_pair(0, GhostMode::SCATTER), std::make_pair(7, GhostMode::CHASE), 
-        std::make_pair(20, GhostMode::SCATTER), std::make_pair(7, GhostMode::CHASE), 
-        std::make_pair(20, GhostMode::SCATTER), std::make_pair(5, GhostMode::CHASE), 
-        std::make_pair(20, GhostMode::SCATTER), std::make_pair(5, GhostMode::CHASE)};
-    this->ghostModeTimer = std::make_unique<GhostModeTimer>(this->transitionDelays, transitionGhostMode);
-    this->ghostModeThread = std::make_unique<std::thread>(&GhostModeTimer::run, this->ghostModeTimer.get());
+    this->transitionDelays = {make_pair(0, GhostMode::SCATTER), make_pair(7, GhostMode::CHASE), 
+        make_pair(20, GhostMode::SCATTER), make_pair(7, GhostMode::CHASE), 
+        make_pair(20, GhostMode::SCATTER), make_pair(5, GhostMode::CHASE), 
+        make_pair(20, GhostMode::SCATTER), make_pair(5, GhostMode::CHASE)};
+    this->ghostModeTimer = make_unique<GhostModeTimer>(this->transitionDelays, transitionGhostMode);
+    this->ghostModeThread = make_unique<thread>(&GhostModeTimer::run, this->ghostModeTimer.get());
     this->ghostModeTimer->startTimer();
 
-    std::function<void()> removeFruit = [this]()
+    function<void()> removeFruit = [this]()
     {
         this->removeFruitHandler();
     };
-    this->fruitTimer = std::make_unique<Timer>(9, 10, removeFruit);
-    this->fruitThread = std::make_unique<std::thread>(&Timer::run, this->fruitTimer.get());
+    this->fruitTimer = make_unique<Timer>(9, 10, removeFruit);
+    this->fruitThread = make_unique<thread>(&Timer::run, this->fruitTimer.get());
 
     return true;
 }
@@ -116,17 +119,23 @@ void Board::draw()
     drawPacman();
     drawGhosts();
 
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - gameStartTime);
-    if (duration.count() > Constants::LEVEL_START_DELAY)
+    milliseconds sinceGameStart = duration_cast<milliseconds>(steady_clock::now() - gameStartTime);
+    frameCount++;
+    /*
+    if (frameCount % 30 == 0)
+    {
+        cout << "time: " << sinceGameStart.count() << endl;
+    }
+    */
+    if (sinceGameStart.count() > Constants::LEVEL_START_DELAY)
     {
         updatePacman();
         updateGhosts();
-        count++;
     }
 
     //SDL_Delay(33.333333);
     //SDL_Delay(300);
-    SDL_Delay(16.6666667);
+    //SDL_Delay(16.6666667);
     SDL_UpdateWindowSurface(window);
 }
 
@@ -138,7 +147,7 @@ void Board::drawBoard()
 
 void Board::drawText()
 {
-    std::vector<Cell> highScoreText{Constants::H, Constants::I, Constants::G, Constants::H, Cell{30, 5}, 
+    vector<Cell> highScoreText{Constants::H, Constants::I, Constants::G, Constants::H, Cell{30, 5}, 
         Constants::S, Constants::C, Constants::O, Constants::R, Constants::E};
     for (int i = 0; i < highScoreText.size(); i++)
     {
@@ -171,7 +180,14 @@ void Board::drawMaze()
         {
             spriteSheet->selectSprite(cell.col, cell.row);
         }
-        spriteSheet->drawSelectedSprite(surface, &position);
+        if (cell == Level::ENERGIZER && ((frameCount / 10) % 2 == 0))
+        {
+            spriteSheet->drawSelectedSprite(surface, &position);
+        }
+        else if (cell != Level::ENERGIZER)
+        {
+            spriteSheet->drawSelectedSprite(surface, &position);
+        }
         colCount++;
         if (colCount % Constants::COLUMN_COUNT == 0)
         {
@@ -225,7 +241,7 @@ void Board::drawFruits()
         this->fruitTimer->startTimer();
     }
 
-    for (int i = std::max(level - 7, 0); i <= level; i++)
+    for (int i = max(level - 7, 0); i <= level; i++)
     {
         Cell fruitCell = fruitManager->getFruit(i);
         drawLargeTile(FruitConstants::LEVEL_START_COL - (i * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO)),
@@ -240,13 +256,13 @@ void Board::drawPacman()
 
 void Board::drawGhosts()
 {
-    for (std::shared_ptr<Ghost> ghost : ghosts)
+    for (shared_ptr<Ghost> ghost : ghosts)
     {
         drawCharacter(ghost);
     }
 }
 
-void Board::drawCharacter(std::shared_ptr<Character> character)
+void Board::drawCharacter(shared_ptr<Character> character)
 {
     //printf("{drawCharacter} %s (%3d, %3d)\n", typeid(*character).name(), character->getX(), character->getY());
 
@@ -298,7 +314,7 @@ void Board::updatePacman()
 
 void Board::updateGhosts()
 {
-    for (std::shared_ptr<Ghost> ghost : ghosts)
+    for (shared_ptr<Ghost> ghost : ghosts)
     {
         if (this->characterManager->canMoveGhost(ghost))
         {

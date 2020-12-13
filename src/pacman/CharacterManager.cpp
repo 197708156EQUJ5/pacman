@@ -32,6 +32,16 @@ CharacterManager::CharacterManager() :
     this->timerThread = std::make_unique<std::thread>(&Timer::run, this->timer.get());
 }
 
+CharacterManager::~CharacterManager()
+{    
+    if (this->timerThread != nullptr)
+    {
+        this->timer->stop();
+        this->timerThread->join();
+        this->timerThread.reset();
+    }
+}
+
 std::shared_ptr<Pacman> CharacterManager::getPacman()
 {
     return pacman;

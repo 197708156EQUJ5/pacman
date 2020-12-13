@@ -12,6 +12,7 @@ namespace pacman
 const Cell Level::GH_DOWN_EMPTY_TILE = Cell{31, 5};
 const Cell Level::GH_UP_EMPTY_TILE = Cell{29, 5};
 const Cell Level::GHOST_HOUSE_DOOR = Cell{15, 1};
+const Cell Level::ENERGIZER = Cell{21, 0};
 
 const std::vector<Cell> Level::LEGAL_TILES(
 {
