@@ -143,7 +143,7 @@ void Board::draw()
 
     SDL_UpdateWindowSurface(window);
 
-    SDL_Delay(16.66667);
+    SDL_Delay(31.33333);
 }
 
 void Board::drawBoard()
@@ -217,8 +217,11 @@ void Board::drawLives()
 {
     for (int i = 0; i < lives; i++)
     {
+        //printf("allLives[%d] (%3d, %3d) \n", i, PacmanConstants::LIVES_START_COL + (i * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO)),
+        //        PacmanConstants::LIVES_START_ROW);
+
         drawLargeTile(PacmanConstants::LIVES_START_COL + (i * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO)),
-                PacmanConstants::LIVES_START_ROW, PacmanConstants::SRC_LEFT_1, PacmanConstants::SRC_ROW);
+                PacmanConstants::LIVES_START_ROW, PacmanConstants::SRC_LEFT_1, PacmanConstants::SRC_ROW, false);
     }
 }
 
@@ -236,15 +239,18 @@ void Board::drawFruits()
         int y = FruitConstants::ROW;
 
         Cell fruitCell = fruitManager->getFruit(level);
-        drawLargeTile(x, y, fruitCell.col, fruitCell.row);
+        //printf("boardFruit (%3d, %3d) \n", x, y);
+        drawLargeTile(x, y, fruitCell.col, fruitCell.row, true);
         this->fruitTimer->startTimer();
     }
 
     for (int i = max(level - 7, 0); i <= level; i++)
     {
         Cell fruitCell = fruitManager->getFruit(i);
+        //printf("allFruit[%d] (%3d, %3d) \n", i, FruitConstants::LEVEL_START_COL - (i * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO)),
+        //        FruitConstants::LEVEL_START_ROW);
         drawLargeTile(FruitConstants::LEVEL_START_COL - (i * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO)),
-                FruitConstants::LEVEL_START_ROW, fruitCell.col, fruitCell.row);
+                FruitConstants::LEVEL_START_ROW, fruitCell.col, fruitCell.row, false);
     }
 }
 
@@ -263,17 +269,33 @@ void Board::drawGhosts()
 
 void Board::drawCharacter(shared_ptr<Character> character)
 {
-    //printf("{drawCharacter} %s (%3d, %3d) \n", typeid(*character).name(), character->getX(), character->getY());
+    //printf("drawCharacter %s (%3d, %3d) (%3d, %3d)\n", typeid(*character).name(), character->getX(), character->getY());
 
     if (!character->isHidden())
     {
-        drawLargeTile(character->getX(), character->getY(), character->getSrcCol(), character->getSrcRow());
+        drawLargeTile(character->getX(), character->getY(), character->getSrcCol(), character->getSrcRow(), true);
     }
 }
 
 
-void Board::drawLargeTile(int tileX, int tileY, int tileSrcCol, int tileSrcRow)
+void Board::drawLargeTile(int tileX, int tileY, int tileSrcCol, int tileSrcRow, bool isRedrawNeeded)
 {
+    if (isRedrawNeeded)
+    {
+        Cell grid = Util::convertToGrid(Cell{tileX, tileY});
+        Cell cellType = Level::getCellType(grid.col, grid.row);
+        // TODO convert to a double for loop
+        maze.push_back(make_pair(Tile{grid.col, grid.row},         Level::getCellType(grid.col, grid.row)));
+        maze.push_back(make_pair(Tile{grid.col, grid.row - 1},     Level::getCellType(grid.col, grid.row - 1)));
+        maze.push_back(make_pair(Tile{grid.col - 1, grid.row - 1}, Level::getCellType(grid.col - 1, grid.row - 1)));
+        maze.push_back(make_pair(Tile{grid.col - 1, grid.row},     Level::getCellType(grid.col - 1, grid.row)));
+        maze.push_back(make_pair(Tile{grid.col - 1, grid.row + 1}, Level::getCellType(grid.col - 1, grid.row + 1)));
+        maze.push_back(make_pair(Tile{grid.col, grid.row + 1},     Level::getCellType(grid.col, grid.row + 1)));
+        maze.push_back(make_pair(Tile{grid.col + 1, grid.row + 1}, Level::getCellType(grid.col + 1, grid.row + 1)));
+        maze.push_back(make_pair(Tile{grid.col + 1, grid.row},     Level::getCellType(grid.col + 1, grid.row)));
+        maze.push_back(make_pair(Tile{grid.col + 1, grid.row - 1}, Level::getCellType(grid.col + 1, grid.row - 1)));
+    }
+
     int i = 1;
     int j = 1;
     for (int srcRow = 0; srcRow < 2; srcRow++)
@@ -282,7 +304,6 @@ void Board::drawLargeTile(int tileX, int tileY, int tileSrcCol, int tileSrcRow)
         {
             int x = (tileX * Constants::TILE_DISPLAY_RATIO) - (i * Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO);
             int y = (tileY * Constants::TILE_DISPLAY_RATIO) - (j * Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO);
-            //printf("[%d,%d] = (%3d, %3d)\n", srcCol, srcRow, x, y);
             int width = Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO;
             int height = Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO;
 
@@ -290,8 +311,6 @@ void Board::drawLargeTile(int tileX, int tileY, int tileSrcCol, int tileSrcRow)
             spriteSheet->selectSprite(tileSrcCol + srcCol, tileSrcRow + srcRow);
             spriteSheet->drawSelectedSprite(surface, &position);
             i--;
-            Cell grid = Util::convertToGrid(Cell{tileX - (i * Constants::TILE_SIZE), tileY - (j - Constants::TILE_SIZE)});
-            maze.push_back(make_pair(Tile{grid.col, grid.row}, Cell{tileSrcCol + srcCol, tileSrcRow + srcRow}));
         }
         i = 1;
         j--;
