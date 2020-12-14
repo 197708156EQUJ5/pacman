@@ -74,7 +74,18 @@ bool Board::init()
     characterManager = make_unique<CharacterManager>();
     fruitManager = make_unique<FruitManager>();
 
-    maze = Level::LEVEL_1;
+    int colCount = 0;
+    int rowCount = 0;
+    for (Cell cell : Level::LEVEL_1)
+    {
+        maze.push_back(make_pair(Tile{colCount, rowCount}, cell));
+        colCount++;
+        if (colCount % Constants::COLUMN_COUNT == 0)
+        {
+            colCount = 0;
+            rowCount++;
+        }
+    }
     pacman = this->characterManager->getPacman();
     ghosts = this->characterManager->getGhosts();
     gameStartTime = steady_clock::now();
@@ -111,10 +122,7 @@ void Board::setUserDirection(Direction direction)
 
 void Board::draw()
 {
-    if (frameCount == 2)
-    {
-        drawBoard();
-    }
+    drawBoard();
     drawScore();
     drawFruits();
     drawLives();
@@ -161,15 +169,12 @@ void Board::drawText()
 
 void Board::drawMaze()
 {
-    int colCount = 0;
-    int rowCount = 3;
-
-    // TODO Potential memory leak
-    maze = Level::getLevel();
-    for (Cell cell : maze)
+    for (pair<Tile, Cell> tileCell : maze)
     {
-        SDL_Rect position = {colCount * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO), 
-            rowCount * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO), 
+        Tile tile = tileCell.first;
+        Cell cell = tileCell.second;
+        SDL_Rect position = {tile.x * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO), 
+            (tile.y + 3) * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO),
             (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO), (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO)};
         if (cell.hasVisited)
         {
@@ -187,13 +192,8 @@ void Board::drawMaze()
         {
             spriteSheet->drawSelectedSprite(surface, &position);
         }
-        colCount++;
-        if (colCount % Constants::COLUMN_COUNT == 0)
-        {
-            colCount = 0;
-            rowCount++;
-        }
     }
+    maze.clear();
 }
 
 void Board::drawScore()
@@ -290,6 +290,8 @@ void Board::drawLargeTile(int tileX, int tileY, int tileSrcCol, int tileSrcRow)
             spriteSheet->selectSprite(tileSrcCol + srcCol, tileSrcRow + srcRow);
             spriteSheet->drawSelectedSprite(surface, &position);
             i--;
+            Cell grid = Util::convertToGrid(Cell{tileX - (i * Constants::TILE_SIZE), tileY - (j - Constants::TILE_SIZE)});
+            maze.push_back(make_pair(Tile{grid.col, grid.row}, Cell{tileSrcCol + srcCol, tileSrcRow + srcRow}));
         }
         i = 1;
         j--;

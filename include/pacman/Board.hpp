@@ -45,7 +45,7 @@ private:
     std::unique_ptr<std::thread> fruitThread;
     bool showFruit;
 
-    std::vector<Cell> maze;
+    std::vector<std::pair<Tile, Cell>> maze;
     std::shared_ptr<Pacman> pacman;
     std::vector<std::shared_ptr<Ghost>> ghosts;
     Direction userDirection;

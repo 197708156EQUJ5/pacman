@@ -23,4 +23,22 @@ struct Cell
 
 };
 
+struct Tile
+{
+    /// upper-left corner x,y
+    int x;
+    int y;
+
+    bool operator==(const Tile& rhs) const
+    {
+        return x == rhs.x && y == rhs.y;
+    }
+
+    bool operator!=(const Tile& rhs) const
+    {
+        return x != rhs.x || y != rhs.y;
+    }
+
+};
+
 } // namespace pacman
