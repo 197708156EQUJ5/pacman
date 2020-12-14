@@ -122,6 +122,7 @@ void Board::setUserDirection(Direction direction)
 
 void Board::draw()
 {
+    time_point<steady_clock> frameStartTime = steady_clock::now();
     drawBoard();
     drawScore();
     drawFruits();
@@ -131,10 +132,6 @@ void Board::draw()
 
     milliseconds sinceGameStart = duration_cast<milliseconds>(steady_clock::now() - gameStartTime);
     frameCount++;
-    if (frameCount % 30 == 0)
-    {
-        cout << "time: " << sinceGameStart.count() << endl;
-    }
     if (sinceGameStart.count() > Constants::LEVEL_START_DELAY)
     {
         updatePacman();
@@ -143,7 +140,8 @@ void Board::draw()
 
     SDL_UpdateWindowSurface(window);
 
-    SDL_Delay(31.33333);
+    milliseconds frameTime = duration_cast<milliseconds>(steady_clock::now() - frameStartTime);
+    SDL_Delay(33.33333 - frameTime.count());
 }
 
 void Board::drawBoard()
