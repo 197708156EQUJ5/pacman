@@ -75,7 +75,6 @@ bool Board::init()
     fruitManager = make_unique<FruitManager>();
 
     maze = Level::LEVEL_1;
-    //maze = Level::getLevel();
     pacman = this->characterManager->getPacman();
     ghosts = this->characterManager->getGhosts();
     gameStartTime = steady_clock::now();
@@ -100,6 +99,8 @@ bool Board::init()
     this->fruitTimer = make_unique<Timer>(9, 10, removeFruit);
     this->fruitThread = make_unique<thread>(&Timer::run, this->fruitTimer.get());
 
+    SDL_FillRect(surface, nullptr, SDL_MapRGB(surface->format, 0x00, 0x00, 0x00));
+    
     return true;
 }
 
@@ -110,9 +111,10 @@ void Board::setUserDirection(Direction direction)
 
 void Board::draw()
 {
-    SDL_FillRect(surface, nullptr, SDL_MapRGB(surface->format, 0x00, 0x00, 0x00));
-
-    drawBoard();
+    if (frameCount == 2)
+    {
+        drawBoard();
+    }
     drawScore();
     drawFruits();
     drawLives();
@@ -121,22 +123,19 @@ void Board::draw()
 
     milliseconds sinceGameStart = duration_cast<milliseconds>(steady_clock::now() - gameStartTime);
     frameCount++;
-    /*
     if (frameCount % 30 == 0)
     {
         cout << "time: " << sinceGameStart.count() << endl;
     }
-    */
     if (sinceGameStart.count() > Constants::LEVEL_START_DELAY)
     {
         updatePacman();
         updateGhosts();
     }
 
-    //SDL_Delay(33.333333);
-    //SDL_Delay(300);
-    //SDL_Delay(16.6666667);
     SDL_UpdateWindowSurface(window);
+
+    SDL_Delay(16.66667);
 }
 
 void Board::drawBoard()
@@ -264,7 +263,7 @@ void Board::drawGhosts()
 
 void Board::drawCharacter(shared_ptr<Character> character)
 {
-    //printf("{drawCharacter} %s (%3d, %3d)\n", typeid(*character).name(), character->getX(), character->getY());
+    //printf("{drawCharacter} %s (%3d, %3d) \n", typeid(*character).name(), character->getX(), character->getY());
 
     if (!character->isHidden())
     {
@@ -283,6 +282,7 @@ void Board::drawLargeTile(int tileX, int tileY, int tileSrcCol, int tileSrcRow)
         {
             int x = (tileX * Constants::TILE_DISPLAY_RATIO) - (i * Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO);
             int y = (tileY * Constants::TILE_DISPLAY_RATIO) - (j * Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO);
+            //printf("[%d,%d] = (%3d, %3d)\n", srcCol, srcRow, x, y);
             int width = Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO;
             int height = Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO;
 
