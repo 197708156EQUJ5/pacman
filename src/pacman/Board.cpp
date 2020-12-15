@@ -23,6 +23,8 @@ Board::Board() :
     frameCount(0),
     pauseGame(false),
     pauseGameTime(0),
+    frameUpdate(false),
+    updateCounter(0),
     showFruit(false)
 {
 }
@@ -135,12 +137,13 @@ void Board::draw()
     drawScore();
     drawFruits();
     drawLives();
+    drawOnMazeScore();
     drawPacman();
     drawGhosts();
 
     milliseconds sinceGameStart = duration_cast<milliseconds>(steady_clock::now() - gameStartTime);
     frameCount++;
-    if (sinceGameStart.count() > Constants::LEVEL_START_DELAY)
+    if (sinceGameStart.count() > Constants::LEVEL_START_DELAY && updateCounter == 0)
     {
         updatePacman();
         updateGhosts();
@@ -150,12 +153,11 @@ void Board::draw()
 
     milliseconds frameTime = duration_cast<milliseconds>(steady_clock::now() - frameStartTime);
 
-    if (pauseGame)
+    if (updateCounter > 0)
     {
-        printf("pausing for %d seconds.\n", pauseGameTime);
-        this_thread::sleep_for(seconds(pauseGameTime));
-        pauseGame = false;
+        updateCounter--;
     }
+
     SDL_Delay((1000.0 / 30.0) - frameTime.count());
 }
 
@@ -230,9 +232,6 @@ void Board::drawLives()
 {
     for (int i = 0; i < lives; i++)
     {
-        //printf("allLives[%d] (%3d, %3d) \n", i, PacmanConstants::LIVES_START_COL + (i * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO)),
-        //        PacmanConstants::LIVES_START_ROW);
-
         drawLargeTile(PacmanConstants::LIVES_START_COL + (i * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO)),
                 PacmanConstants::LIVES_START_ROW, PacmanConstants::SRC_LEFT_1, PacmanConstants::SRC_ROW, false);
     }
@@ -252,7 +251,6 @@ void Board::drawFruits()
         int y = FruitConstants::ROW;
 
         Cell fruitCell = fruitManager->getFruit(level);
-        //printf("boardFruit (%3d, %3d) \n", x, y);
         drawLargeTile(x, y, fruitCell.col, fruitCell.row, true);
         this->fruitTimer->startTimer();
     }
@@ -260,10 +258,18 @@ void Board::drawFruits()
     for (int i = max(level - 7, 0); i <= level; i++)
     {
         Cell fruitCell = fruitManager->getFruit(i);
-        //printf("allFruit[%d] (%3d, %3d) \n", i, FruitConstants::LEVEL_START_COL - (i * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO)),
-        //        FruitConstants::LEVEL_START_ROW);
         drawLargeTile(FruitConstants::LEVEL_START_COL - (i * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO)),
                 FruitConstants::LEVEL_START_ROW, fruitCell.col, fruitCell.row, false);
+    }
+}
+
+void Board::drawOnMazeScore()
+{
+    if (updateCounter > 0)
+    {
+        Tile tile = onMazeScore.first;
+        Cell cell = onMazeScore.second;
+        drawLargeTile(tile.x, tile.y, cell.col, cell.row, true);
     }
 }
 
@@ -374,11 +380,11 @@ void Board::removeFruitHandler()
 
 void Board::updateGhostValueHandler(int deadGhostCount, Cell deadGhostTile)
 {
-    printf("deadCount: %d tile: {%3d, %3d}\n", deadGhostCount, deadGhostTile.col, deadGhostTile.row);
     Cell pointValueCell = Util::getSrcCellPointValue(deadGhostCount);
-    drawLargeTile(deadGhostTile.col, deadGhostTile.row, pointValueCell.col, pointValueCell.row, true);
-    pauseGame = true;
-    pauseGameTime = 2;
+    printf("deadCount: %d tile: {%3d, %3d} Cell: {%3d, %3d}\n", deadGhostCount, deadGhostTile.col, 
+            deadGhostTile.row, pointValueCell.col, pointValueCell.row);
+    onMazeScore = make_pair(Tile{deadGhostTile.col, deadGhostTile.row}, Cell{pointValueCell.col, pointValueCell.row});
+    updateCounter = 60;
 }
 
 } // namespace

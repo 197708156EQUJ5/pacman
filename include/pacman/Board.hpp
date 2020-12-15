@@ -46,6 +46,7 @@ private:
     bool showFruit;
     bool pauseGame;
     int pauseGameTime;
+    bool frameUpdate;
 
     std::vector<std::pair<Tile, Cell>> maze;
     std::shared_ptr<Pacman> pacman;
@@ -57,6 +58,8 @@ private:
     int level;
     int frameCount;
     std::chrono::time_point<std::chrono::steady_clock> gameStartTime;
+    int updateCounter;
+    std::pair<Tile, Cell> onMazeScore;
     
     SDL_Window *window;
     SDL_Surface *surface;
@@ -74,6 +77,7 @@ private:
     void drawScore();
     void drawLives();
     void drawFruits();
+    void drawOnMazeScore();
     
     void updatePacman();
     void updateGhosts();

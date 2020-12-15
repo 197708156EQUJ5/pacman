@@ -369,9 +369,10 @@ void CharacterManager::checkCollision()
                 printf("Pacman ate %s\n", typeid(*ghost).name());
                 ghost->hide();
                 pacman->hide();
+                ghost->setMode(GhostMode::EYES);
                 this->ghostEaten(deadGhostCount, ghostTile);
             }
-            else
+            else if (ghost->getMode() == GhostMode::CHASE || ghost->getMode() == GhostMode::SCATTER)
             {
                 printf("Pacman died by the hand of %s\n", typeid(*ghost).name());
                 freezeCharacters();
