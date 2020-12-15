@@ -61,6 +61,10 @@ static const pacman::Cell Z{26, 2};
 static const pacman::Cell PELLET{17, 0};
 static const pacman::Cell ENERGIZER{21, 0};
 static const pacman::Cell EMPTY{30, 5};
+static const pacman::Cell PV_200{16, 12};
+static const pacman::Cell PV_400{18, 12};
+static const pacman::Cell PV_800{20, 12};
+static const pacman::Cell PV_1600{22, 12};
 
 static const int PELLET_VALUE = 10;
 static const int ENERGIZER_VALUE = 50;

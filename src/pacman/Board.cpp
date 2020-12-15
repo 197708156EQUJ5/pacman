@@ -21,6 +21,8 @@ Board::Board() :
     lives(2),
     level(0),
     frameCount(0),
+    pauseGame(false),
+    pauseGameTime(0),
     showFruit(false)
 {
 }
@@ -71,7 +73,13 @@ bool Board::init()
     }
 
     spriteSheet = make_unique<SpriteSheet>();
-    characterManager = make_unique<CharacterManager>();
+
+    function<void(int, Cell)> ghostEaten = [this](int deadGhostCount, Cell deadGhostTile)
+    {
+        this->updateGhostValueHandler(deadGhostCount, deadGhostTile);
+    };
+
+    characterManager = make_unique<CharacterManager>(ghostEaten);
     fruitManager = make_unique<FruitManager>();
 
     int colCount = 0;
@@ -141,7 +149,14 @@ void Board::draw()
     SDL_UpdateWindowSurface(window);
 
     milliseconds frameTime = duration_cast<milliseconds>(steady_clock::now() - frameStartTime);
-    SDL_Delay(33.33333 - frameTime.count());
+
+    if (pauseGame)
+    {
+        printf("pausing for %d seconds.\n", pauseGameTime);
+        this_thread::sleep_for(seconds(pauseGameTime));
+        pauseGame = false;
+    }
+    SDL_Delay((1000.0 / 30.0) - frameTime.count());
 }
 
 void Board::drawBoard()
@@ -355,6 +370,15 @@ void Board::transitionGhostModeHandler(GhostMode ghostMode)
 void Board::removeFruitHandler()
 {
     this->showFruit = false;
+}
+
+void Board::updateGhostValueHandler(int deadGhostCount, Cell deadGhostTile)
+{
+    printf("deadCount: %d tile: {%3d, %3d}\n", deadGhostCount, deadGhostTile.col, deadGhostTile.row);
+    Cell pointValueCell = Util::getSrcCellPointValue(deadGhostCount);
+    drawLargeTile(deadGhostTile.col, deadGhostTile.row, pointValueCell.col, pointValueCell.row, true);
+    pauseGame = true;
+    pauseGameTime = 2;
 }
 
 } // namespace

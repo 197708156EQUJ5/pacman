@@ -99,5 +99,25 @@ float generateRandom(int low, int high)
     return low + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(high - low)));
 }
 
+Cell getSrcCellPointValue(int deadGhostCount)
+{
+    if (deadGhostCount == 1)
+    {
+        return Constants::PV_200;
+    }
+    else if (deadGhostCount == 2)
+    {
+        return Constants::PV_400;
+    }
+    else if (deadGhostCount == 3)
+    {
+        return Constants::PV_800;
+    }
+    else
+    {
+        return Constants::PV_1600;
+    }
+}
+
 }
 }

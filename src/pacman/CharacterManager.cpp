@@ -12,9 +12,11 @@
 namespace pacman
 {
     
-CharacterManager::CharacterManager() :
+CharacterManager::CharacterManager(std::function<void(int, Cell)> ghostEaten) :
     releaseOrderIndex(0),
-    mtx(std::make_unique<std::mutex>())
+    deadGhostCount(0),
+    mtx(std::make_unique<std::mutex>()),
+    ghostEaten(ghostEaten)
 {
     pacman = std::make_shared<Pacman>();
     blinky = std::make_shared<Blinky>();
@@ -275,6 +277,11 @@ void CharacterManager::updateGhostMode(GhostMode ghostMode)
 {
     mtx->lock();
 
+    if (ghostMode == GhostMode::FRIGHTENED)
+    {
+        deadGhostCount = 0;
+    }
+
     for (std::shared_ptr<Ghost> ghost : getGhosts())
     {
         ghost->setMode(ghostMode);
@@ -358,7 +365,11 @@ void CharacterManager::checkCollision()
             printf("Collision between Pacman and %s!\n", typeid(*ghost).name());
             if (ghost->getMode() == GhostMode::FRIGHTENED)
             {
+                deadGhostCount++;
                 printf("Pacman ate %s\n", typeid(*ghost).name());
+                ghost->hide();
+                pacman->hide();
+                this->ghostEaten(deadGhostCount, ghostTile);
             }
             else
             {
