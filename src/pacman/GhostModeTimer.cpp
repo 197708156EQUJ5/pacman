@@ -27,7 +27,6 @@ GhostModeTimer::~GhostModeTimer()
 
 void GhostModeTimer::run()
 {
-    printf("run()\n");
     this->isRunning = true;
 
     int transitionIndex = 0;
@@ -71,7 +70,6 @@ void GhostModeTimer::startTimer()
     if (!this->isTimerRunning)
     {
         this->startTime = steady_clock::now();
-        printf("startTime: %d\n", startTime);
         this->isTimerRunning = true;
     }
 }

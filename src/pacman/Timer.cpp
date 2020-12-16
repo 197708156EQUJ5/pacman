@@ -28,7 +28,6 @@ Timer::~Timer()
 
 void Timer::run()
 {
-    printf("run()\n");
     this->isRunning = true;
 
     int transitionIndex = 0;
@@ -67,7 +66,6 @@ void Timer::startTimer()
             this->delay = Util::generateRandom(low, high);
         }
         this->startTime = steady_clock::now();
-        printf("delay %.6f\n", delay);
         this->isTimerRunning = true;
     }
 }

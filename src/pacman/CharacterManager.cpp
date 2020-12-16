@@ -102,8 +102,6 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
         std::pair<Cell, Direction> nextStep = ghost->peekNextExitStep();
         Cell nextStepCell = nextStep.first;
         Direction nextStepDirection = nextStep.second;
-        //printf("%s: (%3d, %3d) nextStep - Cell: (%3d, %3d) direction: %d\n", typeid(*ghost).name(), 
-        //        ghost->getX(), ghost->getY(), nextStepCell.col, nextStepCell.row, nextStepDirection);
 
         if (nextStepDirection == Direction::NONE)
         {
@@ -115,7 +113,6 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
 
         if (Cell{x, y} == nextStepCell)
         {
-            //printf("Next pivot point (%3d, %3d) acheived. Setting direction: %d\n", ghost->getX(), ghost->getY(), nextStepDirection);
             ghost->changeDirection(nextStepDirection);
             ghost->advanceNextExitStep();
         }
@@ -140,18 +137,6 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
 
     std::vector<int> legalDirections = findLegalDirections(adjacentTile, ghost);
 
-    /*
-    if (typeid(*ghost) == typeid(Pinky))
-    {
-        printf("(%3d, %3d) {", x, y);
-        for (int dir : legalDirections)
-        {
-            printf("%d ", dir);
-        }
-        printf("}\n");
-    }
-    */
-
     selectNewDirection(adjacentTile, legalDirections, ghost);
 
     bool onTrackX = (ghostDirection == Direction::UP || ghostDirection == Direction::DOWN) && ((y + 4) % 8 == 0);
@@ -160,12 +145,6 @@ bool CharacterManager::canMoveGhost(std::shared_ptr<Ghost> ghost)
     if (onTrackX || onTrackY)
     {
         Direction changedDirection = ghost->getNextDirection();
-        /*
-        if (typeid(*ghost) == typeid(Blinky))
-        {
-            printf("changing direction; %d\n", changedDirection);
-        }
-        */
         ghost->changeDirection(changedDirection);
     }
 

@@ -369,7 +369,6 @@ void Board::updateGhosts()
 
 void Board::transitionGhostModeHandler(GhostMode ghostMode)
 {
-    printf("GhostMode: %d\n", ghostMode);
     characterManager->updateGhostMode(ghostMode);
 }
 
@@ -381,10 +380,19 @@ void Board::removeFruitHandler()
 void Board::updateGhostValueHandler(int deadGhostCount, Cell deadGhostTile)
 {
     Cell pointValueCell = Util::getSrcCellPointValue(deadGhostCount);
-    printf("deadCount: %d tile: {%3d, %3d} Cell: {%3d, %3d}\n", deadGhostCount, deadGhostTile.col, 
-            deadGhostTile.row, pointValueCell.col, pointValueCell.row);
     onMazeScore = make_pair(Tile{deadGhostTile.col, deadGhostTile.row}, Cell{pointValueCell.col, pointValueCell.row});
     updateCounter = 60;
+    
+    thread t([](int const &updateCounter, shared_ptr<Pacman> &pacman)
+    {
+        while (updateCounter > 0)
+        {
+        }
+        pacman->hide(false);
+
+    }, ref(updateCounter), ref(pacman));
+
+    t.detach();
 }
 
 } // namespace
