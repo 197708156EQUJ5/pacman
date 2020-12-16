@@ -84,7 +84,7 @@ private:
 
     void transitionGhostModeHandler(GhostMode ghostMode);
     void removeFruitHandler();
-    void updateGhostValueHandler(int deadGhostCount, Cell deadGhostTile);
+    void updateGhostValueHandler(int deadGhostCount, Cell deadGhostTile, std::shared_ptr<Ghost> ghost);
 };
 
 } // namespace

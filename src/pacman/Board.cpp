@@ -76,9 +76,9 @@ bool Board::init()
 
     spriteSheet = make_unique<SpriteSheet>();
 
-    function<void(int, Cell)> ghostEaten = [this](int deadGhostCount, Cell deadGhostTile)
+    function<void(int, Cell, shared_ptr<Ghost>)> ghostEaten = [this](int deadGhostCount, Cell deadGhostTile, std::shared_ptr<Ghost> ghost)
     {
-        this->updateGhostValueHandler(deadGhostCount, deadGhostTile);
+        this->updateGhostValueHandler(deadGhostCount, deadGhostTile, ghost);
     };
 
     characterManager = make_unique<CharacterManager>(ghostEaten);
@@ -377,20 +377,21 @@ void Board::removeFruitHandler()
     this->showFruit = false;
 }
 
-void Board::updateGhostValueHandler(int deadGhostCount, Cell deadGhostTile)
+void Board::updateGhostValueHandler(int deadGhostCount, Cell deadGhostTile, shared_ptr<Ghost> ghost)
 {
     Cell pointValueCell = Util::getSrcCellPointValue(deadGhostCount);
     onMazeScore = make_pair(Tile{deadGhostTile.col, deadGhostTile.row}, Cell{pointValueCell.col, pointValueCell.row});
     updateCounter = 60;
     
-    thread t([](int const &updateCounter, shared_ptr<Pacman> &pacman)
+    thread t([](int const &updateCounter, shared_ptr<Pacman> &pacman, shared_ptr<Ghost> ghost)
     {
         while (updateCounter > 0)
         {
         }
         pacman->hide(false);
+        ghost->hide(false);
 
-    }, ref(updateCounter), ref(pacman));
+    }, ref(updateCounter), ref(pacman), ghost);
 
     t.detach();
 }

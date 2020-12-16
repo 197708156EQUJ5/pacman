@@ -21,7 +21,7 @@ class CharacterManager
 {
 public:
 
-    CharacterManager(std::function<void(int, Cell)> ghostEaten);
+    CharacterManager(std::function<void(int, Cell, std::shared_ptr<Ghost>)> ghostEaten);
     ~CharacterManager();
 
     void initCharacters();
@@ -46,7 +46,7 @@ private:
     std::unique_ptr<Timer> timer;
     std::unique_ptr<std::thread> timerThread;
     int deadGhostCount;
-    std::function<void(int, Cell)> ghostEaten;
+    std::function<void(int, Cell, std::shared_ptr<Ghost>)> ghostEaten;
     
     std::vector<int> findLegalDirections(AdjacentTile adjacentTile, std::shared_ptr<Ghost> ghost);
     void selectNewDirection(AdjacentTile adjacentTile, std::vector<int> legalDirections, std::shared_ptr<Ghost> ghost);

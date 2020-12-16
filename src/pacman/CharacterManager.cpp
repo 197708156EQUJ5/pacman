@@ -12,7 +12,7 @@
 namespace pacman
 {
     
-CharacterManager::CharacterManager(std::function<void(int, Cell)> ghostEaten) :
+CharacterManager::CharacterManager(std::function<void(int, Cell, std::shared_ptr<Ghost>)> ghostEaten) :
     releaseOrderIndex(0),
     deadGhostCount(0),
     mtx(std::make_unique<std::mutex>()),
@@ -349,7 +349,7 @@ void CharacterManager::checkCollision()
                 ghost->hide();
                 pacman->hide();
                 ghost->setMode(GhostMode::EYES);
-                this->ghostEaten(deadGhostCount, ghostTile);
+                this->ghostEaten(deadGhostCount, ghostTile, ghost);
             }
             else if (ghost->getMode() == GhostMode::CHASE || ghost->getMode() == GhostMode::SCATTER)
             {
