@@ -44,9 +44,6 @@ private:
     std::unique_ptr<Timer> fruitTimer;
     std::unique_ptr<std::thread> fruitThread;
     bool showFruit;
-    bool pauseGame;
-    int pauseGameTime;
-    bool frameUpdate;
 
     std::vector<std::pair<Tile, Cell>> maze;
     std::shared_ptr<Pacman> pacman;

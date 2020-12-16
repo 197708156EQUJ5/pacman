@@ -21,9 +21,6 @@ Board::Board() :
     lives(2),
     level(0),
     frameCount(0),
-    pauseGame(false),
-    pauseGameTime(0),
-    frameUpdate(false),
     updateCounter(0),
     showFruit(false)
 {
@@ -347,6 +344,7 @@ void Board::updatePacman()
             if (tileValue == Constants::ENERGIZER_VALUE)
             {
                 characterManager->updateGhostMode(GhostMode::FRIGHTENED);
+                ghostModeTimer->pause();
             }
             pacman->incrementDotCounter();
             characterManager->incrementDotCounter();

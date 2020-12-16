@@ -37,11 +37,11 @@ void GhostModeTimer::run()
         {
             steady_clock::time_point currentTime = steady_clock::now();
 
-            duration<int> timeDelta = duration_cast<duration<int>>(currentTime - this->startTime);
+            duration<int> timeDelta = duration_cast<duration<int>>((currentTime - this->startTime) - (pauseEndTime - pauseStartTime));
             
             std::pair<int, GhostMode> transitionPair = this->transitionDelays.at(transitionIndex);
             int transitionDelay = transitionPair.first;
-            //printf("delay %d transition Delay %d\n", timeDelta.count(), transitionDelay);
+            printf("delay %d transition Delay %d\n", timeDelta.count(), transitionDelay);
             if (timeDelta.count() >= transitionDelay)
             {
                 GhostMode nextGhostMode = transitionPair.second;
@@ -61,7 +61,15 @@ void GhostModeTimer::pause()
 {
     if (this->isTimerRunning)
     {
+        printf("pause begins\n");
         this->isTimerRunning = false;
+        this->pauseStartTime = steady_clock::now();
+    }
+    else
+    {
+        printf("pause ends\n");
+        this->isTimerRunning = true;
+        this->pauseEndTime = steady_clock::now();
     }
 }
 
