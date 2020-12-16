@@ -35,6 +35,7 @@ private:
     std::chrono::seconds transitionDelay;
     std::function<void(GhostMode)> transitionGhostMode;
     std::vector<std::pair<int, GhostMode>> transitionDelays;
+    int transitionIndex;
 
 };
 

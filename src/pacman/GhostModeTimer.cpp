@@ -7,14 +7,16 @@
 #include <ratio>
 
 using namespace std::chrono;
+using namespace std;
 
 namespace pacman
 {
 
-GhostModeTimer::GhostModeTimer(std::vector<std::pair<int, GhostMode>> transitionDelays, 
-        std::function<void(GhostMode)> transitionGhostMode) :
+GhostModeTimer::GhostModeTimer(vector<pair<int, GhostMode>> transitionDelays, 
+        function<void(GhostMode)> transitionGhostMode) :
     isRunning(false),
     isTimerRunning(false),
+    transitionIndex(0),
     transitionDelays(transitionDelays),
     transitionGhostMode(transitionGhostMode)
 {
@@ -29,7 +31,6 @@ void GhostModeTimer::run()
 {
     this->isRunning = true;
 
-    int transitionIndex = 0;
 
     while (this->isRunning)
     {
@@ -39,9 +40,9 @@ void GhostModeTimer::run()
 
             duration<int> timeDelta = duration_cast<duration<int>>((currentTime - this->startTime) - (pauseEndTime - pauseStartTime));
             
-            std::pair<int, GhostMode> transitionPair = this->transitionDelays.at(transitionIndex);
+            pair<int, GhostMode> transitionPair = this->transitionDelays.at(transitionIndex);
             int transitionDelay = transitionPair.first;
-            printf("delay %d transition Delay %d\n", timeDelta.count(), transitionDelay);
+            //printf("delay %d transition Delay %d\n", timeDelta.count(), transitionDelay);
             if (timeDelta.count() >= transitionDelay)
             {
                 GhostMode nextGhostMode = transitionPair.second;
@@ -70,6 +71,8 @@ void GhostModeTimer::pause()
         printf("pause ends\n");
         this->isTimerRunning = true;
         this->pauseEndTime = steady_clock::now();
+        pair<int, GhostMode> transitionPair = this->transitionDelays.at(transitionIndex);
+        this->transitionGhostMode(transitionPair.second);
     }
 }
 

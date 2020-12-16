@@ -47,6 +47,13 @@ Board::~Board()
         this->fruitThread->join();
         this->fruitThread.reset();
     }
+    
+    if (this->frightenedThread != nullptr)
+    {
+        this->frightenedTimer->stop();
+        this->frightenedThread->join();
+        this->frightenedThread.reset();
+    }
 }
 
 bool Board::init()
@@ -116,6 +123,13 @@ bool Board::init()
     };
     this->fruitTimer = make_unique<Timer>(9, 10, removeFruit);
     this->fruitThread = make_unique<thread>(&Timer::run, this->fruitTimer.get());
+
+    function<void()> frightenedModeEnded = [this]()
+    {
+        this->frightenedModeEndedHandler();
+    };
+    this->frightenedTimer = make_unique<Timer>(0, 0, frightenedModeEnded, 6);
+    this->frightenedThread = make_unique<thread>(&Timer::run, this->frightenedTimer.get());
 
     SDL_FillRect(surface, nullptr, SDL_MapRGB(surface->format, 0x00, 0x00, 0x00));
     
@@ -345,6 +359,7 @@ void Board::updatePacman()
             {
                 characterManager->updateGhostMode(GhostMode::FRIGHTENED);
                 ghostModeTimer->pause();
+                frightenedTimer->startTimer();
             }
             pacman->incrementDotCounter();
             characterManager->incrementDotCounter();
@@ -392,6 +407,11 @@ void Board::updateGhostValueHandler(int deadGhostCount, Cell deadGhostTile, shar
     }, ref(updateCounter), ref(pacman), ghost);
 
     t.detach();
+}
+
+void Board::frightenedModeEndedHandler()
+{
+    ghostModeTimer->pause();
 }
 
 } // namespace

@@ -341,11 +341,11 @@ void CharacterManager::checkCollision()
 
         if (ghostTile == pacmanTile)
         {
-            printf("Collision between Pacman and %s!\n", typeid(*ghost).name());
+            //printf("Collision between Pacman and %s!\n", typeid(*ghost).name());
             if (ghost->getMode() == GhostMode::FRIGHTENED)
             {
                 deadGhostCount++;
-                printf("Pacman ate %s\n", typeid(*ghost).name());
+                //printf("Pacman ate %s\n", typeid(*ghost).name());
                 ghost->hide();
                 pacman->hide();
                 ghost->setMode(GhostMode::EYES);
@@ -353,7 +353,7 @@ void CharacterManager::checkCollision()
             }
             else if (ghost->getMode() == GhostMode::CHASE || ghost->getMode() == GhostMode::SCATTER)
             {
-                printf("Pacman died by the hand of %s\n", typeid(*ghost).name());
+                //printf("Pacman died by the hand of %s\n", typeid(*ghost).name());
                 freezeCharacters();
                 this->timer->startTimer();
             }

@@ -45,6 +45,9 @@ private:
     std::unique_ptr<std::thread> fruitThread;
     bool showFruit;
 
+    std::unique_ptr<Timer> frightenedTimer;
+    std::unique_ptr<std::thread> frightenedThread;
+
     std::vector<std::pair<Tile, Cell>> maze;
     std::shared_ptr<Pacman> pacman;
     std::vector<std::shared_ptr<Ghost>> ghosts;
@@ -82,6 +85,7 @@ private:
     void transitionGhostModeHandler(GhostMode ghostMode);
     void removeFruitHandler();
     void updateGhostValueHandler(int deadGhostCount, Cell deadGhostTile, std::shared_ptr<Ghost> ghost);
+    void frightenedModeEndedHandler();
 };
 
 } // namespace
