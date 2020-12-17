@@ -19,6 +19,7 @@ public:
     
     virtual int getSrcCol() {};
     virtual int getSrcRow() {};
+    int getSpeed(int level) {};
     void move();
     void changeDirection(Direction direction);
     virtual bool preExitingCheck() = 0;
@@ -56,6 +57,7 @@ public:
 
     std::pair<Cell, Direction> peekNextExitStep();
     void advanceNextExitStep();
+
 
 protected:
     

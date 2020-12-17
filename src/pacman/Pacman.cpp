@@ -8,6 +8,7 @@ namespace pacman
 
 Pacman::Pacman() :
     Character(PacmanConstants::START_COL, PacmanConstants::START_ROW, Direction::NONE),
+    isEnergized(false),
     dotCounter(0)
 {
 }
@@ -48,6 +49,19 @@ int Pacman::getSrcRow()
     }
 
     return PacmanConstants::SRC_ROW;
+}
+
+int Pacman::getSpeed(int level)
+{
+    if (level == 1)
+    {
+        if (this->isEnergized)
+        {
+            return 54;
+        }
+        return 48;
+    }
+
 }
 
 void Pacman::move()
@@ -92,6 +106,11 @@ void Pacman::resetDotCounter()
 int Pacman::getDotCounter()
 {
     return this->dotCounter;
+}
+
+bool Pacman::setEnergized(bool isEnergized)
+{
+    this->isEnergized = isEnergized;
 }
 
 }

@@ -18,6 +18,7 @@ public:
     int getY() const;
     virtual int getSrcCol() = 0;
     virtual int getSrcRow() = 0;
+    virtual int getSpeed(int level) = 0;
     virtual void move() = 0;
     virtual void changeDirection(Direction direction) = 0;
     Direction getDirection();
@@ -35,6 +36,7 @@ protected:
     bool isOddMove;
     bool collided;
     bool hidden;
+    int speed;
 
 };
 

@@ -14,16 +14,19 @@ public:
     
     int getSrcCol();
     int getSrcRow();
+    int getSpeed(int level);
     void move();
     void changeDirection(Direction direction);
 
     void incrementDotCounter();
     void resetDotCounter();
     int getDotCounter();
+    bool setEnergized(bool isEnergized = true);
     
 private:
 
     int dotCounter;
+    bool isEnergized;
 
 };
 

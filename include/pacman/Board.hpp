@@ -33,6 +33,8 @@ public:
 
 private:    
     
+    const int MAX_FRAMES = 66;
+
     std::unique_ptr<SpriteSheet> spriteSheet;
     std::unique_ptr<CharacterManager> characterManager;
     std::unique_ptr<FruitManager> fruitManager;

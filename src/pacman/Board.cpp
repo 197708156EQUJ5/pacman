@@ -156,7 +156,10 @@ void Board::draw()
     frameCount++;
     if (sinceGameStart.count() > Constants::LEVEL_START_DELAY && updateCounter == 0)
     {
-        updatePacman();
+        if (frameCount % (MAX_FRAMES / (MAX_FRAMES - pacman->getSpeed(level + 1))) != 0)
+        {
+            updatePacman();
+        }
         updateGhosts();
     }
 
@@ -357,6 +360,7 @@ void Board::updatePacman()
         {
             if (tileValue == Constants::ENERGIZER_VALUE)
             {
+                pacman->setEnergized();
                 characterManager->updateGhostMode(GhostMode::FRIGHTENED);
                 ghostModeTimer->pause();
                 frightenedTimer->startTimer();
@@ -412,6 +416,7 @@ void Board::updateGhostValueHandler(int deadGhostCount, Cell deadGhostTile, shar
 void Board::frightenedModeEndedHandler()
 {
     ghostModeTimer->pause();
+    pacman->setEnergized(false);
 }
 
 } // namespace

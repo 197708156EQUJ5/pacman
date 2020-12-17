@@ -14,6 +14,7 @@ public:
     
     virtual int getSrcCol() {};
     virtual int getSrcRow() {};
+    int getSpeed(int level) {};
     virtual int getValue() = 0;
     void move() {};
     void changeDirection(Direction direction) {};
