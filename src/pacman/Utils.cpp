@@ -119,5 +119,10 @@ Cell getSrcCellPointValue(int deadGhostCount)
     }
 }
 
+int getPointValue(int deadGhostCount)
+{
+    return pow(2, deadGhostCount) * 100;
+}
+
 }
 }

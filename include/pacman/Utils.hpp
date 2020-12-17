@@ -175,5 +175,7 @@ float generateRandom(int low, int high);
 
 Cell getSrcCellPointValue(int deadGhostCount);
 
+int getPointValue(int deadGhostCount);
+
 }
 }

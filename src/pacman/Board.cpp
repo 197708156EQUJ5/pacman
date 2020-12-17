@@ -397,6 +397,7 @@ void Board::removeFruitHandler()
 void Board::updateGhostValueHandler(int deadGhostCount, Cell deadGhostTile, shared_ptr<Ghost> ghost)
 {
     Cell pointValueCell = Util::getSrcCellPointValue(deadGhostCount);
+    score += Util::getPointValue(deadGhostCount);
     onMazeScore = make_pair(Tile{deadGhostTile.col, deadGhostTile.row}, Cell{pointValueCell.col, pointValueCell.row});
     updateCounter = 60;
     
@@ -404,6 +405,7 @@ void Board::updateGhostValueHandler(int deadGhostCount, Cell deadGhostTile, shar
     {
         while (updateCounter > 0)
         {
+            this_thread::sleep_for(milliseconds(10));
         }
         pacman->hide(false);
         ghost->hide(false);
