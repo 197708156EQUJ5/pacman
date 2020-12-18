@@ -21,6 +21,7 @@ public:
     static const Cell GH_DOWN_EMPTY_TILE;
     static const Cell GH_UP_EMPTY_TILE;
     static const Cell ENERGIZER;
+    static const Cell FRUIT;
 
     static Cell& getCellType(Cell cell);
     static Cell& getCellType(int col, int row);
@@ -28,6 +29,7 @@ public:
     static bool isLegalMove(Cell cell);
     static bool isGhostHouseDoor(Cell cell);
     static std::vector<Cell>& getLevel();
+    static bool isFruitTile(Cell cell);
     
 };
 

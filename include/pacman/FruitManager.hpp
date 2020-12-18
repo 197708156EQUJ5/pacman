@@ -1,6 +1,5 @@
 #pragma once
 
-#include "pacman/Cell.hpp"
 #include "pacman/fruit/Apple.hpp"
 #include "pacman/fruit/Bell.hpp"
 #include "pacman/fruit/Cherry.hpp"
@@ -25,7 +24,7 @@ public:
     FruitManager();
     ~FruitManager() = default;
     
-    Cell getFruit(int level);
+    std::shared_ptr<Fruit> getFruit(int level);
 
 private:
     

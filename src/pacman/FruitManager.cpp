@@ -30,10 +30,9 @@ FruitManager::FruitManager()
         std::make_shared<Key>()};
 }
 
-Cell FruitManager::getFruit(int level)
+std::shared_ptr<Fruit> FruitManager::getFruit(int level)
 {
-    std::shared_ptr<Fruit> fruit = fruits.at(level);
-    return Cell{fruit->getSrcCol(), fruit->getSrcRow()};
+    return fruits.at(level);
 }
 
 } // namespace pacman

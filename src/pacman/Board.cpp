@@ -264,14 +264,16 @@ void Board::drawFruits()
         int x = FruitConstants::COL;
         int y = FruitConstants::ROW;
 
-        Cell fruitCell = fruitManager->getFruit(level);
+        std::shared_ptr<Fruit> fruit = fruitManager->getFruit(level);
+        Cell fruitCell{fruit->getSrcCol(), fruit->getSrcRow()};
         drawLargeTile(x, y, fruitCell.col, fruitCell.row, true);
         this->fruitTimer->startTimer();
     }
 
     for (int i = max(level - 7, 0); i <= level; i++)
     {
-        Cell fruitCell = fruitManager->getFruit(i);
+        std::shared_ptr<Fruit> fruit = fruitManager->getFruit(i);
+        Cell fruitCell{fruit->getSrcCol(), fruit->getSrcRow()};
         drawLargeTile(FruitConstants::LEVEL_START_COL - (i * (Constants::TILE_SIZE * Constants::TILE_DISPLAY_RATIO)),
                 FruitConstants::LEVEL_START_ROW, fruitCell.col, fruitCell.row, false);
     }
@@ -355,7 +357,8 @@ void Board::updatePacman()
     if (this->characterManager->canMovePacman())
     {
         pacman->move();
-        int tileValue = Level::getCellValue(Util::convertToGrid(Cell{pacman->getX(), pacman->getY()}));
+        Cell currentPacmanTile = Cell{pacman->getX(), pacman->getY()};
+        int tileValue = Level::getCellValue(Util::convertToGrid(currentPacmanTile));
         if (tileValue > 0)
         {
             if (tileValue == Constants::ENERGIZER_VALUE)
@@ -367,6 +370,13 @@ void Board::updatePacman()
             }
             pacman->incrementDotCounter();
             characterManager->incrementDotCounter();
+        }
+        if (tileValue == -1 && showFruit)
+        {
+            tileValue = fruitManager->getFruit(level)->getValue();
+            showFruit = false;
+            this->fruitTimer->stop();
+
         }
         score += tileValue;
     }

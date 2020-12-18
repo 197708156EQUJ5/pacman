@@ -13,10 +13,11 @@ const Cell Level::GH_DOWN_EMPTY_TILE = Cell{31, 5};
 const Cell Level::GH_UP_EMPTY_TILE = Cell{29, 5};
 const Cell Level::GHOST_HOUSE_DOOR = Cell{15, 1};
 const Cell Level::ENERGIZER = Cell{21, 0};
+const Cell Level::FRUIT = Cell{30, 0};
 
 const std::vector<Cell> Level::LEGAL_TILES(
 {
-    Cell{17, 0}, Cell{21, 0}, Cell{30, 5}, GH_DOWN_EMPTY_TILE, GH_UP_EMPTY_TILE
+    Cell{17, 0}, ENERGIZER, Cell{30, 5}, GH_DOWN_EMPTY_TILE, GH_UP_EMPTY_TILE, FRUIT
 });
 
 
@@ -110,7 +111,7 @@ std::vector<Cell> Level::LEVEL_1(
     // Row 18
     Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{19, 4}, Cell{17, 0}, 
     Cell{4, 8}, Cell{3, 8}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, 
-    Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{4, 8}, Cell{3, 8}, 
+    Cell{30, 0}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{4, 8}, Cell{3, 8}, 
     Cell{17, 0}, Cell{18, 4}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, 
     // Row 19
     Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{30, 5}, Cell{19, 4}, Cell{17, 0}, 
@@ -208,6 +209,10 @@ int Level::getCellValue(Cell cell)
     {
         cellType.hasVisited = true;
         return Constants::ENERGIZER_VALUE;
+    }
+    else if (cellType == Constants::FRUIT)
+    {
+        return -1;
     }
 
     return 0;
